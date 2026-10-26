@@ -32,7 +32,7 @@ struct RadioView: View {
     }
     .frame(width: u(Radio.size.width), height: u(Radio.size.height))
     // close and minimise: an overlay sized to the buttons only, so it doesn't swallow clicks on the wood
-    .overlay(alignment: .topLeading) { TrafficLights(visible: hovering).padding(.top, u(7)).padding(.leading, u(14)) }
+    .overlay(alignment: .topLeading) { TrafficLights(visible: hovering).padding(.top, u(11)).padding(.leading, u(24))   // clear of the rounded corner }
     .clipShape(shape)
     .overlay(shape.stroke(Color(hex: 0x140A03, opacity: 0.85), lineWidth: 0.5))
   }
