@@ -97,8 +97,8 @@ struct RadioView: View {
         .overlay(RoundedRectangle(cornerRadius: u(10))
           .strokeBorder(LinearGradient(colors: [Color(hex: 0xFFF0C8, opacity: 0.45), .clear, Color(hex: 0x2A1804, opacity: 0.45)],
                                        startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2))
-        .overlay(RoundedRectangle(cornerRadius: u(10)).stroke(Color(hex: 0x32200A, opacity: 0.5), lineWidth: 0.5))
-        .shadow(color: Color(hex: 0x0A0500, opacity: 0.4), radius: 0.8, x: 0.8, y: 1.2)
+        .overlay(RoundedRectangle(cornerRadius: u(10)).stroke(Color(hex: 0x32200A, opacity: 0.35), lineWidth: 0.5))
+        .shadow(color: Color(hex: 0x0A0500, opacity: 0.25), radius: 1.2, x: 0.8, y: 1.2)
         .shadow(color: Color(hex: 0x1E0F00, opacity: 0.25), radius: 4, x: u(2), y: u(4))
       controls
     }

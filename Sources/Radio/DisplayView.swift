@@ -48,11 +48,11 @@ struct DisplayView: View {
     // set behind the brass: the frame's top lip throws a shadow down onto the glass, a little on the
     // left too, and a fine dark line marks where the glass meets the brass
     .overlay(alignment: .top) {
-      LinearGradient(colors: [Color.black.opacity(0.32), Color.black.opacity(0.1), .clear], startPoint: .top, endPoint: .bottom)
-        .frame(height: u(9)).allowsHitTesting(false)
+      LinearGradient(colors: [Color(hex: 0x5A3812, opacity: 0.26), Color(hex: 0x7A5420, opacity: 0.07), .clear], startPoint: .top, endPoint: .bottom)
+        .frame(height: u(12)).allowsHitTesting(false)   // warm, so it doesn't read as a grey strip
     }
     .clipShape(RoundedRectangle(cornerRadius: u(5)))
-    .overlay(RoundedRectangle(cornerRadius: u(5)).stroke(Color(hex: 0x2A1A04, opacity: 0.75), lineWidth: 1))
+    .overlay(RoundedRectangle(cornerRadius: u(5)).stroke(Color(hex: 0x2A1A04, opacity: 0.45), lineWidth: 1))
     .saturation(dim ? (style.glare > 0.3 ? 0.8 : 0.7) : 1)
     .brightness(dim ? (style.glare > 0.3 ? -0.03 : 0) : 0)   // dark mode: the brown glass already reads as off
     // a short fade when playback pauses or resumes; switching screens is instant
@@ -336,7 +336,7 @@ private struct AlbumArt: View {
     }
     .clipShape(RoundedRectangle(cornerRadius: u(10), style: .continuous))
     .overlay(RoundedRectangle(cornerRadius: u(10), style: .continuous).stroke(Color(hex: 0x3C2305, opacity: 0.35), lineWidth: 0.5))
-    .shadow(color: Color(hex: 0x3C2305, opacity: 0.3), radius: 2.5, y: 2)
+    .shadow(color: Color(hex: 0x3C2305, opacity: 0.12), radius: 0.6, y: 0.5)   // just an edge, not a tile on the glass
   }
 }
 

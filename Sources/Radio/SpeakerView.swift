@@ -91,7 +91,10 @@ struct SpeakerView: View {
                                  .init(color: Color(hex: 0xAE8744), location: 0.65), .init(color: Color(hex: 0x86652C), location: 1)])
     ctx.fill(ring(c, bO, bI), with: .linearGradient(brass, startPoint: CGPoint(x: c.x - bO, y: c.y - bO), endPoint: CGPoint(x: c.x + bO, y: c.y + bO)), style: eoFill)
     grain(&ctx, ring(c, bO, bI), 0.22, eo: true)
-    ctx.stroke(arc(c, bO - 0.6, 1.0, 1.5), with: .color(Color(hex: 0xFFF4D4, opacity: 0.35)), lineWidth: 1)   // upper-left edge
+    // the band's outer edge: brighter toward the upper left, in shade toward the lower right
+    let edge = Gradient(stops: [.init(color: Color(hex: 0xFFF4D4, opacity: 0.5), location: 0.1), .init(color: .clear, location: 0.5),
+                                .init(color: Color(hex: 0x2A1804, opacity: 0.45), location: 0.9)])
+    ctx.stroke(circle(c, bO - 1.2), with: .linearGradient(edge, startPoint: CGPoint(x: c.x - bO, y: c.y - bO), endPoint: CGPoint(x: c.x + bO, y: c.y + bO)), lineWidth: 2.4)
     ctx.stroke(circle(c, bO), with: .color(Color(hex: 0x3C280A, opacity: 0.9)), lineWidth: 0.5)
     ctx.stroke(circle(c, bI), with: .color(Color(hex: 0x140C02, opacity: 0.95)), lineWidth: 1.5)
     for i in 0..<4 {

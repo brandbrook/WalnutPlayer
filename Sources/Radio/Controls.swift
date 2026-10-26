@@ -42,12 +42,12 @@ struct RecessedBrassButton<Icon: View>: View {
     ZStack {
       // the recess: dark, top wall in shadow, lower lip catching the light
       Circle()
-        .fill(RadialGradient(colors: [Color(hex: 0x3A2614), Color(hex: 0x4A3220), Color(hex: 0x5A3E26)],
+        .fill(RadialGradient(colors: [Color(hex: 0x2A1A0C), Color(hex: 0x36241A), Color(hex: 0x43301E)],
                              center: UnitPoint(x: 0.5, y: 0.45), startRadius: 0, endRadius: size / 2))
         // the recess wall: in shade toward the upper left, catching light at the lower right
         .overlay(Circle().strokeBorder(LinearGradient(colors: [Color(hex: 0x140A02, opacity: 0.55), .clear, Color(hex: 0xFFE6C4, opacity: 0.18)],
                                                       startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 2.5).blur(radius: 1))
-        .overlay(Circle().stroke(Color(hex: 0x0A0500, opacity: 0.4), lineWidth: 0.5))
+        .overlay(Circle().stroke(Color(hex: 0x0A0500, opacity: 0.6), lineWidth: 0.8))   // a thin, clear cut in the wood
       // the cap
       SpunBrass()
         .clipShape(Circle())
@@ -56,10 +56,13 @@ struct RecessedBrassButton<Icon: View>: View {
             LinearGradient(colors: [Color(hex: 0xFFF6DA, opacity: 0.4), Color(hex: 0x5A3E14, opacity: 0.4)],
                            startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: size * 0.05))
         .overlay(Circle().stroke(Color(hex: 0x3C280A, opacity: 0.75), lineWidth: 0.5))
+        .overlay(Circle().inset(by: 0.6).stroke(LinearGradient(stops: [.init(color: Color(hex: 0xFFF8E2, opacity: 0.6), location: 0),
+                                                                      .init(color: .clear, location: 0.4)],
+                                                               startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 0.9))   // upper-left lip
         .shadow(color: Color(hex: 0x0A0500, opacity: pressed ? 0.55 : 0.45), radius: pressed ? 0.4 : 1.2, x: pressed ? 0.2 : 0.8, y: pressed ? 0.3 : 1.2)
         .padding(size * 0.07)
         .scaleEffect(pressed ? 0.93 : 1)
-        .brightness(pressed ? -0.1 : 0)
+        .brightness(pressed ? -0.06 : 0)
       icon()
         .foregroundStyle(engraveBrown)
         .shadow(color: Color(hex: 0xFFF5D7, opacity: 0.85), radius: 0, y: 1)
