@@ -33,6 +33,25 @@ enum Texture {
   static let brushedMetal = image("metal009") // ambientCG Metal009, CC0
   static let paper = image("paper006")        // ambientCG Paper006, CC0
 
+  /// A few worn patches for the wooden lettering (white = worn), the same every launch.
+  static let wear: NSImage = {
+    let size = NSSize(width: 240, height: 30)
+    let image = NSImage(size: size)
+    image.lockFocus()
+    var rng = SeededRandom(seed: 11)
+    NSColor.white.setFill()
+    for _ in 0..<9 {
+      let w = CGFloat.random(in: 7...16, using: &rng), h = CGFloat.random(in: 3...7, using: &rng)
+      NSBezierPath(ovalIn: NSRect(x: .random(in: 0...size.width, using: &rng), y: .random(in: 0...size.height, using: &rng), width: w, height: h)).fill()
+    }
+    for _ in 0..<25 {
+      let d = CGFloat.random(in: 0.6...1.4, using: &rng)
+      NSBezierPath(ovalIn: NSRect(x: .random(in: 0...size.width, using: &rng), y: .random(in: 0...size.height, using: &rng), width: d, height: d)).fill()
+    }
+    image.unlockFocus()
+    return image
+  }()
+
   /// Per-pixel grain, one texel per device pixel, laid over surfaces with overlay blending.
   static let grain: NSImage = {
     let side = 256
@@ -141,3 +160,13 @@ let engraveBrown = Color(hex: 0x5A4120)
 /// Mockup units to points: every dimension in the radio goes through this.
 @inline(__always) func u(_ v: CGFloat) -> CGFloat { v * Radio.scale }
 
+
+/// Small deterministic random generator, so generated wear looks the same every time.
+struct SeededRandom: RandomNumberGenerator {
+  var state: UInt64
+  init(seed: UInt64) { state = seed }
+  mutating func next() -> UInt64 {
+    state = state &* 6364136223846793005 &+ 1442695040888963407
+    return state
+  }
+}

@@ -212,13 +212,15 @@ private struct MenuBars: View {
 /// on the frame below.
 private struct WoodenName: View {
   var body: some View {
-    let text = Text("WALNUT PLAYER").font(.system(size: u(12), weight: .bold, design: .serif)).kerning(u(3))
+    let text = Text("WALNUT PLAYER").font(.system(size: u(10.5), weight: .bold, design: .serif)).kerning(u(2.8))
     ZStack {
       text.foregroundStyle(Color(hex: 0x2A1206)).offset(y: u(1.3))                 // the letters' thickness
       text.foregroundStyle(Color(hex: 0xFFE8CC, opacity: 0.6)).offset(y: -u(0.5))  // lit top edges
       text.foregroundStyle(Color(hex: 0xA8743F))                                     // letter faces: lighter walnut…
         .overlay(Image(nsImage: Texture.panelWalnut).resizable().aspectRatio(contentMode: .fill)
                    .opacity(0.55).blendMode(.multiply).mask(text))                   // …with their own grain
+      text.foregroundStyle(Color(hex: 0x3E220E, opacity: 0.9))                       // finish worn through in a few places
+        .mask(Image(nsImage: Texture.wear).resizable())
     }
     .compositingGroup()
     .shadow(color: Color(hex: 0x0A0402, opacity: 0.6), radius: 0.8, x: 0.3, y: u(1.6))
