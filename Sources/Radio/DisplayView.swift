@@ -29,7 +29,7 @@ struct DisplayView: View {
         topStrip
         if model.mode == .stations { TunerScale(model: model, style: style) }
         content.frame(maxWidth: .infinity, maxHeight: .infinity)
-        bottomStrip
+        if model.mode != .nowPlaying { bottomStrip }   // now playing has no action strip
       }
       .padding(u(7))
       .foregroundStyle(style.ink)
@@ -90,9 +90,7 @@ struct DisplayView: View {
     Strip(style: style, plain: true, spread: true) {
       switch model.mode {
       case .nowPlaying:
-        StripButton("DISLIKE", icon: "hand.thumbsdown.fill", lit: model.flash == "dislike", style: style) { model.dislike() }
-        StripButton("TIRED", icon: "moon.fill", lit: model.flash == "tired", style: style) { model.tired() }
-        StripButton("LIKE", icon: "hand.thumbsup.fill", lit: model.rating == 1, litColor: accentRed, style: style) { model.like() }
+        EmptyView()   // like and dislike sit beside the time; skip is the brass button
       case .login:
         StripButton("CREATE ACCOUNT", style: style, bright: true) {
           NSWorkspace.shared.open(URL(string: "https://www.pandora.com/account/register")!)
@@ -176,10 +174,16 @@ private struct NowPlayingView: View {
       AlbumArt(image: model.art, style: style).frame(width: u(88), height: u(88))
       // the time on the art's top edge; song, artist and album below it, the last on the art's bottom edge
       VStack(alignment: .leading, spacing: 0) {
-        SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
-          .frame(height: u(30))
-          .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
-          .fixedSize()
+        HStack(alignment: .top) {
+          SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
+            .frame(height: u(30))
+            .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
+            .fixedSize()
+          Spacer(minLength: u(8))
+          // thumbs down / up, top right of the song info
+          RatingButton(symbol: "hand.thumbsdown.fill", lit: model.flash == "dislike", style: style, help: "Dislike") { model.dislike() }
+          RatingButton(symbol: "hand.thumbsup.fill", lit: model.rating == 1, litColor: accentRed, style: style, help: "Like") { model.like() }
+        }
         Spacer(minLength: u(6))
         InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
           SpinningRecord(playing: model.isPlaying, style: style)
@@ -650,5 +654,28 @@ private struct ThemeButton: View {
     .buttonStyle(.plain).focusable(false)
     .onHover { hover = $0 }
     .help(theme == .system ? "Match the system appearance" : theme == .light ? "Light display" : "Dark display")
+  }
+}
+
+/// Thumbs down / up beside the time: a filled icon, lit when active.
+private struct RatingButton: View {
+  let symbol: String
+  let lit: Bool
+  var litColor: Color? = nil
+  let style: GlassStyle
+  let help: String
+  let action: () -> Void
+  @State private var hover = false
+  var body: some View {
+    Button(action: action) {
+      Image(systemName: symbol).font(.system(size: u(14)))
+        .frame(width: u(26), height: u(24)).contentShape(Rectangle())
+        .foregroundStyle(lit ? (litColor ?? style.ink) : style.inkDim)
+        .opacity(lit ? 1 : hover ? 0.9 : 0.5)
+    }
+    .buttonStyle(.plain).focusable(false)
+    .onHover { hover = $0 }
+    .help(help)
+    .animation(.easeOut(duration: 0.15), value: lit)
   }
 }
