@@ -28,6 +28,7 @@ struct RadioView: View {
       FrameWalnut().allowsHitTesting(false)
       cornerGlints
       front.padding(u(Radio.cabinetPadding))
+      CarvedName().frame(maxHeight: .infinity, alignment: .bottom).padding(.bottom, u(4.5))
     }
     .frame(width: u(Radio.size.width), height: u(Radio.size.height))
     // close and minimise: an overlay sized to the buttons only, so it doesn't swallow clicks on the wood
@@ -203,5 +204,21 @@ private struct MenuBars: View {
       }
       .frame(width: g.size.width, height: g.size.height)
     }
+  }
+}
+
+/// The app's name carved into the bottom of the walnut frame: letters cut into the wood, shaded
+/// inside along their top edge and catching the light along their bottom edge.
+private struct CarvedName: View {
+  var body: some View {
+    let text = Text("WALNUT").font(.system(size: u(10.5), weight: .semibold, design: .serif)).kerning(u(3.2))
+    ZStack {
+      text.foregroundStyle(Color(hex: 0xFFE6C8, opacity: 0.22)).offset(y: 0.75)    // lit lower lip of the cut
+      text.foregroundStyle(Color(hex: 0x1E0C04, opacity: 0.62))                    // the cut itself
+      text.foregroundStyle(Color(hex: 0x0A0402, opacity: 0.35)).offset(y: -0.5)    // shade under the top edge
+        .mask(text)
+    }
+    .allowsHitTesting(false)
+    .accessibilityHidden(true)
   }
 }
