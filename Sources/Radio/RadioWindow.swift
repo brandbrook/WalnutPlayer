@@ -20,7 +20,7 @@ final class RadioWindow: NSWindow {
   /// Areas of the radio that handle their own clicks, in mockup units from the cabinet's top-left:
   /// the display and the controls row (the face), and close/minimise. Everything else is wood.
   private static let interactive = [
-    CGRect(x: 20 + Radio.speakerColumn + 8, y: 20 + 18, width: Radio.size.width - 40 - Radio.speakerColumn - 8 - 20, height: 310 - 18 - 16),
+    CGRect(x: 20 + Radio.speakerColumn + 8, y: 20 + 18, width: Radio.size.width - 40 - Radio.speakerColumn - 8 - 20, height: Radio.size.height - 40 - 18 - 16),
     CGRect(x: 8, y: 2, width: 60, height: 24),
   ]
 
@@ -132,7 +132,7 @@ final class RadioWindowController: NSWindowController, NSWindowDelegate {
         model.move(event.keyCode == 125 ? 1 : -1); return nil
       case 123, 124:                             // left, right: a column at a time
         guard !editing, model.mode.isBrowser else { return event }
-        model.move(event.keyCode == 124 ? 4 : -4); return nil
+        model.move(event.keyCode == 124 ? 3 : -3); return nil
       case 36, 76:                               // Return
         if editing { return event }
         if model.mode == .nowPlaying { model.back() } else { model.choose() }

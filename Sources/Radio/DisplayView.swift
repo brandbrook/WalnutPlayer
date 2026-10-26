@@ -26,7 +26,7 @@ struct DisplayView: View {
     ZStack {
       RadialGradient(colors: style.glass, center: UnitPoint(x: 0.4, y: 0.3), startRadius: 0, endRadius: u(380))
       VStack(spacing: u(7)) {
-        topStrip
+        if model.mode != .nowPlaying { topStrip }       // now playing lays out its own top row
         if model.mode == .stations { TunerScale(model: model, style: style) }
         content.frame(maxWidth: .infinity, maxHeight: .infinity)
         if model.mode != .nowPlaying { bottomStrip }   // now playing has no action strip
@@ -137,7 +137,7 @@ struct DisplayView: View {
       if model.browserItems == 0 {
         Hint(model.mode == .history ? "Songs you play show up here." : "No stations yet. Press + NEW to make one.", style: style)
       } else {
-        BrowserGrid(model: model, style: style, rows: 4)
+        BrowserGrid(model: model, style: style, rows: 3)
       }
     case .newStation:
       VStack(spacing: u(6)) {
@@ -170,43 +170,61 @@ private struct NowPlayingView: View {
   let style: GlassStyle
 
   var body: some View {
-    HStack(alignment: .center, spacing: u(14)) {
-      AlbumArt(image: model.art, style: style).frame(width: u(88), height: u(88))
-      // the time on the art's top edge; song, artist and album below it, the last on the art's bottom edge
-      VStack(alignment: .leading, spacing: 0) {
-        HStack(alignment: .top) {
+    HStack(alignment: .top, spacing: u(16)) {
+      // left: the art, with the time centred under it
+      VStack(spacing: u(8)) {
+        AlbumArt(image: model.art, style: style).frame(width: u(96), height: u(96))
+        HStack(alignment: .bottom, spacing: u(4)) {
           SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
-            .frame(height: u(30))
+            .frame(height: u(20))
             .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
             .fixedSize()
+          VStack(alignment: .leading, spacing: u(1)) {
+            Text("MIN").kerning(u(0.5)); Text("SEC").kerning(u(0.5))
+          }
+          .font(.system(size: u(7)))
+          .foregroundStyle(model.isPlaying ? style.inkDim : style.inkOff)
+        }
+      }
+      // right: station and appearance on top, the song in the middle, ratings at the bottom
+      VStack(alignment: .leading, spacing: 0) {
+        HStack(spacing: u(4)) {
+          StationBadge(model: model, style: style)
           Spacer(minLength: u(8))
-          // thumbs down / up, top right of the song info
+          ForEach(DisplayTheme.allCases, id: \.self) { t in
+            ThemeButton(theme: t, lit: model.theme == t, style: style) { model.theme = t }
+          }
+        }
+        Spacer(minLength: u(6))
+        VStack(alignment: .leading, spacing: u(4)) {
+          InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
+            SpinningRecord(playing: model.isPlaying, style: style)
+          }
+          InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
+            Image(systemName: "person.fill").font(.system(size: u(11.5)))
+          }
+          InfoLine(text: model.album, link: model.link(for: .album), style: style) {
+            Image(systemName: "rectangle.stack.fill").font(.system(size: u(11.5)))
+          }
+        }
+        Spacer(minLength: u(6))
+        HStack(spacing: u(4)) {
           RatingButton(symbol: "hand.thumbsdown.fill", lit: model.flash == "dislike", style: style, help: "Dislike") { model.dislike() }
           RatingButton(symbol: "hand.thumbsup.fill", lit: model.rating == 1, litColor: accentRed, style: style, help: "Like") { model.like() }
         }
-        Spacer(minLength: u(6))
-        InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
-          SpinningRecord(playing: model.isPlaying, style: style)
-        }
-        Spacer(minLength: u(3))
-        InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
-          Image(systemName: "person.fill").font(.system(size: u(11.5)))
-        }
-        Spacer(minLength: u(3))
-        InfoLine(text: model.album, link: model.link(for: .album), style: style) {
-          Image(systemName: "rectangle.stack.fill").font(.system(size: u(11.5)))
-        }
+        .padding(.leading, -u(5))                  // line the icons up with the rows above
       }
-      .frame(height: u(88))
-      .frame(maxWidth: .infinity, alignment: .leading)
+      .frame(maxWidth: .infinity, alignment: .topLeading)
+      .frame(height: u(96 + 8 + 20) + u(2))         // same height as the art and time, so the rows line up
     }
-    .padding(.horizontal, u(3))
+    .padding(.horizontal, u(4))
+    .frame(maxHeight: .infinity)                   // centred in the display
   }
 
-  /// Three digits (9:59), four only once a song passes ten minutes.
+  /// Four digits, the unused leading one faintly visible like a real LCD.
   private var timeDigits: String {
     let s = Int(model.elapsed), m = (s / 60) % 100
-    return "\(m)" + String(format: "%02d", s % 60)
+    return (m < 10 ? " \(m)" : "\(m)") + String(format: "%02d", s % 60)
   }
 }
 
@@ -395,7 +413,7 @@ private struct BrowserGrid: View {
   var body: some View {
     GeometryReader { geo in
       ScrollViewReader { proxy in
-        ScrollView(.horizontal, showsIndicators: true) {
+        ScrollView(.horizontal, showsIndicators: false) {   // the tuning needle shows where you are
           LazyHGrid(rows: Array(repeating: GridItem(.flexible(), spacing: u(1)), count: rows), spacing: u(16)) {
             ForEach(0..<count, id: \.self) { i in
               cell(i)
