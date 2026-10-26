@@ -25,13 +25,13 @@ struct RadioView: View {
   private var cabinet: some View {
     let shape = RoundedRectangle(cornerRadius: u(Radio.cabinetRadius), style: .continuous)
     return ZStack {
-      FrameWalnut()
+      WindowDragArea()                  // dragging the outer frame moves the window
+      FrameWalnut().allowsHitTesting(false)
         .overlay(alignment: .bottom) {   // the edge rolling under: a narrow band of shade, thin dark line
           LinearGradient(colors: [.clear, Color(hex: 0x1E0C04, opacity: 0.45)], startPoint: .top, endPoint: .bottom).frame(height: u(5))
         }
       cornerGlints
       front.padding(u(Radio.cabinetPadding))
-      WindowDragArea().allowsHitTesting(true).opacity(0.001).padding(u(Radio.cabinetPadding)).mask(cabinetRing)
       TrafficLights(visible: hovering).padding(.top, u(7)).padding(.leading, u(14)).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
     .frame(width: u(Radio.size.width), height: u(Radio.size.height))
@@ -40,15 +40,6 @@ struct RadioView: View {
     .overlay(alignment: .bottom) { shape.stroke(Color(hex: 0x140802, opacity: 0.75), lineWidth: 1).mask(Rectangle().frame(height: u(8))) }
     // the slab's front face below the edge, then the desk
     .background(shape.fill(Color(hex: 0x4A2613)).offset(y: u(6)).overlay(shape.stroke(Color(hex: 0x140A03, opacity: 0.85), lineWidth: 0.5).offset(y: u(6))))
-  }
-
-  /// The cabinet frame only (not the panel), so dragging the wood moves the window.
-  private var cabinetRing: some View {
-    ZStack {
-      Rectangle()
-      RoundedRectangle(cornerRadius: u(Radio.panelRadius)).padding(u(Radio.cabinetPadding)).blendMode(.destinationOut)
-    }
-    .compositingGroup()
   }
 
   /// One small glint on the top-left corner, a tinier one top-right; nothing else.
@@ -88,7 +79,7 @@ struct RadioView: View {
         .frame(width: u(720) * 0.37)
       face
     }
-    .background(PanelWalnut())
+    .background(ZStack { WindowDragArea(); PanelWalnut().allowsHitTesting(false) })   // and so does the wood panel
     .clipShape(shape)
     // the cabinet's top lip shades the panel; its bottom edge catches the light
     .overlay(shape.stroke(Color(hex: 0x0A0500, opacity: 0.55), lineWidth: 3).blur(radius: 1.5).offset(y: 1.5).clipShape(shape))
@@ -187,6 +178,8 @@ struct WindowDragArea: NSViewRepresentable {
   final class DragView: NSView {
     override func mouseDown(with event: NSEvent) { window?.performDrag(with: event) }
     override var mouseDownCanMoveWindow: Bool { true }
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }   // drag even when Walnut isn't frontmost
+    override func hitTest(_ point: NSPoint) -> NSView? { frame.contains(point) ? self : nil }
   }
   func makeNSView(context: Context) -> NSView { DragView() }
   func updateNSView(_ nsView: NSView, context: Context) {}
