@@ -122,7 +122,8 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
                         &context);
   CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),
                                   kCFRunLoopCommonModes);
-  timeout = [NSTimer scheduledTimerWithTimeInterval:10
+  // Pandora's login can take over 10 s to answer (seen in 2026), so allow 30 s of silence
+  timeout = [NSTimer scheduledTimerWithTimeInterval:30
                                              target:self
                                            selector:@selector(checkTimeout)
                                            userInfo:nil
