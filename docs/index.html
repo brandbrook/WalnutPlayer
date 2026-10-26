@@ -93,7 +93,9 @@
   .button.ghost { color: #f3e3c2; background: rgba(255, 240, 210, 0.08); box-shadow: inset 0 0 0 1px rgba(240, 215, 154, 0.45); }
   .meta { font-size: 14px; color: #cdb48a; margin: 10px 0 0; }
   .shot { margin: 40px auto 0; max-width: 680px; }
-  .shot img { width: 100%; height: auto; display: block; filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.5)); }
+  .shot video, .shot img { width: 100%; height: auto; display: block; filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.5)); }
+  .shot .still { display: none; }
+  @media (prefers-reduced-motion: reduce) { .shot video { display: none; } .shot .still { display: block; } }
 
   /* features */
   section { padding: 72px 0; }
@@ -140,7 +142,14 @@
     </div>
     <p class="meta">Free · macOS 13 or later · Apple Silicon and Intel · Signed and notarized</p>
     <div class="shot">
-      <img src="radio.png" width="1338" height="652" alt="Walnut playing a station: a walnut cabinet with a brass speaker on the left, a backlit navy display showing the song, artist and album with its cover, three brass buttons and three EQ knobs.">
+      <!-- transparent video: HEVC with alpha for Safari, VP9 with alpha for Chrome and Firefox -->
+      <video autoplay muted loop playsinline poster="radio.png" width="1338" height="652"
+             aria-label="Walnut playing a station: the brass speaker moves with the music beside a backlit navy display showing the song, artist and album.">
+        <source src="radio.mov" type='video/quicktime; codecs="hvc1"'>
+        <source src="radio.webm" type="video/webm">
+        <img src="radio.png" width="1338" height="652" alt="Walnut playing a station.">
+      </video>
+      <img class="still" src="radio.png" width="1338" height="652" alt="Walnut playing a station: a walnut cabinet with a brass speaker beside a backlit navy display showing the song, artist and album.">
     </div>
   </div>
 </header>

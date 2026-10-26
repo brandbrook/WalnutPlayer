@@ -59,3 +59,17 @@ On the Mac that makes releases:
 The site is in [`docs/`](docs/) and served by GitHub Pages at
 https://brandbrook.github.io/WalnutPlayer/. Its download button opens the latest release,
 so it needs no change per release.
+
+### Re-recording the website video
+
+The hero video is a transparent recording of the Walnut window. With Walnut open and playing:
+
+    swiftc -O Scripts/record-window.swift -o build/record-window
+    ./build/record-window 8 build/walnut-window.mov
+    ffmpeg -i build/walnut-window.mov -r 30 -c:v libvpx-vp9 -pix_fmt yuva420p -crf 36 -b:v 0 -row-mt 1 -an docs/radio.webm
+    ffmpeg -i build/walnut-window.mov -r 30 -c:v hevc_videotoolbox -alpha_quality 0.8 -q:v 55 -tag:v hvc1 -an docs/radio.mov
+    ffmpeg -i build/walnut-window.mov -frames:v 1 -pix_fmt rgba docs/radio.png
+
+The recorder needs Screen Recording permission (System Settings → Privacy & Security).
+`radio.mov` (HEVC with alpha) plays in Safari, `radio.webm` (VP9 with alpha) in Chrome and
+Firefox, and `radio.png` is the still shown before the video loads and with reduced motion.
