@@ -212,13 +212,12 @@ private struct NowPlayingView: View {
   }
 }
 
-/// Top right: the level meter, a radio-station icon and the station's name.
+/// Top right: a radio-station icon and the station's name.
 private struct StationBadge: View {
   @ObservedObject var model: RadioModel
   let style: GlassStyle
   var body: some View {
     HStack(spacing: u(6)) {
-      LevelMeter(style: style, playing: model.isPlaying)
       Image(systemName: "radio.fill").font(.system(size: u(11)))
         .foregroundStyle(style.inkDim)
       Text(model.stationName.isEmpty ? "Walnut" : model.stationName)
@@ -317,30 +316,6 @@ private struct AlbumArt: View {
   }
 }
 
-/// Three red bars that follow the speaker's low, mid and high levels.
-private struct LevelMeter: View {
-  let style: GlassStyle
-  let playing: Bool
-  @State private var motion = SpeakerMotion()
-
-  var body: some View {
-    HStack(spacing: u(6)) {
-      TimelineView(.animation) { timeline in   // redrawn every frame, like the speaker
-        Canvas { ctx, size in
-          _ = timeline.date
-          motion.step(playing: playing)
-          let w = u(3), gap = u(2)
-          for (i, v) in [motion.low, motion.mid, motion.high].enumerated() {
-            let h = size.height * (0.25 + 0.75 * v)
-            ctx.fill(Path(roundedRect: CGRect(x: CGFloat(i) * (w + gap), y: size.height - h, width: w, height: h), cornerRadius: 1),
-                     with: .color(accentRed))
-          }
-        }
-        .frame(width: u(13), height: u(12))
-      }
-    }
-  }
-}
 
 // MARK: - Login
 
