@@ -395,7 +395,7 @@ BOOL playOnStart = YES;
 
 /* Plays a new station, or nil to play no station (e.g., if station deleted) */
 - (void) playStation: (Station*) station {
-  if ([playing stationId] == [station stationId]) {
+  if (station != nil && [[playing stationId] isEqualToString:[station stationId]]) {   // same station (compare the ids, not the string objects)
     return;
   }
 

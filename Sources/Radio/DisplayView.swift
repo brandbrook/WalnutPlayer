@@ -94,6 +94,9 @@ struct DisplayView: View {
         StripButton("TIRED", icon: "moon.fill", lit: model.flash == "tired", style: style) { model.tired() }
         StripButton("LIKE", icon: "hand.thumbsup.fill", lit: model.rating == 1, litColor: accentRed, style: style) { model.like() }
       case .login:
+        StripButton("CREATE ACCOUNT", style: style, bright: true) {
+          NSWorkspace.shared.open(URL(string: "https://www.pandora.com/account/register")!)
+        }
         StripButton("LOG IN", lit: true, style: style) { model.logIn() }
       case .loading:
         StripLabel(" ", style: style)
@@ -136,7 +139,7 @@ struct DisplayView: View {
     case .newStation:
       VStack(spacing: u(6)) {
         Field(label: "SEARCH", style: style) {
-          GlassTextField(placeholder: "ARTIST, SONG OR GENRE", text: Binding(get: { model.query }, set: { model.search($0) }),
+          GlassTextField(placeholder: "Artist, song or genre", text: Binding(get: { model.query }, set: { model.search($0) }),
                          style: style, focus: true) { model.createStation(model.selection) }
         }
         if model.query.trimmingCharacters(in: .whitespaces).isEmpty {
@@ -253,14 +256,15 @@ private struct LoginView: View {
   var body: some View {
     VStack(spacing: u(8)) {
       Field(label: "EMAIL", style: style) {
-        GlassTextField(placeholder: "PANDORA EMAIL", text: $model.username, style: style, focus: model.username.isEmpty) { model.logIn() }
+        GlassTextField(placeholder: "Pandora email", text: $model.username, style: style, focus: model.username.isEmpty) { model.logIn() }
       }
       Field(label: "PASSWORD", style: style) {
-        GlassTextField(placeholder: "PASSWORD", text: $model.password, style: style, secure: true, focus: !model.username.isEmpty) { model.logIn() }
+        GlassTextField(placeholder: "Password", text: $model.password, style: style, secure: true, focus: !model.username.isEmpty) { model.logIn() }
       }
-      Text(model.loginError ?? "Log in with your Pandora account.")
-        .font(.system(size: u(11), weight: model.loginError == nil ? .regular : .semibold))
-        .foregroundStyle(model.loginError == nil ? style.inkDim : accentRed)
+      if let error = model.loginError {          // only shown when something went wrong, under the fields
+        Text(error).font(.system(size: u(9), weight: .bold)).kerning(u(1.3)).foregroundStyle(accentRed)
+          .frame(maxWidth: .infinity, alignment: .leading).padding(.leading, u(90))
+      }
     }
     .padding(.horizontal, u(6))
   }
@@ -274,7 +278,7 @@ private struct EditStationView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: u(6)) {
       Field(label: "NAME", style: style) {
-        GlassTextField(placeholder: "STATION NAME", text: $model.draftName, style: style, focus: true) { model.saveEdit() }
+        GlassTextField(placeholder: "Station name", text: $model.draftName, style: style, focus: true) { model.saveEdit() }
       }
       Field(label: "BASED ON", style: style) {
         HStack(spacing: u(5)) {
@@ -289,7 +293,7 @@ private struct EditStationView: View {
             .overlay(Capsule().stroke(style.inkDim, lineWidth: 1))
           }
           if model.draftSeeds.count > 3 { Text("+\(model.draftSeeds.count - 3)").font(.system(size: u(11))).foregroundStyle(style.inkDim) }
-          GlassTextField(placeholder: "+ ADD ARTIST OR SONG", text: Binding(get: { model.seedQuery }, set: { model.searchSeeds($0) }),
+          GlassTextField(placeholder: "+ Add artist or song", text: Binding(get: { model.seedQuery }, set: { model.searchSeeds($0) }),
                          style: style, focus: false) { if let first = model.seedResults.first { model.addSeed(first) } }
         }
       }
@@ -505,7 +509,7 @@ private struct Field<Content: View>: View {
   @ViewBuilder var content: () -> Content
   var body: some View {
     HStack(spacing: u(10)) {
-      Text(label).font(.system(size: u(9), weight: .bold)).kerning(u(1.3)).foregroundStyle(style.inkDim).frame(width: u(62), alignment: .leading)
+      Text(label).font(.system(size: u(9), weight: .bold)).kerning(u(1.3)).foregroundStyle(style.inkDim).lineLimit(1).fixedSize().frame(width: u(80), alignment: .leading)
       content()
     }
     .frame(minHeight: u(26))
@@ -536,7 +540,7 @@ private struct GlassTextField: View {
   var body: some View {
     ZStack(alignment: .leading) {
       if text.isEmpty {
-        Text(placeholder).font(.system(size: u(13))).kerning(u(0.5)).foregroundStyle(style.inkDim.opacity(0.6)).allowsHitTesting(false)
+        Text(placeholder).font(.system(size: u(13))).foregroundStyle(style.inkDim.opacity(0.6)).allowsHitTesting(false)
       }
       Group {
         if secure { SecureField("", text: $text) } else { TextField("", text: $text) }
