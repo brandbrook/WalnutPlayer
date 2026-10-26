@@ -26,9 +26,6 @@ struct RadioView: View {
     let shape = RoundedRectangle(cornerRadius: u(Radio.cabinetRadius), style: .continuous)
     return ZStack {
       FrameWalnut().allowsHitTesting(false)
-        .overlay(alignment: .bottom) {   // the edge rolling under: a narrow band of shade, thin dark line
-          LinearGradient(colors: [.clear, Color(hex: 0x1E0C04, opacity: 0.45)], startPoint: .top, endPoint: .bottom).frame(height: u(5))
-        }
       cornerGlints
       front.padding(u(Radio.cabinetPadding))
     }
@@ -37,9 +34,6 @@ struct RadioView: View {
     .overlay(alignment: .topLeading) { TrafficLights(visible: hovering).padding(.top, u(7)).padding(.leading, u(14)) }
     .clipShape(shape)
     .overlay(shape.stroke(Color(hex: 0x140A03, opacity: 0.85), lineWidth: 0.5))
-    .overlay(alignment: .bottom) { shape.stroke(Color(hex: 0x140802, opacity: 0.75), lineWidth: 1).mask(Rectangle().frame(height: u(8))) }
-    // the slab's front face below the edge, then the desk
-    .background(shape.fill(Color(hex: 0x4A2613)).offset(y: u(6)).overlay(shape.stroke(Color(hex: 0x140A03, opacity: 0.85), lineWidth: 0.5).offset(y: u(6))))
   }
 
   /// One small glint on the top-left corner, a tinier one top-right; nothing else.

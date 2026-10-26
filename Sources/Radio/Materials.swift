@@ -58,7 +58,7 @@ struct FrameWalnut: View {
   var body: some View {
     ZStack {
       Color(red: 0.35, green: 0.2, blue: 0.1)
-      Rectangle().fill(ImagePaint(image: Image(nsImage: Texture.frameWalnut), scale: 1100 / 2048))
+      Color.clear.overlay(Image(nsImage: Texture.frameWalnut).resizable().aspectRatio(contentMode: .fill)).clipped()   // one piece, no tiling seams
       LinearGradient(colors: [Color(hex: 0x946036), Color(hex: 0x87542F)], startPoint: .top, endPoint: .bottom)
         .blendMode(.softLight)
       Grain(opacity: 0.12)
@@ -71,7 +71,7 @@ struct PanelWalnut: View {
   var body: some View {
     ZStack {
       Color(hex: 0x8A5228)
-      Rectangle().fill(ImagePaint(image: Image(nsImage: Texture.panelWalnut), sourceRect: CGRect(x: 0.1, y: 0.07, width: 1, height: 1), scale: 900 / 2048))
+      Color.clear.overlay(Image(nsImage: Texture.panelWalnut).resizable().aspectRatio(contentMode: .fill)).clipped()   // one piece, no tiling seams
       Color(red: 118 / 255, green: 78 / 255, blue: 50 / 255).opacity(0.55).blendMode(.color)
       Grain(opacity: 0.12)
     }
