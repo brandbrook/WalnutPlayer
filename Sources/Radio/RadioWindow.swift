@@ -21,7 +21,7 @@ final class RadioWindow: NSWindow {
   /// the display and the controls row (the face), and close/minimise. Everything else is wood.
   private static let interactive = [
     CGRect(x: 20 + Radio.speakerColumn + 8, y: 20 + 18, width: Radio.size.width - 40 - Radio.speakerColumn - 8 - 20, height: Radio.size.height - 40 - 18 - 16),
-    CGRect(x: 18, y: 6, width: 60, height: 26),   // close / minimise
+    CGRect(x: 18, y: 0, width: 50, height: 20),   // close / minimise, in the frame's top band
   ]
 
   private func isWood(_ p: NSPoint) -> Bool {
