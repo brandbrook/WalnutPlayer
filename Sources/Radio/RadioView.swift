@@ -109,7 +109,7 @@ struct RadioView: View {
     HStack(spacing: 0) {
       HStack(spacing: u(20)) {
         RecessedBrassButton(size: u(64), action: { model.back() }) {
-          Image(systemName: "line.3.horizontal").resizable().aspectRatio(contentMode: .fit)
+          MenuBars()
         }
         .help("Stations")
         RecessedBrassButton(size: u(64), action: playButton) {
@@ -188,5 +188,18 @@ struct UnevenRoundedRectangleShape: Shape {
     p.addQuadCurve(to: CGPoint(x: r.minX, y: r.maxY - bottomRadius), control: CGPoint(x: r.minX, y: r.maxY))
     p.closeSubpath()
     return p
+  }
+}
+
+/// The menu icon: three solid bars, as heavy as the pause and skip glyphs.
+private struct MenuBars: View {
+  var body: some View {
+    GeometryReader { g in
+      let bar = g.size.height * 0.2, gap = (g.size.height * 0.86 - bar * 3) / 2
+      VStack(spacing: gap) {
+        ForEach(0..<3, id: \.self) { _ in RoundedRectangle(cornerRadius: bar * 0.35).frame(height: bar) }
+      }
+      .frame(width: g.size.width, height: g.size.height)
+    }
   }
 }
