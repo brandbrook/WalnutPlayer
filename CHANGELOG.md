@@ -1,3 +1,18 @@
+# Walnut 1.0 (10/26/26)
+
+Walnut is Hermes rebuilt for today's Macs and redesigned as a walnut table radio.
+
+* Runs natively on Apple Silicon and Intel Macs, on macOS 13 Ventura and later
+* A new player: a walnut cabinet with a brass speaker that moves with the music, a backlit display, latching brass buttons and a tuning scale for your stations
+* Light and dark displays (cream backlight or amber on navy), or follow the system
+* Three-band EQ on the LOW, MID and HIGH knobs; double-click a knob to reset it
+* Like, dislike and "tired of this song" from the display; links to the song, artist and album
+* Create, rename and delete stations, and browse your history, from the display
+* New Settings window, new app and menu bar icons
+* Updates through Sparkle 2, signed and notarized for Gatekeeper
+* Always opens paused; remembers whether you were playing
+* Longer network timeouts for slow connections
+
 # Version 1.3.2 (unreleased)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.3.1...HEAD)

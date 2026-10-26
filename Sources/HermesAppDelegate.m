@@ -375,19 +375,19 @@
 }
 
 - (IBAction)changelog:(id)sender {
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/brandbrook/McHermes/blob/master/CHANGELOG.md"]];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/brandbrook/WalnutPlayer/blob/master/CHANGELOG.md"]];
 }
 
 - (IBAction) hermesOnGitHub:(id)sender {
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/brandbrook/McHermes"]];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/brandbrook/WalnutPlayer"]];
 }
 
 - (IBAction) reportAnIssue:(id)sender {
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/brandbrook/McHermes/issues"]];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/brandbrook/WalnutPlayer/issues"]];
 }
 
 - (IBAction)hermesHomepage:(id)sender {
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/brandbrook/McHermes#readme"]];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://brandbrook.github.io/WalnutPlayer/"]];
 }
 
 #pragma mark - Drawer management

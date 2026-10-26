@@ -8,7 +8,7 @@ Walnut is not affiliated with Pandora.
 
 ### Download Walnut
 
-Signed builds will be published on this repository's [Releases](https://github.com/brandbrook/McHermes/releases) page.
+Signed builds will be published on this repository's [Releases](https://github.com/brandbrook/WalnutPlayer/releases) page.
 
 If you would like to compile Walnut, continue reading.
 
@@ -60,7 +60,7 @@ There are a few ways you can develop against Walnut:
 
 ### Want something new/fixed?
 
-1. [Open a ticket](https://github.com/brandbrook/McHermes/issues).
+1. [Open a ticket](https://github.com/brandbrook/WalnutPlayer/issues).
 
 2. Take a stab at it yourself and send a pull request. Here are some common
    things to do at the command line:

@@ -27,18 +27,12 @@ install:
 	rm -rf /Applications/Walnut.app
 	cp -a ./build/Release/Walnut.app /Applications/
 
-# Create an archive to share (for beta testing purposes).
-archive: CONFIGURATION = Release
-archive: SCHEME = 'Archive Hermes'
-archive: hermes
-
-# Used to be called 'archive'. Upload Hermes and update the website.
-upload-release: CONFIGURATION = Release
-upload-release: SCHEME = 'Upload Hermes Release'
-upload-release: hermes
+# A notarized, Sparkle-signed release zip and its appcast.xml entry. See RELEASING.md.
+release:
+	./Scripts/release.sh
 
 clean:
 	$(XCB) $(COMMON_OPTS) -scheme $(SCHEME) clean
 	rm -rf build
 
-.PHONY: all hermes run dbg archive clean install archive upload-release
+.PHONY: all hermes run dbg clean install release
