@@ -54,8 +54,7 @@ struct RadioView: View {
     HStack {
       foot; Spacer(); foot
     }
-    .frame(width: u(Radio.size.width) * 0.9)
-    .padding(.top, u(5))
+    .frame(width: u(Radio.size.width) * 0.9)   // directly under the cabinet
   }
 
   private var foot: some View {

@@ -28,7 +28,7 @@ final class RadioWindow: NSWindow {
     // window coordinates (bottom-left origin) to mockup units from the cabinet's top-left
     let x = (p.x - radioOrigin.x) / Radio.scale
     let y = (frame.height - p.y - radioOrigin.y) / Radio.scale
-    let cabinet = CGRect(x: 0, y: 0, width: Radio.size.width, height: Radio.size.height + 6 + 5 + 7)   // plus slab edge and feet
+    let cabinet = CGRect(x: 0, y: 0, width: Radio.size.width, height: Radio.size.height + 7)   // plus the feet
     guard cabinet.contains(CGPoint(x: x, y: y)) else { return false }
     return !Self.interactive.contains { $0.contains(CGPoint(x: x, y: y)) }
   }
@@ -61,7 +61,7 @@ final class RadioWindowController: NSWindowController, NSWindowDelegate {
   @objc static let shared = RadioWindowController()
 
   /// Margins around the radio for its shadow and feet.
-  private static let margin = NSEdgeInsets(top: 2, left: 2, bottom: u(5 + 7) + 2, right: 2)   // room for the feet only, no shadow
+  private static let margin = NSEdgeInsets(top: 2, left: 2, bottom: u(7) + 2, right: 2)   // room for the feet only, no shadow
   private var keyMonitor: Any?
 
   private init() {
