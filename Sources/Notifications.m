@@ -10,7 +10,7 @@
 
 #pragma mark - Distributed Notifications
 
-NSString * const HistoryControllerDidPlaySongDistributedNotification = @"hermes.song";
+NSString * const HistoryControllerDidPlaySongDistributedNotification = @"walnut.song";
 
 NSString * const AppleScreensaverDidStartDistributedNotification     = @"com.apple.screensaver.didstart";
 NSString * const AppleScreensaverDidStopDistributedNotification      = @"com.apple.screensaver.didstop";

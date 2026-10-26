@@ -20,7 +20,7 @@
 // strftime_l()
 #include <xlocale.h>
 
-#define HERMES_LOG_DIRECTORY_PATH @"~/Library/Logs/Hermes/"
+#define HERMES_LOG_DIRECTORY_PATH @"~/Library/Logs/Walnut/"
 #define DEBUG_MODE_TITLE_PREFIX @"🐞 "
 #define STATUS_BAR_MAX_WIDTH 200
 
@@ -330,7 +330,7 @@
 - (NSString*) stateDirectory:(NSString *)file {
   NSFileManager *fileManager = [NSFileManager defaultManager];
 
-  NSString *folder = @"~/Library/Application Support/Hermes/";
+  NSString *folder = @"~/Library/Application Support/Walnut/";
   folder = [folder stringByExpandingTildeInPath];
   BOOL hasFolder = YES;
 
@@ -368,19 +368,19 @@
 }
 
 - (IBAction)changelog:(id)sender {
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/HermesApp/Hermes/blob/master/CHANGELOG.md"]];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/brandbrook/McHermes/blob/master/CHANGELOG.md"]];
 }
 
 - (IBAction) hermesOnGitHub:(id)sender {
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/HermesApp/Hermes"]];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/brandbrook/McHermes"]];
 }
 
 - (IBAction) reportAnIssue:(id)sender {
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/HermesApp/Hermes/issues"]];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/brandbrook/McHermes/issues"]];
 }
 
 - (IBAction)hermesHomepage:(id)sender {
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://hermesapp.org/"]];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/brandbrook/McHermes#readme"]];
 }
 
 #pragma mark - Drawer management
@@ -830,7 +830,7 @@
   if (playback.playing != nil) {
     [window setTitle:[NSString stringWithFormat:@"%@%@", debugTitlePrefix, playback.playing.name]];
   } else {
-    [window setTitle:[NSString stringWithFormat:@"%@Hermes", debugTitlePrefix]];
+    [window setTitle:[NSString stringWithFormat:@"%@Walnut", debugTitlePrefix]];
   }
 }
 
@@ -844,7 +844,7 @@
                                                                    attributes:nil
                                                                         error:&error];
   if (!logPathCreated) {
-    NSLog(@"Hermes: failed to create logging directory \"%@\". Logging is disabled.", hermesStandardizedLogPath);
+    NSLog(@"Walnut: failed to create logging directory \"%@\". Logging is disabled.", hermesStandardizedLogPath);
     return NO;
   }
   
@@ -860,7 +860,7 @@
   localNow = localtime(&now);
   strftime_l(currentDateTime, CURRENTTIMEBYTES, "%Y-%m-%d_%H:%M:%S_%z", localNow, NULL);
   
-  _hermesLogFile = [[NSString stringWithFormat:@"%@/HermesLog_%s.log", HERMES_LOG_DIRECTORY_PATH, currentDateTime] stringByStandardizingPath];
+  _hermesLogFile = [[NSString stringWithFormat:@"%@/WalnutLog_%s.log", HERMES_LOG_DIRECTORY_PATH, currentDateTime] stringByStandardizingPath];
   static dispatch_once_t onceTokenForOpeningLogFile = 0;
   dispatch_once(&onceTokenForOpeningLogFile, ^{
     self->_hermesLogFileHandle = fopen([self.hermesLogFile cStringUsingEncoding:NSUTF8StringEncoding], "a");

@@ -54,7 +54,7 @@ typedef struct queued_packet {
 
 NSString * const ASBitrateReadyNotification = @"ASBitrateReadyNotification";
 NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
-NSString * const ASDidChangeStateDistributedNotification = @"hermes.state";
+NSString * const ASDidChangeStateDistributedNotification = @"walnut.state";
 
 @interface AudioStreamer ()
 
@@ -499,7 +499,7 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   if (statusString) {
     [[NSDistributedNotificationCenter defaultCenter]
       postNotificationName:ASDidChangeStateDistributedNotification
-      object:@"hermes"
+      object:@"walnut"
       userInfo:@{@"state":statusString}
       deliverImmediately: YES];
   }

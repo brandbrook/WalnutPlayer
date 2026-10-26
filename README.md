@@ -1,36 +1,30 @@
-Hermes
+Walnut
 ======
 
+A [Pandora](http://www.pandora.com/) client for macOS, running natively on Apple Silicon and Intel Macs.
 
-A [Pandora](http://www.pandora.com/) client for macOS.
+Walnut is based on [Hermes](https://github.com/HermesApp/Hermes), which is no longer maintained.
+Walnut is not affiliated with Pandora.
 
-### THIS PROJECT IS UNMAINTAINED
+### Download Walnut
 
-This means that bugs will not be fixed and features will not be added unless someone else does so.  Unfortunately, the former maintainers no longer have the time and/or resources to work on Hermes further.
+Signed builds will be published on this repository's [Releases](https://github.com/brandbrook/McHermes/releases) page.
 
-If you're interested in fixing up Hermes, please reply to this [GitHub issue (237)](https://github.com/HermesApp/Hermes/issues/237).
+If you would like to compile Walnut, continue reading.
 
-### Download Hermes
+### Develop against Walnut
 
-- Click Download at [hermesapp.org](http://hermesapp.org/).
-- Or install using [Homebrew](http://brew.sh)/[Caskroom](https://caskroom.github.io): `brew cask install hermes`.
-
-If you would like to compile Hermes, continue reading.
-
-### Develop against Hermes
-
-Thanks to the suggestions by [blalor](https://github.com/blalor), there's a few
-ways you can develop against Hermes if you really want to.
+There are a few ways you can develop against Walnut:
 
 1. `NSDistributedNotificationCenter` - Every time a new song plays, a
-   notification is posted with the name `hermes.song` under the object `hermes`
+   notification is posted with the name `walnut.song` under the object `walnut`
    with `userInfo` as a dictionary representing the song being played. See
-   [Song.m](https://github.com/HermesApp/Hermes/blob/master/Sources/Pandora/Song.m#L29)
-   for the keys available to you.
+   [Song.m](Sources/Pandora/Song.m) for the keys available to you. Playback
+   state changes are posted as `walnut.state`.
 
 2. AppleScript - here's an example script:
 
-        tell application "Hermes"
+        tell application "Walnut"
           play          -- resumes playback, does nothing if playing
           pause         -- pauses playback, does nothing if not playing
           playpause     -- toggles playback between pause/play
@@ -66,13 +60,10 @@ ways you can develop against Hermes if you really want to.
 
 ### Want something new/fixed?
 
-1. [Open a ticket](https://github.com/HermesApp/Hermes/issues)! We'll get
-   around to it soon, especially if it sounds appealing to us. We take all
-   suggestions/feedback!
+1. [Open a ticket](https://github.com/brandbrook/McHermes/issues).
 
-2. Take a stab at it yourself if you're brave. Just send us a pull request if
-   you've got something fixed. Here's some common things to do at the command
-   line:
+2. Take a stab at it yourself and send a pull request. Here are some common
+   things to do at the command line:
 
         make        # build everything
         make run    # build and run the application (logging to stdout)
@@ -81,11 +72,6 @@ ways you can develop against Hermes if you really want to.
         # Build with the 'Release' configuration instead of 'Debug'
         make CONFIGURATION=Release [run|dbg]
 
-   Please note that Media Key shortcuts
-   [will not work](https://github.com/nevyn/SPMediaKeyTap/blob/master/SPMediaKeyTap.m#L108)
-   if compiled with `CONFIGURATION=Debug` (the default).
-
 ## License
 
-Code is available under the [MIT
-License](https://github.com/HermesApp/Hermes/blob/master/LICENSE).
+Code is available under the [MIT License](LICENSE), as was Hermes.

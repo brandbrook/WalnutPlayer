@@ -715,7 +715,7 @@ BOOL playOnStart = YES;
 #pragma mark QLPreviewItem
 
 - (NSURL *)previewItemURL {
-  NSURL *artFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"Hermes Album Art.tiff"]];
+  NSURL *artFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"Walnut Album Art.tiff"]];
   [self.artImage.TIFFRepresentation writeToURL:artFileURL atomically:YES];
 
   return artFileURL;
