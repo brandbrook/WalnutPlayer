@@ -55,7 +55,7 @@ struct DisplayView: View {
   // MARK: Strips
 
   private var topStrip: some View {
-    Strip(style: style, plain: true) {
+    Strip(style: style) {
       switch model.mode {
       case .nowPlaying, .loading, .login:
         if model.mode == .nowPlaying { StationBadge(model: model, style: style) }
@@ -87,7 +87,7 @@ struct DisplayView: View {
   }
 
   private var bottomStrip: some View {
-    Strip(style: style, plain: true, spread: true) {
+    Strip(style: style, spread: true) {
       switch model.mode {
       case .nowPlaying:
         EmptyView()   // like and dislike sit beside the time; skip is the brass button
