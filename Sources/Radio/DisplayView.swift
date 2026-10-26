@@ -185,26 +185,19 @@ private struct NowPlayingView: View {
           Image(systemName: "rectangle.stack.fill").font(.system(size: u(11.5)))
         }
         Spacer(minLength: u(4))
-        InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
-          Image(systemName: "person.fill").font(.system(size: u(11.5)))
-        }
-        .padding(.trailing, u(130))                // room for the time beside it
-      }
-      .overlay(alignment: .bottomTrailing) {
-        HStack(alignment: .bottom, spacing: u(5)) {
-          SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
-            .frame(height: u(30))
-            .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
-          VStack(alignment: .leading, spacing: u(2)) {
-            Text("MIN").kerning(u(0.6)); Text("SEC").kerning(u(0.6))
+        // the artist, with the time beside it; the time's bottom lines up with the art's
+        HStack(alignment: .center, spacing: u(10)) {
+          InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
+            Image(systemName: "person.fill").font(.system(size: u(11.5)))
           }
-          .font(.system(size: u(8.5)))
-          .foregroundStyle(model.isPlaying ? style.inkDim : style.inkOff)
+          .frame(maxWidth: .infinity, alignment: .leading)
+          SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
+            .frame(height: u(28))
+            .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
+            .fixedSize()
+            .offset(y: u(3.5))   // the digits sit a little above the bottom of their box
         }
-        .fixedSize()
-        .padding(.bottom, -u(4))
       }
-      .padding(.vertical, u(8))
       .frame(height: u(88))
       .frame(maxWidth: .infinity, alignment: .leading)
     }
