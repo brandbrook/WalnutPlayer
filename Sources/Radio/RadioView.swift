@@ -1,0 +1,245 @@
+//
+//  RadioView.swift
+//  Walnut
+//
+//  The whole radio: walnut cabinet with feet, the lighter recessed panel, the speaker, the
+//  brass-framed display, recessed brass buttons and the EQ knobs.
+//
+
+import SwiftUI
+
+struct RadioView: View {
+  @ObservedObject var model: RadioModel
+  @State private var hovering = false
+
+  var body: some View {
+    VStack(spacing: 0) {
+      cabinet
+      feet
+    }
+    .onHover { hovering = $0 }
+  }
+
+  // MARK: Cabinet
+
+  private var cabinet: some View {
+    let shape = RoundedRectangle(cornerRadius: u(Radio.cabinetRadius), style: .continuous)
+    return ZStack {
+      FrameWalnut().allowsHitTesting(false)
+      SoftLight(strength: 1).allowsHitTesting(false)
+      // the rounded edge: a broad subdued highlight along the top and upper-left curve,
+      // a slightly darker bottom and right edge
+      RoundedRectangle(cornerRadius: u(Radio.cabinetRadius), style: .continuous)
+        .strokeBorder(LinearGradient(stops: [.init(color: Color(hex: 0xFFE8CC, opacity: 0.22), location: 0),
+                                             .init(color: Color(hex: 0xFFE8CC, opacity: 0.05), location: 0.45),
+                                             .init(color: Color(hex: 0x140802, opacity: 0.12), location: 0.6),
+                                             .init(color: Color(hex: 0x140802, opacity: 0.32), location: 1)],
+                                     startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: u(5))
+        .blur(radius: u(3)).allowsHitTesting(false)
+      front.padding(u(Radio.cabinetPadding))
+      WoodenName().frame(maxHeight: .infinity, alignment: .bottom).padding(.bottom, u(4.5))
+    }
+    .frame(width: u(Radio.size.width), height: u(Radio.size.height))
+    // close and minimise: an overlay sized to the buttons only, so it doesn't swallow clicks on the wood
+    .overlay(alignment: .topLeading) {   // in the frame's top band, lined up with the panel's left edge
+      TrafficLights(visible: hovering).padding(.top, u(Radio.cabinetPadding) / 2 - 6).padding(.leading, u(Radio.cabinetPadding))
+    }
+    .clipShape(shape)
+    .overlay(shape.stroke(Color(hex: 0x140A03, opacity: 0.85), lineWidth: 0.5))
+  }
+
+  private var feet: some View {
+    HStack {
+      foot; Spacer(); foot
+    }
+    .frame(width: u(Radio.size.width) * 0.9)   // directly under the cabinet
+  }
+
+  private var foot: some View {
+    UnevenRoundedRectangleShape(bottomRadius: u(4))
+      .fill(LinearGradient(colors: [Color(hex: 0x2A170B), Color(hex: 0x1B0E06)], startPoint: .top, endPoint: .bottom))
+      .frame(width: u(64), height: u(7))
+  }
+
+  // MARK: Front panel
+
+  private var front: some View {
+    let shape = RoundedRectangle(cornerRadius: u(Radio.panelRadius))
+    return HStack(spacing: 0) {
+      SpeakerView(playing: model.isPlaying)
+        .frame(width: u(Radio.speakerColumn))
+      face
+    }
+    .background(ZStack { PanelWalnut(); SoftLight(strength: 0.8) }.allowsHitTesting(false))
+    .clipShape(shape)
+    // the cabinet's top lip shades the panel; its bottom edge catches the light
+    .overlay(shape.stroke(Color(hex: 0x0A0500, opacity: 0.55), lineWidth: 3).blur(radius: 1.5).offset(y: 1.5).clipShape(shape))
+    .overlay(LinearGradient(colors: [Color(hex: 0x0A0500, opacity: 0.32), .clear], startPoint: .top, endPoint: .bottom)
+               .frame(height: u(8)).frame(maxHeight: .infinity, alignment: .top).clipShape(shape).allowsHitTesting(false))
+    .overlay(alignment: .bottom) { Rectangle().fill(Color(hex: 0xFFECCD, opacity: 0.22)).frame(height: 1).padding(.horizontal, u(16)) }
+    .overlay(shape.stroke(Color(hex: 0x0A0500, opacity: 0.75), lineWidth: 0.5))
+  }
+
+  private var face: some View {
+    VStack(spacing: u(16)) {
+      DisplayView(model: model)
+        // the brass's inner edge bevels down toward the glass: the light on it is full along the bottom
+        // and fades out up the sides (gone 80% of the way up); shaded under the top lip
+        .padding(u(2.5))
+        .background(RoundedRectangle(cornerRadius: u(7)).fill(Color(hex: 0x7C5C26))
+          .overlay(LinearGradient(stops: [.init(color: .clear, location: 0.2), .init(color: Color(hex: 0xE2C684), location: 1)],
+                                  startPoint: .top, endPoint: .bottom))
+          .overlay(LinearGradient(stops: [.init(color: Color(hex: 0x4E3612), location: 0), .init(color: Color(hex: 0x4E3612, opacity: 0), location: 0.1)],
+                                  startPoint: .top, endPoint: .bottom))
+          .clipShape(RoundedRectangle(cornerRadius: u(7))))
+        .padding(u(4.5))
+        .background(BrushedBrass().clipShape(RoundedRectangle(cornerRadius: u(10))))
+        .overlay(RoundedRectangle(cornerRadius: u(10))
+          .strokeBorder(LinearGradient(colors: [Color(hex: 0xFFF0C8, opacity: 0.45), .clear, Color(hex: 0x2A1804, opacity: 0.45)],
+                                       startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2))
+        .overlay(RoundedRectangle(cornerRadius: u(10)).stroke(Color(hex: 0x32200A, opacity: 0.35), lineWidth: 0.5))
+        .shadow(color: Color(hex: 0x0A0500, opacity: 0.25), radius: 1.2, x: 0.8, y: 1.2)
+        .shadow(color: Color(hex: 0x1E0F00, opacity: 0.25), radius: 4, x: u(2), y: u(4))
+      controls
+    }
+    .padding(EdgeInsets(top: u(18), leading: u(8), bottom: u(16), trailing: u(20)))
+  }
+
+  private var controls: some View {
+    HStack(spacing: 0) {
+      HStack(spacing: u(20)) {
+        RecessedBrassButton(size: u(64), latched: model.mode != .nowPlaying && model.mode != .login && !isLoading, action: { model.back() }) {
+          MenuBars()
+        }
+        .help("Stations")
+        RecessedBrassButton(size: u(64), action: playButton) {   // the icon tells play from pause; it only goes in while pressed
+          Image(systemName: model.isPlaying && model.mode == .nowPlaying ? "pause.fill" : "play.fill").resizable().aspectRatio(contentMode: .fit)
+        }
+        .help("Play / Pause")
+        RecessedBrassButton(size: u(64), action: skipButton) {
+          Image(systemName: "forward.end.fill").resizable().aspectRatio(contentMode: .fit)
+        }
+        .help("Next song")
+      }
+      Spacer(minLength: 0)
+      PanelDivider()
+      Spacer(minLength: 0)
+      HStack(spacing: u(14)) {
+        BrassKnob(label: "Low", value: $model.eqLow, size: u(44))
+        BrassKnob(label: "Mid", value: $model.eqMid, size: u(44))
+        BrassKnob(label: "High", value: $model.eqHigh, size: u(44))
+      }
+    }
+    .frame(height: u(64))
+  }
+
+  private var isLoading: Bool { if case .loading = model.mode { return true } else { return false } }
+
+  /// Play plays and pauses; in the station browser and its screens it chooses (history keeps playing/pausing).
+  private func playButton() {
+    switch model.mode {
+    case .nowPlaying, .history: model.playPause()
+    case .login: model.logIn()
+    case .loading: model.playPause()               // retries after a dropped stream
+    default: model.choose()
+    }
+  }
+  /// Skip skips the song; in a list it moves the selection along.
+  private func skipButton() {
+    switch model.mode {
+    case .nowPlaying: model.next()
+    case .stations, .history, .newStation: model.move(1)
+    default: break
+    }
+  }
+}
+
+/// Close and minimise, shown on hover, drawn like small enamel buttons on the wood.
+private struct TrafficLights: View {
+  let visible: Bool
+  @State private var over = false
+  var body: some View {
+    HStack(spacing: u(7)) {
+      light(Color(hex: 0xFF5F57), symbol: "xmark") { NSApp.keyWindow?.orderOut(nil) }
+      light(Color(hex: 0xFEBC2E), symbol: "minus") { NSApp.keyWindow?.miniaturize(nil) }
+    }
+    .opacity(visible ? 1 : 0)
+    .animation(.easeOut(duration: 0.15), value: visible)
+    .onHover { over = $0 }
+  }
+  private func light(_ color: Color, symbol: String, action: @escaping () -> Void) -> some View {
+    Button(action: action) {
+      Circle().fill(color).frame(width: 12, height: 12)
+        .overlay(Circle().stroke(Color.black.opacity(0.25), lineWidth: 0.5))
+        .overlay(Image(systemName: symbol).font(.system(size: 7, weight: .black)).foregroundStyle(.black.opacity(over ? 0.55 : 0)))
+    }
+    .buttonStyle(.plain)
+  }
+}
+
+/// Rectangle with only its bottom corners rounded (UnevenRoundedRectangle needs macOS 13).
+struct UnevenRoundedRectangleShape: Shape {
+  let bottomRadius: CGFloat
+  func path(in r: CGRect) -> Path {
+    var p = Path()
+    p.move(to: CGPoint(x: r.minX, y: r.minY))
+    p.addLine(to: CGPoint(x: r.maxX, y: r.minY))
+    p.addLine(to: CGPoint(x: r.maxX, y: r.maxY - bottomRadius))
+    p.addQuadCurve(to: CGPoint(x: r.maxX - bottomRadius, y: r.maxY), control: CGPoint(x: r.maxX, y: r.maxY))
+    p.addLine(to: CGPoint(x: r.minX + bottomRadius, y: r.maxY))
+    p.addQuadCurve(to: CGPoint(x: r.minX, y: r.maxY - bottomRadius), control: CGPoint(x: r.minX, y: r.maxY))
+    p.closeSubpath()
+    return p
+  }
+}
+
+/// The menu icon: three solid bars, as heavy as the pause and skip glyphs.
+private struct MenuBars: View {
+  var body: some View {
+    GeometryReader { g in
+      let bar = g.size.height * 0.2, gap = (g.size.height * 0.86 - bar * 3) / 2
+      VStack(spacing: gap) {
+        ForEach(0..<3, id: \.self) { _ in RoundedRectangle(cornerRadius: bar * 0.35).frame(height: bar) }
+      }
+      .frame(width: g.size.width, height: g.size.height)
+    }
+  }
+}
+
+/// The app's name as wooden letters glued onto the bottom of the frame: each letter is cut from
+/// walnut (its own grain), with a lit top edge, a darker side showing its thickness, and a small shadow
+/// on the frame below.
+private struct WoodenName: View {
+  var body: some View {
+    let text = Text("WALNUT PLAYER").font(.system(size: u(10.5), weight: .bold, design: .serif)).kerning(u(2.8))
+    ZStack {
+      text.foregroundStyle(Color(hex: 0x2A1206)).offset(y: u(1.3))                 // the letters' thickness
+      text.foregroundStyle(Color(hex: 0xFFE8CC, opacity: 0.6)).offset(y: -u(0.5))  // lit top edges
+      text.foregroundStyle(Color(hex: 0xA8743F))                                     // letter faces: lighter walnut…
+        .overlay(Image(nsImage: Texture.panelWalnut).resizable().aspectRatio(contentMode: .fill)
+                   .opacity(0.55).blendMode(.multiply).mask(text))                   // …with their own grain
+      text.foregroundStyle(Color(hex: 0x3E220E, opacity: 0.9))                       // finish worn through in a few places
+        .mask(Image(nsImage: Texture.wear).resizable())
+    }
+    .compositingGroup()
+    .shadow(color: Color(hex: 0x0A0402, opacity: 0.6), radius: 0.8, x: 0.3, y: u(1.6))
+    .allowsHitTesting(false)
+    .accessibilityHidden(true)
+  }
+}
+
+/// One broad, soft light from the upper left over a whole surface: a little lighter there, gradually
+/// darker toward the lower right, gentle enough to keep the grain.
+struct SoftLight: View {
+  var strength: Double = 1
+  var body: some View {
+    ZStack {
+      LinearGradient(stops: [.init(color: Color(hex: 0xFFE6C4, opacity: 0.13 * strength), location: 0),
+                             .init(color: .clear, location: 0.5),
+                             .init(color: Color(hex: 0x120700, opacity: 0.2 * strength), location: 1)],
+                     startPoint: .topLeading, endPoint: .bottomTrailing)
+      RadialGradient(colors: [Color(hex: 0xFFE6C4, opacity: 0.07 * strength), .clear],
+                     center: UnitPoint(x: 0.15, y: 0.1), startRadius: 0, endRadius: u(520))
+    }
+  }
+}

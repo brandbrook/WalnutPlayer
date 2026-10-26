@@ -30,6 +30,7 @@
 - (void) focus;
 
 - (void) addSong: (Song*) song;
+- (void) loadSavedSongs;
 - (BOOL) saveSongs;
 
 - (void) insertObject:(Song *)s inSongsAtIndex:(NSUInteger)index;

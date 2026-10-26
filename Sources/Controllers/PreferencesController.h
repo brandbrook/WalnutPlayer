@@ -94,4 +94,5 @@
 - (IBAction) bindMediaChanged: (id) sender;
 - (IBAction) show: (id) sender;
 
+- (IBAction) proxySettingsChanged:(id)sender;
 @end

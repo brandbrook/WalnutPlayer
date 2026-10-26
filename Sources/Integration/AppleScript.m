@@ -122,10 +122,10 @@ NSInteger savedVolume = 0;
   Station *playing = [playback playing];
   if (playing == nil) {
     return PlaybackStateStopped;
-  } else if ([playing isPaused]) {
-    return PlaybackStatePaused;
+  } else if ([playing isPlaying]) {
+    return PlaybackStatePlaying;
   }
-  return PlaybackStatePlaying;
+  return PlaybackStatePaused;   // paused, or a station restored paused that hasn't started yet
 }
 
 - (NSNumber *) playbackPosition {

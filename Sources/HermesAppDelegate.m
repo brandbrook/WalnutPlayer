@@ -5,6 +5,7 @@
  * Contains startup routines, and other interfaces with the OS
  */
 
+#import "Walnut-Swift.h"
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 #import <MediaPlayer/MediaPlayer.h>
 
@@ -201,6 +202,10 @@
 
   [NSApp activateIgnoringOtherApps:YES];
 
+
+  // The radio interface listens to the engine from here on, before login starts below.
+  [[RadioWindowController shared] startRadio];
+
   NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 
   [notificationCenter addObserver:self selector:@selector(handlePandoraError:)
@@ -225,7 +230,9 @@
 
   NSString *savedUsername = [self getSavedUsername];
   NSString *savedPassword = [self getSavedPassword];
-  if (savedPassword == nil || [savedPassword isEqualToString:@""] ||
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"walnut.demo"]) {
+    // demo mode (launch with -walnut.demo YES): sample data on the radio, no Pandora connection
+  } else if (savedPassword == nil || [savedPassword isEqualToString:@""] ||
       savedUsername == nil || [savedUsername isEqualToString:@""]) {
     [auth show];
   } else {
@@ -508,10 +515,12 @@
 
     /* Causes underlying window to activate briefly, but no other solution I could find */
     [NSApp hide:nil];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-      TransformProcessType(&psn, kProcessTransformToUIElementApplication);
+    // window work has to happen on the main thread (macOS crashes the app otherwise)
+    dispatch_async(dispatch_get_main_queue(), ^{
+      ProcessSerialNumber current = { 0, kCurrentProcess };
+      TransformProcessType(&current, kProcessTransformToUIElementApplication);
       [NSApp activateIgnoringOtherApps:YES];
-      [[NSApp mainWindow] makeKeyAndOrderFront:nil]; // restores mouse cursor
+      [[RadioWindowController shared] bringToFront]; // restores mouse cursor
     });
   }
 
@@ -584,19 +593,13 @@
   NSImage *icon;
   NSSize size = {.width = 18, .height = 18};
 
-  if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW)) {
-    
-    icon = [NSImage imageNamed:(playback.playing.isPlaying) ?
-            @"Pandora-Menu-Dark-Play" : @"Pandora-Menu-Dark-Pause"];
-    [icon setTemplate:YES];
-    
-  } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM)) {
-    
+  if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM)) {
     icon = [self buildPlayPauseAlbumArtImage:size];
-    
+  } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW)) {
+    // template glyph: macOS tints it for light, dark and coloured menu bars
+    icon = [MenuBarIcon glyphWithPlaying:playback.playing.isPlaying];
   } else {
-    // Use color application image
-    icon = [NSImage imageNamed:@"walnut"];
+    icon = [MenuBarIcon color];
   }
 
   // Set image size, then set status bar icon
@@ -640,12 +643,13 @@
   if (playing != nil) {
     nowPlaying.title = [@"Now Playing: " stringByAppendingString:s.name];
     currentSong.title = playing.title;
+    currentSong.hidden = NO;
     currentArtist.title = playing.artist;
     currentArtist.hidden = NO;
     statusItem.button.toolTip = [NSString stringWithFormat:@"Song: %@\nArtist: %@\nAlbum: %@\nStation: %@", playing.title, playing.artist, playing.album, s.name];
   } else {
-    nowPlaying.title = @"Now Playing";
-    currentSong.title = @"(none)";
+    nowPlaying.title = @"Not playing";
+    currentSong.hidden = YES;
     currentArtist.hidden = YES;
     statusItem.button.toolTip = nil;
   }
@@ -758,6 +762,9 @@
   lastRequest = [notification userInfo][@"request"];
   [self setCurrentView:errorView];
   [errorLabel setStringValue:err];
+  // the radio shows this on its display (RadioModel); the old error view stays hidden
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"WalnutConnectionProblem" object:self
+                                                    userInfo:@{@"message": err ?: @"", @"autoRetry": @(code != 0 && code != 1039)}];
   [window orderFront:nil];
   [autoRetry invalidate];
 

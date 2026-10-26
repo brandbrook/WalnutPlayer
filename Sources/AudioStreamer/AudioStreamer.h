@@ -26,6 +26,7 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import <Foundation/Foundation.h>
+#import "WalnutAudio.h"
 
 /* Maximum number of packets which can be contained in one buffer */
 #define kAQMaxPacketDescs 512
@@ -208,6 +209,7 @@ struct queued_packet;
   /* Once properties have been read, packets arrive, and the audio queue is
      created once the first packet arrives */
   AudioQueueRef audioQueue;
+  WalnutTap *walnutTap;           // EQ and speaker levels (WalnutAudio.h)
   UInt32 packetBufferSize;  /* guessed from audioFileStream */
 
   /* When receiving audio data, raw data is placed into these buffers. The

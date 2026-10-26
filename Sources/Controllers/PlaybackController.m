@@ -8,6 +8,7 @@
  * to these actions as well
  */
 
+#import "Walnut-Swift.h"
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 #import <MediaPlayer/MediaPlayer.h>
 
@@ -344,7 +345,8 @@ BOOL playOnStart = YES;
       [art setImage:nil];
       lastImgSrc = [song art];
       lastImg = nil;
-      [[ImageLoader loader] loadImageURL:lastImgSrc
+      // some of Pandora's mediaserver hosts don't answer; ArtURL moves those to its content CDN
+      [[ImageLoader loader] loadImageURL:[RadioArt url:lastImgSrc]
                                 callback:^(NSData *data) {
         NSImage *image = nil;
         self->lastImg = data;
@@ -395,7 +397,7 @@ BOOL playOnStart = YES;
 
 /* Plays a new station, or nil to play no station (e.g., if station deleted) */
 - (void) playStation: (Station*) station {
-  if ([playing stationId] == [station stationId]) {
+  if (station != nil && [[playing stationId] isEqualToString:[station stationId]]) {   // same station (compare the ids, not the string objects)
     return;
   }
 

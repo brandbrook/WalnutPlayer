@@ -26,6 +26,7 @@
 
 - (void) loadSavedSongs {
   NSLogd(@"loading saved songs");
+  if (songs == nil) songs = [NSMutableArray array];
   NSString *historySaveStatePath = [HMSAppDelegate stateDirectory:@"history.savestate"];
   if (historySaveStatePath == nil) return;
 

@@ -58,7 +58,8 @@
   }
 
   [[delegate stations] show];
-  [PlaybackController setPlayOnStart:YES];
+  // Walnut always opens paused on the last station; press play to start
+  [PlaybackController setPlayOnStart:NO];
 }
 
 /* Login button in sheet hit, should authenticate */
