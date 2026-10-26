@@ -342,7 +342,10 @@ final class RadioModel: ObservableObject {
     if let s = playback.playing, !s.isPlaying(), !s.isPaused() { playback.play() } else { playback.playpause(nil) }
   }
   func next() { playback.next(nil) }
-  func like() { playback.like(nil) }
+  func like() {
+    if demo { rating = rating == 1 ? 0 : 1; return }   // demo: just toggle the lit state
+    playback.like(nil)
+  }
   func dislike() { lightUp("dislike") { self.playback.dislike(nil) } }
   func tired() { lightUp("tired") { self.playback.tired(nil) } }
 
