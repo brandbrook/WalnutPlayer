@@ -148,6 +148,14 @@ struct GlassStyle {
     stripBackground: Color(hex: 0x6E460F, opacity: 0.07), stripLine: Color(hex: 0x6E460F, opacity: 0.16),
     selectedText: Color(hex: 0xF6E6B8), glow: .clear, glare: 0.5)
 
+  /// Dark mode while music plays: the same glowing amber on navy glass.
+  static let darkPlaying = GlassStyle(
+    glass: [Color(hex: 0x1C2C4A), Color(hex: 0x111C33), Color(hex: 0x080E1C)],
+    ink: Color(hex: 0xFFBE5C), inkDim: Color(hex: 0xC88D40), inkOff: Color(hex: 0xFFAA3C, opacity: 0.08),
+    songStrong: Color(hex: 0xF2AD4F),
+    stripBackground: Color(hex: 0xFFAA3C, opacity: 0.04), stripLine: Color(hex: 0xFFAA3C, opacity: 0.12),
+    selectedText: Color(hex: 0x0C1424), glow: Color(hex: 0xFFA532, opacity: 0.45), glare: 0.14)
+
   static let dark = GlassStyle(
     glass: [Color(hex: 0x2A1A0B), Color(hex: 0x170E06), Color(hex: 0x0C0703)],
     ink: Color(hex: 0xFFBE5C), inkDim: Color(hex: 0xC88D40), inkOff: Color(hex: 0xFFAA3C, opacity: 0.08),

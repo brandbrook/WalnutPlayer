@@ -14,11 +14,14 @@ struct DisplayView: View {
   @Environment(\.colorScheme) private var systemScheme
 
   private var style: GlassStyle {
+    let dark: Bool
     switch model.theme {
-    case .light: return .light
-    case .dark: return .dark
-    case .system: return systemScheme == .dark ? .dark : .light
+    case .light: dark = false
+    case .dark: dark = true
+    case .system: dark = systemScheme == .dark
     }
+    if !dark { return .light }
+    return model.isPlaying ? .darkPlaying : .dark   // navy glass while music plays, warm brown when not
   }
   private var dim: Bool { model.mode == .nowPlaying && !model.isPlaying }
 
@@ -47,7 +50,7 @@ struct DisplayView: View {
     .clipShape(RoundedRectangle(cornerRadius: u(5)))
     .overlay(RoundedRectangle(cornerRadius: u(5)).stroke(Color(hex: 0x2A1A04, opacity: 0.75), lineWidth: 1))
     .saturation(dim ? (style.glare > 0.3 ? 0.55 : 0.7) : 1)
-    .brightness(dim ? (style.glare > 0.3 ? -0.07 : -0.25) : 0)
+    .brightness(dim ? (style.glare > 0.3 ? -0.07 : 0) : 0)   // dark mode: the brown glass already reads as off
     // a short fade when playback pauses or resumes; switching screens is instant
     .animation(.easeInOut(duration: 0.25), value: model.isPlaying)   // only play/pause fades
   }

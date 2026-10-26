@@ -58,9 +58,8 @@
   }
 
   [[delegate stations] show];
-  // Resume the last station the way it was left (Walnut saves this as it changes); the very
-  // first time, with nothing saved yet, it starts paused
-  [PlaybackController setPlayOnStart:[[NSUserDefaults standardUserDefaults] boolForKey:@"walnut.playingAtQuit"]];
+  // Walnut always opens paused on the last station; press play to start
+  [PlaybackController setPlayOnStart:NO];
 }
 
 /* Login button in sheet hit, should authenticate */

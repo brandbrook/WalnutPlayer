@@ -217,9 +217,18 @@ final class RadioModel: ObservableObject {
   private func stationsLoaded() {
     reloadStations()
     // The engine resumes the last station after loading; if it has none, let the listener pick one.
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+    settleAfterStationsLoaded(tries: 10)
+  }
+
+  /// The engine restores the last station from disk a moment after the list loads; wait for it
+  /// (up to ~3 s) before deciding there's nothing to resume and opening the station picker.
+  private func settleAfterStationsLoaded(tries: Int) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
       guard let self, case .loading = self.mode else { return }
-      if self.playback.playing == nil { self.showBrowser(.stations); return }
+      if self.playback.playing == nil {
+        if tries > 0 { self.settleAfterStationsLoaded(tries: tries - 1) } else { self.showBrowser(.stations) }
+        return
+      }
       // restored paused: show the station (and its last song, if saved) on a dimmed display
       self.refreshSong()
       self.loadArt()
