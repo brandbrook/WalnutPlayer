@@ -968,7 +968,6 @@ Gw
                 <outlet property="mediaKeysLabel" destination="1550" id="8dv-nE-yQs"/>
                 <outlet property="network" destination="1919" id="2026"/>
                 <outlet property="notificationEnabled" destination="1827" id="2294"/>
-                <outlet property="notificationType" destination="2288" id="2295"/>
                 <outlet property="playback" destination="1616" id="1630"/>
                 <outlet property="proxyServerErrorMessage" destination="QeC-l0-JJ4" id="0F1-qJ-T5D"/>
                 <outlet property="statusItemShowAlbumArt" destination="28c-Js-E8a" id="bnJ-J9-PXc"/>
@@ -978,7 +977,7 @@ Gw
                 <outlet property="window" destination="1112" id="2334"/>
             </connections>
         </customObject>
-        <customObject id="1000" userLabel="Sparkle Updater" customClass="SUUpdater"/>
+        <customObject id="1000" userLabel="Sparkle Updater" customClass="SPUStandardUpdaterController"/>
         <customObject id="1331" userLabel="HistoryController" customClass="HistoryController">
             <connections>
                 <outlet property="collection" destination="2161" id="2440"/>
@@ -1481,7 +1480,7 @@ DQ
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="1000" name="value" keyPath="automaticallyChecksForUpdates" id="1862"/>
+                        <binding destination="1000" name="value" keyPath="updater.automaticallyChecksForUpdates" id="1862"/>
                     </connections>
                 </button>
                 <button id="1851">
@@ -1492,8 +1491,8 @@ DQ
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="1000" name="enabled" keyPath="automaticallyChecksForUpdates" id="1871"/>
-                        <binding destination="1000" name="value" keyPath="automaticallyDownloadsUpdates" id="1863"/>
+                        <binding destination="1000" name="enabled" keyPath="updater.automaticallyChecksForUpdates" id="1871"/>
+                        <binding destination="1000" name="value" keyPath="updater.automaticallyDownloadsUpdates" id="1863"/>
                     </connections>
                 </button>
                 <popUpButton verticalHuggingPriority="750" id="1864">
@@ -1514,8 +1513,8 @@ DQ
                         </menu>
                     </popUpButtonCell>
                     <connections>
-                        <binding destination="1000" name="enabled" keyPath="automaticallyChecksForUpdates" id="1874"/>
-                        <binding destination="1000" name="selectedTag" keyPath="updateCheckInterval" id="1878"/>
+                        <binding destination="1000" name="enabled" keyPath="updater.automaticallyChecksForUpdates" id="1874"/>
+                        <binding destination="1000" name="selectedTag" keyPath="updater.updateCheckInterval" id="1878"/>
                     </connections>
                 </popUpButton>
                 <button id="vFC-lf-ywe">
@@ -1651,9 +1650,9 @@ DQ
                     </connections>
                 </matrix>
                 <button id="1827">
-                    <rect key="frame" x="18" y="253" width="141" height="18"/>
+                    <rect key="frame" x="18" y="253" width="305" height="18"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Notify with Growl" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1832">
+                    <buttonCell key="cell" type="check" title="Show notifications" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1832">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -1685,26 +1684,6 @@ DQ
                         <binding destination="979" name="value" keyPath="values.pleaseGrowlPlay" id="1994"/>
                     </connections>
                 </button>
-                <popUpButton hidden="YES" verticalHuggingPriority="750" id="2288">
-                    <rect key="frame" x="38" y="249" width="203" height="26"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <popUpButtonCell key="cell" type="push" title="Notify with macOS" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="2292" id="2289">
-                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu"/>
-                        <menu key="menu" title="OtherViews" id="2290">
-                            <items>
-                                <menuItem title="Notify with Growl" id="2291"/>
-                                <menuItem title="Notify with macOS" state="on" id="2292"/>
-                            </items>
-                        </menu>
-                        <connections>
-                            <binding destination="979" name="selectedIndex" keyPath="values.notificationType" id="2301"/>
-                        </connections>
-                    </popUpButtonCell>
-                    <connections>
-                        <binding destination="979" name="enabled" keyPath="values.pleaseGrowl" id="2298"/>
-                    </connections>
-                </popUpButton>
                 <button id="1837">
                     <rect key="frame" x="18" y="163" width="326" height="18"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>

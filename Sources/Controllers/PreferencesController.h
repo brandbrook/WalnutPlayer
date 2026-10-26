@@ -25,7 +25,6 @@
 #define PROXY_AUDIO                @"proxyAudio"
 #define OPEN_DRAWER                @"openDrawer"
 #define SORT_STATIONS              @"sortStations"
-#define GROWL_TYPE                 @"notificationType"
 #define DOCK_ICON_ALBUM_ART        @"dockIconAlbumArt"
 #define ALBUM_ART_PLAY_PAUSE       @"albumArtPlayPause"
 #define STATUS_BAR_ICON            @"statusBarIcon"
@@ -61,8 +60,6 @@
 #define SORT_NAME_ASC 2
 #define SORT_NAME_DSC 3
 
-#define GROWL_TYPE_GROWL 0
-#define GROWL_TYPE_OSX   1
 
 @interface PreferencesController : NSObject <NSWindowDelegate> {
   IBOutlet NSWindow *window;
@@ -81,7 +78,6 @@
 
   // Playback
   IBOutlet NSButton *notificationEnabled;
-  IBOutlet NSPopUpButton *notificationType;
 
   // Network
   IBOutlet NSTextField *proxyServerErrorMessage;

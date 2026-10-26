@@ -7,10 +7,7 @@
 @class Song;
 @class MPRemoteCommandCenter;
 
-// XXX macOS 10.12.2 exposes media keys; 10.12.3 doesn't
-#define MPREMOTECOMMANDCENTER_MEDIA_KEYS_BROKEN 1
-
-@interface PlaybackController : NSObject <QLPreviewPanelDataSource, QLPreviewPanelDelegate, QLPreviewItem> {
+@interface PlaybackController : NSObject <QLPreviewPanelDataSource, QLPreviewPanelDelegate, QLPreviewItem, NSMenuItemValidation, NSToolbarItemValidation> {
   IBOutlet NSProgressIndicator *songLoadingProgress;
 
   IBOutlet NSView *playbackView;
