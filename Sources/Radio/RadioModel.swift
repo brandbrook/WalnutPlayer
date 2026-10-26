@@ -136,6 +136,7 @@ final class RadioModel: ObservableObject {
     on(.PandoraDidDeleteSeed) { [weak self] _ in self?.refetchStationInfo() }
     on(.StationDidPlaySong) { [weak self] _ in self?.songPlayed() }
     on(.ASStatusChanged) { [weak self] _ in self?.stateChanged() }
+    on(NSNotification.Name(ASStreamError)) { [weak self] _ in self?.mode = .loading(Self.noSignal) }
 
     progressTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
       MainActor.assumeIsolated { self?.tick() }
@@ -173,8 +174,12 @@ final class RadioModel: ObservableObject {
     reloadStations()
     // The engine resumes the last station after loading; if it has none, let the listener pick one.
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
-      guard let self, self.playback.playing == nil, case .loading = self.mode else { return }
-      self.showBrowser(.stations)
+      guard let self, case .loading = self.mode else { return }
+      if self.playback.playing == nil { self.showBrowser(.stations); return }
+      // restored paused: show the station (and its last song, if saved) on a dimmed display
+      self.refreshSong()
+      self.loadArt()
+      self.mode = .nowPlaying
     }
   }
 
@@ -188,6 +193,11 @@ final class RadioModel: ObservableObject {
   private func songPlayed() {
     refreshSong()
     if case .loading = mode { mode = .nowPlaying }
+    loadArt()
+    DispatchQueue.main.async { [weak self] in self?.reloadHistory() }
+  }
+
+  private func loadArt() {
     art = nil
     if let url = playback.playing?.playingSong?.art, !url.isEmpty {
       let expected = url
@@ -198,7 +208,6 @@ final class RadioModel: ObservableObject {
         }
       }
     }
-    DispatchQueue.main.async { [weak self] in self?.reloadHistory() }
   }
 
   private func refreshSong() {
@@ -239,7 +248,18 @@ final class RadioModel: ObservableObject {
 
   // MARK: - Transport and song actions
 
-  func playPause() { playback.playpause(nil) }
+  static let noSignal = "NO SIGNAL · PRESS PLAY"
+
+  func playPause() {
+    if mode == .loading(Self.noSignal) {          // stream dropped: fetch a fresh playlist and go on
+      mode = .loading("TUNING IN")
+      playback.playing?.clearSongList()
+      playback.playing?.next()
+      return
+    }
+    // a station restored paused at launch hasn't started streaming yet; play starts it
+    if let s = playback.playing, !s.isPlaying(), !s.isPaused() { playback.play() } else { playback.playpause(nil) }
+  }
   func next() { playback.next(nil) }
   func like() { playback.like(nil) }
   func dislike() { lightUp("dislike") { self.playback.dislike(nil) } }

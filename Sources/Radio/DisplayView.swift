@@ -129,7 +129,7 @@ struct DisplayView: View {
     switch model.mode {
     case .nowPlaying: NowPlayingView(model: model, style: style)
     case .loading(let text):
-      Text(text + "…").font(.system(size: u(13), weight: .bold)).kerning(u(2)).foregroundStyle(style.inkDim)
+      Text(text == RadioModel.noSignal ? text : text + "…").font(.system(size: u(13), weight: .bold)).kerning(u(2)).foregroundStyle(style.inkDim)
     case .login: LoginView(model: model, style: style)
     case .stations, .history: BrowserGrid(model: model, style: style, rows: 4)
     case .newStation:

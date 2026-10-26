@@ -108,11 +108,11 @@ struct RadioView: View {
   private var controls: some View {
     HStack(spacing: 0) {
       HStack(spacing: u(20)) {
-        RecessedBrassButton(size: u(64), action: { model.back() }) {
+        RecessedBrassButton(size: u(64), latched: model.mode != .nowPlaying && model.mode != .login && !isLoading, action: { model.back() }) {
           MenuBars()
         }
         .help("Stations")
-        RecessedBrassButton(size: u(64), action: playButton) {
+        RecessedBrassButton(size: u(64), latched: model.isPlaying, action: playButton) {
           Image(systemName: model.isPlaying && model.mode == .nowPlaying ? "pause.fill" : "play.fill").resizable().aspectRatio(contentMode: .fit)
         }
         .help("Play / Pause")
@@ -133,12 +133,14 @@ struct RadioView: View {
     .frame(height: u(64))
   }
 
+  private var isLoading: Bool { if case .loading = model.mode { return true } else { return false } }
+
   /// Play plays and pauses; in the station browser and its screens it chooses (history keeps playing/pausing).
   private func playButton() {
     switch model.mode {
     case .nowPlaying, .history: model.playPause()
     case .login: model.logIn()
-    case .loading: break
+    case .loading: model.playPause()               // retries after a dropped stream
     default: model.choose()
     }
   }

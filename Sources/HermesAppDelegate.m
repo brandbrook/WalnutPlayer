@@ -202,6 +202,11 @@
 
   [NSApp activateIgnoringOtherApps:YES];
 
+  if ([[NSUserDefaults standardUserDefaults] objectForKey:@"walnut.playingAtQuit"] != nil &&
+      ![[NSUserDefaults standardUserDefaults] boolForKey:@"walnut.playingAtQuit"]) {
+    [PlaybackController setPlayOnStart:NO];   // quit while paused: restore the station without playing
+  }
+
   // The radio interface listens to the engine from here on, before login starts below.
   [[RadioWindowController shared] startRadio];
 
@@ -271,6 +276,8 @@
 }
 
 - (void) applicationWillTerminate: (NSNotification *)aNotification {
+  // Walnut comes back the way it was left: playing if it was playing, paused if it was paused
+  [[NSUserDefaults standardUserDefaults] setBool:[[playback playing] isPlaying] forKey:@"walnut.playingAtQuit"];
   [playback saveState];
   [playback stop];
   [history saveSongs];

@@ -30,9 +30,12 @@ struct SpunBrass: View {
 /// so its edge is smooth and polished rather than knurled.
 struct RecessedBrassButton<Icon: View>: View {
   var size: CGFloat = 64
+  /// Stays pushed in, like a latching radio button (menu while the browser is open, play while playing).
+  var latched = false
   var action: () -> Void
   @ViewBuilder var icon: () -> Icon
-  @State private var pressed = false
+  @State private var touching = false
+  private var pressed: Bool { touching || latched }
 
   var body: some View {
     ZStack {
@@ -53,19 +56,21 @@ struct RecessedBrassButton<Icon: View>: View {
         .overlay(Circle().stroke(Color(hex: 0x3C280A, opacity: 0.75), lineWidth: 0.5))
         .shadow(color: .black.opacity(pressed ? 0.7 : 0.6), radius: pressed ? 0.3 : 0.9, y: pressed ? 0.3 : 1)
         .padding(size * 0.07)
-        .scaleEffect(pressed ? 0.965 : 1)
-        .brightness(pressed ? -0.04 : 0)
+        .scaleEffect(pressed ? 0.93 : 1)
+        .brightness(pressed ? -0.1 : 0)
       icon()
         .foregroundStyle(engraveBrown)
         .shadow(color: Color(hex: 0xFFF5D7, opacity: 0.85), radius: 0, y: 1)
         .frame(width: size * 0.36, height: size * 0.36)
-        .scaleEffect(pressed ? 0.965 : 1)
+        .scaleEffect(pressed ? 0.93 : 1)
+        .opacity(pressed ? 0.85 : 1)
     }
     .frame(width: size, height: size)
     .contentShape(Circle())
     .gesture(DragGesture(minimumDistance: 0)
-      .onChanged { _ in if !pressed { withAnimation(.easeOut(duration: 0.07)) { pressed = true } } }
-      .onEnded { _ in withAnimation(.easeOut(duration: 0.07)) { pressed = false }; action() })
+      .onChanged { _ in if !touching { withAnimation(.easeOut(duration: 0.07)) { touching = true } } }
+      .onEnded { _ in withAnimation(.easeOut(duration: 0.07)) { touching = false }; action() })
+    .animation(.easeOut(duration: 0.1), value: latched)
     .accessibilityAddTraits(.isButton)
   }
 }
