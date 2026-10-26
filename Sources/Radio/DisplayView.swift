@@ -172,7 +172,7 @@ private struct NowPlayingView: View {
   var body: some View {
     HStack(alignment: .top, spacing: u(20)) {
       // left: the art, with the time centred under it
-      VStack(spacing: u(14)) {
+      VStack(spacing: u(17)) {
         AlbumArt(image: model.art, style: style).frame(width: u(96), height: u(96))
         HStack(alignment: .bottom, spacing: u(4)) {
           SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
@@ -195,27 +195,29 @@ private struct NowPlayingView: View {
             ThemeButton(theme: t, lit: model.theme == t, style: style) { model.theme = t }
           }
         }
-        Spacer(minLength: u(6))
-        VStack(alignment: .leading, spacing: u(10)) {
-          InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
-            SpinningRecord(playing: model.isPlaying, style: style)
-          }
-          InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
-            Image(systemName: "person.fill").font(.system(size: u(11.5)))
-          }
-          InfoLine(text: model.album, link: model.link(for: .album), style: style) {
-            Image(systemName: "rectangle.stack.fill").font(.system(size: u(11.5)))
-          }
+        // every line the same distance apart, station to thumbs
+        Spacer(minLength: u(4))
+        InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
+          SpinningRecord(playing: model.isPlaying, style: style)
         }
-        Spacer(minLength: u(6))
-        HStack(spacing: u(4)) {
-          RatingButton(symbol: "hand.thumbsdown.fill", lit: model.flash == "dislike", style: style, help: "Dislike") { model.dislike() }
-          RatingButton(symbol: "hand.thumbsup.fill", lit: model.rating == 1, litColor: accentRed, style: style, help: "Like") { model.like() }
+        Spacer(minLength: u(4))
+        InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
+          Image(systemName: "person.fill").font(.system(size: u(11.5)))
         }
-        .padding(.leading, -u(5))                  // line the icons up with the rows above
+        Spacer(minLength: u(4))
+        InfoLine(text: model.album, link: model.link(for: .album), style: style) {
+          Image(systemName: "rectangle.stack.fill").font(.system(size: u(11.5)))
+        }
+        Spacer(minLength: u(4))
+        // the song's actions, under the info only, level with the time
+        Strip(style: style, spread: true) {
+          StripButton("DISLIKE", icon: "hand.thumbsdown.fill", lit: model.flash == "dislike", style: style) { model.dislike() }
+          StripButton("TIRED", icon: "moon.fill", lit: model.flash == "tired", style: style) { model.tired() }
+          StripButton("LIKE", icon: "hand.thumbsup.fill", lit: model.rating == 1, litColor: accentRed, style: style) { model.like() }
+        }
       }
       .frame(maxWidth: .infinity, alignment: .topLeading)
-      .frame(height: u(96 + 14 + 25) + u(2))         // same height as the art and time, so the rows line up
+      .frame(height: u(96 + 17 + 25) + u(2))         // same height as the art and time, so the rows line up
     }
     .padding(.horizontal, u(4))
     .frame(maxHeight: .infinity)                   // centred in the display
@@ -675,25 +677,3 @@ private struct ThemeButton: View {
   }
 }
 
-/// Thumbs down / up beside the time: a filled icon, lit when active.
-private struct RatingButton: View {
-  let symbol: String
-  let lit: Bool
-  var litColor: Color? = nil
-  let style: GlassStyle
-  let help: String
-  let action: () -> Void
-  @State private var hover = false
-  var body: some View {
-    Button(action: action) {
-      Image(systemName: symbol).font(.system(size: u(14)))
-        .frame(width: u(26), height: u(24)).contentShape(Rectangle())
-        .foregroundStyle(lit ? (litColor ?? style.ink) : style.inkDim)
-        .opacity(lit ? 1 : hover ? 0.9 : 0.5)
-    }
-    .buttonStyle(.plain).focusable(false)
-    .onHover { hover = $0 }
-    .help(help)
-    .animation(.easeOut(duration: 0.15), value: lit)
-  }
-}
