@@ -140,21 +140,30 @@ struct GlassStyle {
   let selectedText: Color
   let glow: Color             // text glow (clear in light mode)
   let glare: Double
+  var vertical = false        // glass lit as a top-to-bottom gradient (while playing)
 
   static let light = GlassStyle(
-    glass: [Color(hex: 0xFFF4CF), Color(hex: 0xF4E2B0), Color(hex: 0xE4C98A)],
+    glass: [Color(hex: 0xFFF8DD), Color(hex: 0xF9EBC2), Color(hex: 0xEDD59D)],   // brighter cream
     ink: Color(hex: 0x3A2A14), inkDim: Color(hex: 0x7D6740), inkOff: Color(hex: 0x5A4119, opacity: 0.14),
     songStrong: Color(hex: 0x5D4826),
     stripBackground: Color(hex: 0x6E460F, opacity: 0.07), stripLine: Color(hex: 0x6E460F, opacity: 0.16),
     selectedText: Color(hex: 0xF6E6B8), glow: .clear, glare: 0.5)
 
-  /// Dark mode while music plays: the same glowing amber on navy glass.
+  /// Light mode while music plays: brighter still, a top-to-bottom gradient like a lit backlight.
+  static let lightPlaying = GlassStyle(
+    glass: [Color(hex: 0xFFFCEC), Color(hex: 0xFCEFC8), Color(hex: 0xF0D899)],
+    ink: Color(hex: 0x3A2A14), inkDim: Color(hex: 0x7D6740), inkOff: Color(hex: 0x5A4119, opacity: 0.14),
+    songStrong: Color(hex: 0x5D4826),
+    stripBackground: Color(hex: 0x6E460F, opacity: 0.07), stripLine: Color(hex: 0x6E460F, opacity: 0.16),
+    selectedText: Color(hex: 0xF6E6B8), glow: .clear, glare: 0.5, vertical: true)
+
+  /// Dark mode while music plays: the same glowing amber on navy glass, in a vertical gradient.
   static let darkPlaying = GlassStyle(
-    glass: [Color(hex: 0x1C2C4A), Color(hex: 0x111C33), Color(hex: 0x080E1C)],
+    glass: [Color(hex: 0x27406A), Color(hex: 0x14223F), Color(hex: 0x070D1A)],
     ink: Color(hex: 0xFFBE5C), inkDim: Color(hex: 0xC88D40), inkOff: Color(hex: 0xFFAA3C, opacity: 0.08),
     songStrong: Color(hex: 0xF2AD4F),
     stripBackground: Color(hex: 0xFFAA3C, opacity: 0.04), stripLine: Color(hex: 0xFFAA3C, opacity: 0.12),
-    selectedText: Color(hex: 0x0C1424), glow: Color(hex: 0xFFA532, opacity: 0.45), glare: 0.14)
+    selectedText: Color(hex: 0x0C1424), glow: Color(hex: 0xFFA532, opacity: 0.45), glare: 0.14, vertical: true)
 
   static let dark = GlassStyle(
     glass: [Color(hex: 0x2A1A0B), Color(hex: 0x170E06), Color(hex: 0x0C0703)],

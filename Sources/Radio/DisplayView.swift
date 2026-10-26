@@ -20,14 +20,18 @@ struct DisplayView: View {
     case .dark: dark = true
     case .system: dark = systemScheme == .dark
     }
-    if !dark { return .light }
+    if !dark { return model.isPlaying ? .lightPlaying : .light }
     return model.isPlaying ? .darkPlaying : .dark   // navy glass while music plays, warm brown when not
   }
   private var dim: Bool { model.mode == .nowPlaying && !model.isPlaying }
 
   var body: some View {
     ZStack {
-      RadialGradient(colors: style.glass, center: UnitPoint(x: 0.4, y: 0.3), startRadius: 0, endRadius: u(380))
+      if style.vertical {
+        LinearGradient(colors: style.glass, startPoint: .top, endPoint: .bottom)
+      } else {
+        RadialGradient(colors: style.glass, center: UnitPoint(x: 0.4, y: 0.3), startRadius: 0, endRadius: u(380))
+      }
       VStack(spacing: u(7)) {
         if model.mode != .nowPlaying { topStrip }       // now playing lays out its own top row
         if model.mode == .stations { TunerScale(model: model, style: style) }
@@ -49,8 +53,8 @@ struct DisplayView: View {
     }
     .clipShape(RoundedRectangle(cornerRadius: u(5)))
     .overlay(RoundedRectangle(cornerRadius: u(5)).stroke(Color(hex: 0x2A1A04, opacity: 0.75), lineWidth: 1))
-    .saturation(dim ? (style.glare > 0.3 ? 0.55 : 0.7) : 1)
-    .brightness(dim ? (style.glare > 0.3 ? -0.07 : 0) : 0)   // dark mode: the brown glass already reads as off
+    .saturation(dim ? (style.glare > 0.3 ? 0.8 : 0.7) : 1)
+    .brightness(dim ? (style.glare > 0.3 ? -0.03 : 0) : 0)   // dark mode: the brown glass already reads as off
     // a short fade when playback pauses or resumes; switching screens is instant
     .animation(.easeInOut(duration: 0.25), value: model.isPlaying)   // only play/pause fades
   }
