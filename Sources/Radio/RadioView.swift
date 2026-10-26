@@ -26,7 +26,16 @@ struct RadioView: View {
     let shape = RoundedRectangle(cornerRadius: u(Radio.cabinetRadius), style: .continuous)
     return ZStack {
       FrameWalnut().allowsHitTesting(false)
-      cornerGlints
+      SoftLight(strength: 1).allowsHitTesting(false)
+      // the rounded edge: a broad subdued highlight along the top and upper-left curve,
+      // a slightly darker bottom and right edge
+      RoundedRectangle(cornerRadius: u(Radio.cabinetRadius), style: .continuous)
+        .strokeBorder(LinearGradient(stops: [.init(color: Color(hex: 0xFFE8CC, opacity: 0.22), location: 0),
+                                             .init(color: Color(hex: 0xFFE8CC, opacity: 0.05), location: 0.45),
+                                             .init(color: Color(hex: 0x140802, opacity: 0.12), location: 0.6),
+                                             .init(color: Color(hex: 0x140802, opacity: 0.32), location: 1)],
+                                     startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: u(5))
+        .blur(radius: u(3)).allowsHitTesting(false)
       front.padding(u(Radio.cabinetPadding))
       WoodenName().frame(maxHeight: .infinity, alignment: .bottom).padding(.bottom, u(4.5))
     }
@@ -37,20 +46,6 @@ struct RadioView: View {
     }
     .clipShape(shape)
     .overlay(shape.stroke(Color(hex: 0x140A03, opacity: 0.85), lineWidth: 0.5))
-  }
-
-  /// One small glint on the top-left corner, a tinier one top-right; nothing else.
-  private var cornerGlints: some View {
-    ZStack(alignment: .top) {
-      Ellipse().fill(RadialGradient(colors: [Color(hex: 0xFFF2E0, opacity: 0.45), .clear], center: .center, startRadius: 0, endRadius: u(19)))
-        .frame(width: u(38), height: u(8)).rotationEffect(.degrees(-45))
-        .offset(x: u(-7), y: u(10)).frame(maxWidth: .infinity, alignment: .leading)
-      Ellipse().fill(RadialGradient(colors: [Color(hex: 0xFFF2E0, opacity: 0.28), .clear], center: .center, startRadius: 0, endRadius: u(10)))
-        .frame(width: u(20), height: u(5)).rotationEffect(.degrees(45))
-        .offset(x: u(3), y: u(11)).frame(maxWidth: .infinity, alignment: .trailing)
-    }
-    .frame(maxHeight: .infinity, alignment: .top)
-    .allowsHitTesting(false)
   }
 
   private var feet: some View {
@@ -75,7 +70,7 @@ struct RadioView: View {
         .frame(width: u(Radio.speakerColumn))
       face
     }
-    .background(PanelWalnut().allowsHitTesting(false))
+    .background(ZStack { PanelWalnut(); SoftLight(strength: 0.8) }.allowsHitTesting(false))
     .clipShape(shape)
     // the cabinet's top lip shades the panel; its bottom edge catches the light
     .overlay(shape.stroke(Color(hex: 0x0A0500, opacity: 0.55), lineWidth: 3).blur(radius: 1.5).offset(y: 1.5).clipShape(shape))
@@ -99,10 +94,12 @@ struct RadioView: View {
           .clipShape(RoundedRectangle(cornerRadius: u(7))))
         .padding(u(4.5))
         .background(BrushedBrass().clipShape(RoundedRectangle(cornerRadius: u(10))))
-        .overlay(RoundedRectangle(cornerRadius: u(10)).stroke(Color(hex: 0x32200A, opacity: 0.6), lineWidth: 0.5))
-        .overlay(RoundedRectangle(cornerRadius: u(10)).trim(from: 0.5, to: 1).stroke(Color(hex: 0xFFF0C8, opacity: 0.55), lineWidth: 0.5).padding(0.5).rotationEffect(.degrees(0)))
-        .shadow(color: Color(hex: 0x0A0500, opacity: 0.55), radius: 0.5, y: 1.5)
-        .shadow(color: Color(hex: 0x1E0F00, opacity: 0.3), radius: 3, y: u(5))
+        .overlay(RoundedRectangle(cornerRadius: u(10))
+          .strokeBorder(LinearGradient(colors: [Color(hex: 0xFFF0C8, opacity: 0.45), .clear, Color(hex: 0x2A1804, opacity: 0.45)],
+                                       startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2))
+        .overlay(RoundedRectangle(cornerRadius: u(10)).stroke(Color(hex: 0x32200A, opacity: 0.5), lineWidth: 0.5))
+        .shadow(color: Color(hex: 0x0A0500, opacity: 0.4), radius: 0.8, x: 0.8, y: 1.2)
+        .shadow(color: Color(hex: 0x1E0F00, opacity: 0.25), radius: 4, x: u(2), y: u(4))
       controls
     }
     .padding(EdgeInsets(top: u(18), leading: u(8), bottom: u(16), trailing: u(20)))
@@ -228,5 +225,21 @@ private struct WoodenName: View {
     .shadow(color: Color(hex: 0x0A0402, opacity: 0.6), radius: 0.8, x: 0.3, y: u(1.6))
     .allowsHitTesting(false)
     .accessibilityHidden(true)
+  }
+}
+
+/// One broad, soft light from the upper left over a whole surface: a little lighter there, gradually
+/// darker toward the lower right, gentle enough to keep the grain.
+struct SoftLight: View {
+  var strength: Double = 1
+  var body: some View {
+    ZStack {
+      LinearGradient(stops: [.init(color: Color(hex: 0xFFE6C4, opacity: 0.13 * strength), location: 0),
+                             .init(color: .clear, location: 0.5),
+                             .init(color: Color(hex: 0x120700, opacity: 0.2 * strength), location: 1)],
+                     startPoint: .topLeading, endPoint: .bottomTrailing)
+      RadialGradient(colors: [Color(hex: 0xFFE6C4, opacity: 0.07 * strength), .clear],
+                     center: UnitPoint(x: 0.15, y: 0.1), startRadius: 0, endRadius: u(520))
+    }
   }
 }

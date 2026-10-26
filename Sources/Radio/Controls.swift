@@ -13,15 +13,16 @@ struct SpunBrass: View {
   var body: some View {
     ZStack {
       Color(hex: 0xAA8240)
-      AngularGradient(colors: [Color(hex: 0xE9CF8E), Color(hex: 0x9C7634), Color(hex: 0xDDBF7C), Color(hex: 0x8A652A),
-                               Color(hex: 0xE9CF8E), Color(hex: 0x9C7634), Color(hex: 0xDDBF7C), Color(hex: 0x8A652A), Color(hex: 0xE9CF8E)],
+      AngularGradient(colors: [Color(hex: 0xDCC184), Color(hex: 0xA47E3C), Color(hex: 0xD2B574), Color(hex: 0x977235),
+                               Color(hex: 0xDCC184), Color(hex: 0xA47E3C), Color(hex: 0xD2B574), Color(hex: 0x977235), Color(hex: 0xDCC184)],
                       center: .center, angle: .degrees(40))
-        .opacity(0.85)
+        .opacity(0.7)                     // calmer turned rings, fewer hard reflections
       RadialGradient(colors: [Color.white.opacity(0.06), .clear, Color.black.opacity(0.05), .clear],
                      center: .center, startRadius: 0, endRadius: 3).opacity(0)   // rings come from grain below
       Grain(opacity: 0.35)
-      RadialGradient(colors: [Color(hex: 0xFFFAE1, opacity: 0.24), .clear], center: UnitPoint(x: 0.35, y: 0.3),
-                     startRadius: 0, endRadius: 30)
+      // one soft light from the upper left, darker toward the lower right
+      LinearGradient(colors: [Color(hex: 0xFFF6DC, opacity: 0.22), .clear, Color(hex: 0x2A1804, opacity: 0.22)],
+                     startPoint: .topLeading, endPoint: .bottomTrailing)
     }
   }
 }
@@ -41,20 +42,21 @@ struct RecessedBrassButton<Icon: View>: View {
     ZStack {
       // the recess: dark, top wall in shadow, lower lip catching the light
       Circle()
-        .fill(RadialGradient(colors: [Color(hex: 0x1A1009), Color(hex: 0x2A1A0D), Color(hex: 0x3A2614)],
-                             center: UnitPoint(x: 0.5, y: 0.4), startRadius: 0, endRadius: size / 2))
-        .overlay(Circle().stroke(Color.black.opacity(0.75), lineWidth: 3).blur(radius: 1.5).offset(y: 1.5).mask(Circle()))
-        .overlay(Circle().stroke(Color(hex: 0x0A0500, opacity: 0.65), lineWidth: 0.5))
-        .background(Circle().stroke(Color(hex: 0xFFECCD, opacity: 0.2), lineWidth: 1).offset(y: 1))
+        .fill(RadialGradient(colors: [Color(hex: 0x3A2614), Color(hex: 0x4A3220), Color(hex: 0x5A3E26)],
+                             center: UnitPoint(x: 0.5, y: 0.45), startRadius: 0, endRadius: size / 2))
+        // the recess wall: in shade toward the upper left, catching light at the lower right
+        .overlay(Circle().strokeBorder(LinearGradient(colors: [Color(hex: 0x140A02, opacity: 0.55), .clear, Color(hex: 0xFFE6C4, opacity: 0.18)],
+                                                      startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 2.5).blur(radius: 1))
+        .overlay(Circle().stroke(Color(hex: 0x0A0500, opacity: 0.4), lineWidth: 0.5))
       // the cap
       SpunBrass()
         .clipShape(Circle())
         .overlay(   // polished chamfer
           Circle().strokeBorder(
-            RadialGradient(colors: [Color(hex: 0xFFF6DA, opacity: 0.55), Color(hex: 0x5A3E14, opacity: 0.45)],
-                           center: .center, startRadius: size * 0.36, endRadius: size * 0.43), lineWidth: size * 0.06))
+            LinearGradient(colors: [Color(hex: 0xFFF6DA, opacity: 0.4), Color(hex: 0x5A3E14, opacity: 0.4)],
+                           startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: size * 0.05))
         .overlay(Circle().stroke(Color(hex: 0x3C280A, opacity: 0.75), lineWidth: 0.5))
-        .shadow(color: .black.opacity(pressed ? 0.7 : 0.6), radius: pressed ? 0.3 : 0.9, y: pressed ? 0.3 : 1)
+        .shadow(color: Color(hex: 0x0A0500, opacity: pressed ? 0.55 : 0.45), radius: pressed ? 0.4 : 1.2, x: pressed ? 0.2 : 0.8, y: pressed ? 0.3 : 1.2)
         .padding(size * 0.07)
         .scaleEffect(pressed ? 0.93 : 1)
         .brightness(pressed ? -0.1 : 0)
@@ -100,8 +102,10 @@ struct BrassKnob: View {
       .rotationEffect(.degrees(value / 12 * 135))
       .frame(width: size, height: size)
       .overlay(Circle().stroke(Color(hex: 0x28190A, opacity: 0.85), lineWidth: 0.5))
-      .shadow(color: Color(hex: 0x0A0500, opacity: 0.55), radius: 0.8, y: 1)
-      .shadow(color: Color(hex: 0x140A00, opacity: 0.25), radius: 3, y: 2)
+      .overlay(Circle().strokeBorder(LinearGradient(colors: [Color(hex: 0xFFF4D4, opacity: 0.35), .clear, Color(hex: 0x2A1804, opacity: 0.35)],
+                                                    startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1))
+      .shadow(color: Color(hex: 0x0A0500, opacity: 0.45), radius: 1, x: 0.8, y: 1.2)
+      .shadow(color: Color(hex: 0x140A00, opacity: 0.2), radius: 3, x: 1.5, y: 2.5)
       .gesture(DragGesture(minimumDistance: 0)
         .onChanged { g in
           if dragStart == nil { dragStart = value }

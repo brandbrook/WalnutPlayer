@@ -82,16 +82,16 @@ struct SpeakerView: View {
     let eoFill = FillStyle(eoFill: true)
 
     // contact with the panel: a soft short shadow and a tight dark one
-    ctx.drawLayer { l in l.addFilter(.shadow(color: Color(hex: 0x140A02, opacity: 0.45), radius: 3, y: 2)); l.fill(circle(c, bO), with: .color(Color(hex: 0x1B1B1B))) }
-    ctx.drawLayer { l in l.addFilter(.shadow(color: Color(hex: 0x0A0500, opacity: 0.85), radius: 0.6, y: 0.8)); l.fill(circle(c, bO), with: .color(Color(hex: 0x1B1B1B))) }
+    ctx.drawLayer { l in l.addFilter(.shadow(color: Color(hex: 0x140A02, opacity: 0.4), radius: 4, x: 2.5, y: 3)); l.fill(circle(c, bO), with: .color(Color(hex: 0x1B1B1B))) }
+    ctx.drawLayer { l in l.addFilter(.shadow(color: Color(hex: 0x0A0500, opacity: 0.6), radius: 0.8, x: 0.6, y: 0.9)); l.fill(circle(c, bO), with: .color(Color(hex: 0x1B1B1B))) }
 
     // brass band
-    let brass = Gradient(stops: [.init(color: Color(hex: 0xF0D79A), location: 0), .init(color: Color(hex: 0xB8904A), location: 0.28),
-                                 .init(color: Color(hex: 0xE3C584), location: 0.5), .init(color: Color(hex: 0x8A6528), location: 0.75),
-                                 .init(color: Color(hex: 0xC9A462), location: 1)])
+    // lit from the upper left, darker toward the lower right; no hard reflections
+    let brass = Gradient(stops: [.init(color: Color(hex: 0xE2C688), location: 0), .init(color: Color(hex: 0xC9A35C), location: 0.35),
+                                 .init(color: Color(hex: 0xAE8744), location: 0.65), .init(color: Color(hex: 0x86652C), location: 1)])
     ctx.fill(ring(c, bO, bI), with: .linearGradient(brass, startPoint: CGPoint(x: c.x - bO, y: c.y - bO), endPoint: CGPoint(x: c.x + bO, y: c.y + bO)), style: eoFill)
     grain(&ctx, ring(c, bO, bI), 0.22, eo: true)
-    ctx.stroke(arc(c, bI + 0.5, 0.1, 0.9), with: .color(Color(hex: 0xFFF8DE, opacity: 0.5)), lineWidth: 0.5)
+    ctx.stroke(arc(c, bO - 0.6, 1.0, 1.5), with: .color(Color(hex: 0xFFF4D4, opacity: 0.35)), lineWidth: 1)   // upper-left edge
     ctx.stroke(circle(c, bO), with: .color(Color(hex: 0x3C280A, opacity: 0.9)), lineWidth: 0.5)
     ctx.stroke(circle(c, bI), with: .color(Color(hex: 0x140C02, opacity: 0.95)), lineWidth: 1.5)
     for i in 0..<4 {
@@ -143,13 +143,13 @@ struct SpeakerView: View {
     // dust cap: glossy black dome, its highlight shimmers with the highs
     let dr = capR * (1 + e * 0.07 + flutter * 2)
     ctx.drawLayer { l in l.addFilter(.shadow(color: .black.opacity(0.8), radius: 3, y: 2)); l.fill(circle(c, dr), with: .color(Color(hex: 0x0C0C0C))) }
-    ctx.fill(circle(c, dr), with: .radialGradient(Gradient(stops: [.init(color: Color(hex: 0x3D3D3D), location: 0), .init(color: Color(hex: 0x161616), location: 0.6),
+    ctx.fill(circle(c, dr), with: .radialGradient(Gradient(stops: [.init(color: Color(hex: 0x353535), location: 0), .init(color: Color(hex: 0x161616), location: 0.6),
                                                                   .init(color: Color(hex: 0x070707), location: 1)]),
-                                                  center: CGPoint(x: c.x, y: c.y - dr * 0.35), startRadius: dr * 0.1, endRadius: dr))
-    let h = CGPoint(x: c.x - dr * 0.18 + hi * sin(t * 61) * 0.5, y: c.y - dr * 0.5 + hi * cos(t * 53) * 0.4)
+                                                  center: CGPoint(x: c.x - dr * 0.3, y: c.y - dr * 0.35), startRadius: dr * 0.1, endRadius: dr * 1.1))
+    let h = CGPoint(x: c.x - dr * 0.32 + hi * sin(t * 61) * 0.5, y: c.y - dr * 0.42 + hi * cos(t * 53) * 0.4)   // upper left
     ctx.drawLayer { l in
       l.translateBy(x: h.x, y: h.y); l.scaleBy(x: 1.5, y: 0.8)
-      l.fill(circle(.zero, dr * 0.42), with: .radialGradient(Gradient(colors: [.white.opacity(0.34 + hi * 0.18 + e * 0.08), .clear]),
+      l.fill(circle(.zero, dr * 0.42), with: .radialGradient(Gradient(colors: [.white.opacity(0.22 + hi * 0.15 + e * 0.06), .clear]),
                                                              center: .zero, startRadius: 0, endRadius: dr * 0.42))
     }
     ctx.stroke(circle(c, dr), with: .color(.black.opacity(0.9)), lineWidth: 0.75)
