@@ -151,9 +151,45 @@ final class RadioModel: ObservableObject {
     applyEQ()
     app.history.loadSavedSongs()   // so History shows past songs right away, not only after the next song
 
+    if UserDefaults.standard.bool(forKey: "walnut.demo") { startDemo(); return }
     let user = app.getSavedUsername() ?? "", pass = app.getSavedPassword() ?? ""
     username = user
     mode = user.isEmpty || pass.isEmpty ? .login : .loading("TUNING IN")
+  }
+
+  // MARK: - Demo mode
+
+  /// Sample data for working on the layout without Pandora: launch with `-walnut.demo YES`.
+  private var demo = false
+
+  private func startDemo() {
+    demo = true
+    stations = ["Shuffle", "Late Night Lo-Fi Radio", "Sunday Soul Radio", "Neon Drive Radio", "Classical Calm Radio",
+                "Porch Blues Radio", "Café Jazz Radio", "Bossa Nova Breeze Radio", "Indie Folk Radio",
+                "Ambient Drift Radio", "80s Synthpop Radio", "Motown Classics Radio"].enumerated().map { i, name in
+      StationItem(id: "demo\(i)", name: name, created: UInt64(1_700_000_000 - i * 86_400), isShuffle: i == 0, canEdit: i != 0)
+    }
+    currentToken = "demo2"
+    stationName = "Sunday Soul Radio"
+    title = "Golden Hour (Live at the Velvet Room)"
+    album = "Evenings on Larkin Street (Deluxe Edition)"
+    artist = "The Velvet Room Orchestra"
+    rating = 0
+    art = Self.demoArt()
+    isPlaying = true
+    mode = .nowPlaying
+  }
+
+  private static func demoArt() -> NSImage {
+    NSImage(size: NSSize(width: 300, height: 300), flipped: false) { r in
+      NSGradient(colors: [NSColor(red: 0.85, green: 0.55, blue: 0.3, alpha: 1), NSColor(red: 0.35, green: 0.12, blue: 0.15, alpha: 1)])?
+        .draw(in: r, angle: -70)
+      NSColor(white: 1, alpha: 0.85).setFill()
+      NSBezierPath(ovalIn: NSRect(x: 170, y: 170, width: 80, height: 80)).fill()
+      ("GOLDEN HOUR" as NSString).draw(at: NSPoint(x: 22, y: 26),
+        withAttributes: [.font: NSFont.systemFont(ofSize: 26, weight: .heavy), .foregroundColor: NSColor.white])
+      return true
+    }
   }
 
   // MARK: - Engine events
@@ -232,6 +268,7 @@ final class RadioModel: ObservableObject {
   private func stateChanged() { isPlaying = playback.playing?.isPlaying() ?? false }
 
   private func tick() {
+    if demo { if isPlaying { elapsed += 0.25 }; return }
     var t = 0.0
     if let s = playback.playing, s.progress(&t) { elapsed = t } else if playback.playing == nil { elapsed = 0 }
     let playingNow = playback.playing?.isPlaying() ?? false
@@ -290,6 +327,7 @@ final class RadioModel: ObservableObject {
   static let noSignal = "NO SIGNAL · PRESS PLAY"
 
   func playPause() {
+    if demo { isPlaying.toggle(); return }
     if mode == .loading(Self.noSignal) {          // try again
       mode = .loading("TUNING IN")
       if let station = playback.playing, pandora.isAuthenticated() {

@@ -230,7 +230,9 @@
 
   NSString *savedUsername = [self getSavedUsername];
   NSString *savedPassword = [self getSavedPassword];
-  if (savedPassword == nil || [savedPassword isEqualToString:@""] ||
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"walnut.demo"]) {
+    // demo mode (launch with -walnut.demo YES): sample data on the radio, no Pandora connection
+  } else if (savedPassword == nil || [savedPassword isEqualToString:@""] ||
       savedUsername == nil || [savedUsername isEqualToString:@""]) {
     [auth show];
   } else {
