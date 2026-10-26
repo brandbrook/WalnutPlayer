@@ -96,7 +96,9 @@ struct DisplayView: View {
         StripButton("+ NEW", style: style, bright: true) { model.beginNewStation() }
         StripButton("EDIT", style: style, bright: true, disabled: !(item?.canEdit ?? false)) { model.beginEdit(model.selection) }
         StripButton("DELETE", style: style, bright: true, disabled: !(item?.canEdit ?? false)) { model.beginDelete(model.selection) }
-        StripButton("▶ TUNE IN", style: style, bright: true, disabled: item == nil) { model.tune(model.selection) }
+        // lit when the selection isn't the station already playing
+        StripButton("▶ TUNE IN", lit: item != nil && item?.id != model.currentToken, style: style, bright: true,
+                    disabled: item == nil || item?.id == model.currentToken) { model.tune(model.selection) }
       case .history:
         let item = model.history.indices.contains(model.selection) ? model.history[model.selection] : nil
         StripButton("DISLIKE", icon: "hand.thumbsdown.fill", lit: item?.rating == -1, style: style, bright: true, disabled: item == nil) {
@@ -321,7 +323,8 @@ private struct BrowserGrid: View {
                 .id(i)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                  if model.selection == i && model.mode != .history { model.choose() } else { model.selection = i }
+                  // stations: a click only selects (TUNE IN plays it); new-station results: a second click creates
+                  if model.selection == i && model.mode == .newStation { model.choose() } else { model.selection = i }
                 }
             }
           }
@@ -379,7 +382,7 @@ private struct BrowserGrid: View {
 }
 
 /// Tuning scale with a red needle at the selected station. Drag it like a tuning knob: the selection
-/// follows the needle, and letting go snaps onto that station and tunes in.
+/// follows the needle and letting go snaps onto that station; TUNE IN then plays it.
 private struct TunerScale: View {
   @ObservedObject var model: RadioModel
   let style: GlassStyle
@@ -417,10 +420,7 @@ private struct TunerScale: View {
           dragFraction = fr
           model.selection = Int((fr * Double(n - 1)).rounded())
         }
-        .onEnded { _ in
-          dragFraction = nil
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { model.tune(model.selection) }
-        })
+        .onEnded { _ in dragFraction = nil })   // snaps onto the station; TUNE IN plays it
     }
     .frame(height: u(13))
     .padding(.horizontal, u(10))
