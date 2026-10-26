@@ -137,7 +137,7 @@ struct DisplayView: View {
       if model.browserItems == 0 {
         Hint(model.mode == .history ? "Songs you play show up here." : "No stations yet. Press + NEW to make one.", style: style)
       } else {
-        BrowserGrid(model: model, style: style, rows: 3)
+        BrowserGrid(model: model, style: style, rows: 4)
       }
     case .newStation:
       VStack(spacing: u(6)) {
@@ -150,7 +150,7 @@ struct DisplayView: View {
         } else if model.results.isEmpty {
           Hint("Searching…", style: style)
         } else {
-          BrowserGrid(model: model, style: style, rows: 3)
+          BrowserGrid(model: model, style: style, rows: 4)
         }
       }
     case .editStation: EditStationView(model: model, style: style)

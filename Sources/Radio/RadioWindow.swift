@@ -132,7 +132,7 @@ final class RadioWindowController: NSWindowController, NSWindowDelegate {
         model.move(event.keyCode == 125 ? 1 : -1); return nil
       case 123, 124:                             // left, right: a column at a time
         guard !editing, model.mode.isBrowser else { return event }
-        model.move(event.keyCode == 124 ? 3 : -3); return nil
+        model.move(event.keyCode == 124 ? 4 : -4); return nil
       case 36, 76:                               // Return
         if editing { return event }
         if model.mode == .nowPlaying { model.back() } else { model.choose() }
