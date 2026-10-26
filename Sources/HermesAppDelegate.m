@@ -596,7 +596,7 @@
     
   } else {
     // Use color application image
-    icon = [NSImage imageNamed:@"pandora"];
+    icon = [NSImage imageNamed:@"walnut"];
   }
 
   // Set image size, then set status bar icon
