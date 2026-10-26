@@ -91,7 +91,6 @@ struct SpeakerView: View {
                                  .init(color: Color(hex: 0xC9A462), location: 1)])
     ctx.fill(ring(c, bO, bI), with: .linearGradient(brass, startPoint: CGPoint(x: c.x - bO, y: c.y - bO), endPoint: CGPoint(x: c.x + bO, y: c.y + bO)), style: eoFill)
     grain(&ctx, ring(c, bO, bI), 0.22, eo: true)
-    ctx.stroke(arc(c, bO - 0.5, 1.05, 1.95), with: .color(Color(hex: 0xFFF8DE, opacity: 0.75)), lineWidth: 0.5)
     ctx.stroke(arc(c, bI + 0.5, 0.1, 0.9), with: .color(Color(hex: 0xFFF8DE, opacity: 0.5)), lineWidth: 0.5)
     ctx.stroke(circle(c, bO), with: .color(Color(hex: 0x3C280A, opacity: 0.9)), lineWidth: 0.5)
     ctx.stroke(circle(c, bI), with: .color(Color(hex: 0x140C02, opacity: 0.95)), lineWidth: 1.5)

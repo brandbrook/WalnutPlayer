@@ -51,7 +51,6 @@ struct RecessedBrassButton<Icon: View>: View {
             RadialGradient(colors: [Color(hex: 0xFFF6DA, opacity: 0.55), Color(hex: 0x5A3E14, opacity: 0.45)],
                            center: .center, startRadius: size * 0.36, endRadius: size * 0.43), lineWidth: size * 0.06))
         .overlay(Circle().stroke(Color(hex: 0x3C280A, opacity: 0.75), lineWidth: 0.5))
-        .overlay(Circle().trim(from: 0.55, to: 0.95).stroke(Color(hex: 0xFFFAE6, opacity: 0.8), lineWidth: 0.75).padding(0.5))
         .shadow(color: .black.opacity(pressed ? 0.7 : 0.6), radius: pressed ? 0.3 : 0.9, y: pressed ? 0.3 : 1)
         .padding(size * 0.07)
         .scaleEffect(pressed ? 0.965 : 1)
@@ -87,7 +86,6 @@ struct BrassKnob: View {
         // cap
         SpunBrass().clipShape(Circle()).padding(size * 0.12)
           .overlay(Circle().stroke(Color(hex: 0x46300A, opacity: 0.7), lineWidth: 0.5).padding(size * 0.12))
-          .overlay(Circle().trim(from: 0.55, to: 0.95).stroke(Color(hex: 0xFFFAE6, opacity: 0.8), lineWidth: 0.75).padding(size * 0.12 + 0.5))
         // pointer line
         Capsule().fill(engraveBrown).frame(width: 2, height: size * 0.23)
           .shadow(color: Color(hex: 0xFFF5D7, opacity: 0.7), radius: 0, y: 1)
