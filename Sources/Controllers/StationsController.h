@@ -3,7 +3,7 @@
 @class FileReader;
 @class Station;
 
-@interface StationsController : NSObject <NSTableViewDataSource, NSOutlineViewDataSource> {
+@interface StationsController : NSObject <NSTableViewDataSource, NSOutlineViewDataSource, NSMenuItemValidation> {
 
   IBOutlet NSView *chooseStationView;
 

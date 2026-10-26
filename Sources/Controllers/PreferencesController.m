@@ -24,10 +24,6 @@
     statusItemShowColorIcon.state = NSOnState;
 
   NSString *last = PREF_KEY_VALUE(LAST_PREF_PANE);
-  if (NSClassFromString(@"NSUserNotification") != nil) {
-    [notificationEnabled setTitle:@""];
-    [notificationType setHidden:NO];
-  }
 
   if (itemIdentifiers == nil) {
     itemIdentifiers = [[toolbar items] valueForKey:@"itemIdentifier"];
@@ -81,7 +77,7 @@
 #ifndef MPREMOTECOMMANDCENTER_MEDIA_KEYS_BROKEN
     if ([HMSAppDelegate playback].remoteCommandCenter != nil) {
       mediaKeysCheckbox.integerValue = YES;
-      mediaKeysLabel.stringValue = @"Play/pause and next track keys are always enabled in macOS 10.12.2 and later.";
+      mediaKeysLabel.stringValue = @"Play/pause and next track keys are always enabled.";
     } else {
 #endif
 #if DEBUG

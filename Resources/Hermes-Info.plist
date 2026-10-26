@@ -52,9 +52,9 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://raw.githubusercontent.com/HermesApp/HermesApp.github.io/master/versions.xml</string>
-	<key>SUPublicDSAKeyFile</key>
-	<string>dsa_pub.pem</string>
+	<string>https://raw.githubusercontent.com/brandbrook/McHermes/master/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>vzESWvnGHOq+PQKRnl0C4yqH7JEp0c/Fx3/9ZA2PqWo=</string>
 	<key>SUShowReleaseNotes</key>
 	<true/>
 </dict>

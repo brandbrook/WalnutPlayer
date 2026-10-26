@@ -42,6 +42,7 @@
 		E1C1EC131A1AE7E4001E4D8F /* Pandora-Menu-Dark-Pause.pdf in Resources */ = {isa = PBXBuildFile; fileRef = E1C1EC111A1AE7E4001E4D8F /* Pandora-Menu-Dark-Pause.pdf */; };
 		E1D0A73A17E5630200429DE0 /* StationsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0A73917E5630100429DE0 /* StationsTableView.m */; };
 		E1D68B0A1E295DB50074ED7F /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D68B091E295DB50074ED7F /* MediaPlayer.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A1B2C3D40000000000000002 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B2C3D40000000000000001 /* UserNotifications.framework */; };
 		FA04AE96144365D900819310 /* HistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04AE95144365D900819310 /* HistoryItem.m */; };
 		FA04AE9C14438F1000819310 /* thumbdown.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9A14438F1000819310 /* thumbdown.png */; };
 		FA04AE9D14438F1000819310 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9B14438F1000819310 /* thumbup.png */; };
@@ -61,9 +62,7 @@
 		FA3CFF44132FC4CF003554E2 /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3CFF43132FC4CF003554E2 /* PlaybackController.m */; };
 		FA454685156604D100EE98C7 /* blowfish.c in Sources */ = {isa = PBXBuildFile; fileRef = FA454683156604D100EE98C7 /* blowfish.c */; };
 		FA560C511331701E00215F71 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = FA560C501331701E00215F71 /* ImageLoader.m */; };
-		FA6E801B1438E4B700D01FB5 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6E801A1438E4B700D01FB5 /* Growl.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		FA6E801E1438E50C00D01FB5 /* Growler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6E801D1438E50C00D01FB5 /* Growler.m */; };
-		FA6E801F1438E96F00D01FB5 /* Growl.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = FA6E801A1438E4B700D01FB5 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FA7BF0321331832E00E26ADA /* zzs.png in Resources */ = {isa = PBXBuildFile; fileRef = FA7BF0311331832E00E26ADA /* zzs.png */; };
 		FA7FD1E413325F6600DF66EB /* volume_up.png in Resources */ = {isa = PBXBuildFile; fileRef = FA7FD1E313325F6600DF66EB /* volume_up.png */; };
 		FA85E6CE1333B257005C96B8 /* volume_down.icns in Resources */ = {isa = PBXBuildFile; fileRef = FA85E6CD1333B257005C96B8 /* volume_down.icns */; };
@@ -75,7 +74,6 @@
 		FACFACD615673690008A2140 /* StationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FACFACD515673690008A2140 /* StationController.m */; };
 		FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
 		FAD42FA013678FB000E935CA /* Sparkle.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FAD42FA4136790DE00E935CA /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = FAD42FA3136790DE00E935CA /* dsa_pub.pem */; };
 		FAEFFAB1132CB173007DC6FB /* AuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAEFFAB0132CB173007DC6FB /* AuthController.m */; };
 		FAEFFBD5132CC0E2007DC6FB /* error_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFBD4132CC0E2007DC6FB /* error_icon.png */; };
 		FAEFFC4D132D6D2A007DC6FB /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFC4B132D6D2A007DC6FB /* pause.png */; };
@@ -109,7 +107,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				FAD42FA013678FB000E935CA /* Sparkle.framework in Copy Files */,
-				FA6E801F1438E96F00D01FB5 /* Growl.framework in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -176,6 +173,7 @@
 		E1D0A73817E5630100429DE0 /* StationsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StationsTableView.h; path = Views/StationsTableView.h; sourceTree = "<group>"; };
 		E1D0A73917E5630100429DE0 /* StationsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StationsTableView.m; path = Views/StationsTableView.m; sourceTree = "<group>"; };
 		E1D68B091E295DB50074ED7F /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		A1B2C3D40000000000000001 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		FA04AE94144365D900819310 /* HistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HistoryItem.h; path = Models/HistoryItem.h; sourceTree = "<group>"; };
 		FA04AE95144365D900819310 /* HistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HistoryItem.m; path = Models/HistoryItem.m; sourceTree = "<group>"; };
 		FA04AE9A14438F1000819310 /* thumbdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbdown.png; sourceTree = "<group>"; };
@@ -210,7 +208,6 @@
 		FA454684156604D100EE98C7 /* blowfish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blowfish.h; sourceTree = "<group>"; };
 		FA560C4F1331701E00215F71 /* ImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageLoader.h; path = Models/ImageLoader.h; sourceTree = "<group>"; };
 		FA560C501331701E00215F71 /* ImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageLoader.m; path = Models/ImageLoader.m; sourceTree = "<group>"; };
-		FA6E801A1438E4B700D01FB5 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
 		FA6E801C1438E50C00D01FB5 /* Growler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Growler.h; path = Integration/Growler.h; sourceTree = "<group>"; };
 		FA6E801D1438E50C00D01FB5 /* Growler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Growler.m; path = Integration/Growler.m; sourceTree = "<group>"; };
 		FA7BF0311331832E00E26ADA /* zzs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zzs.png; sourceTree = "<group>"; };
@@ -230,7 +227,6 @@
 		FACFACD415673690008A2140 /* StationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StationController.h; path = Controllers/StationController.h; sourceTree = "<group>"; };
 		FACFACD515673690008A2140 /* StationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StationController.m; path = Controllers/StationController.m; sourceTree = "<group>"; };
 		FAD42F8713678F7500E935CA /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
-		FAD42FA3136790DE00E935CA /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		FAEFFAAF132CB173007DC6FB /* AuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AuthController.h; path = Controllers/AuthController.h; sourceTree = "<group>"; };
 		FAEFFAB0132CB173007DC6FB /* AuthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AuthController.m; path = Controllers/AuthController.m; sourceTree = "<group>"; };
 		FAEFFBD4132CC0E2007DC6FB /* error_icon.png */ = {isa = PBXFileReference; explicitFileType = image.png; path = error_icon.png; sourceTree = "<group>"; };
@@ -249,11 +245,11 @@
 				441C9F0D1CC80635000A0302 /* AudioToolbox.framework in Frameworks */,
 				E195ABA917D4636B00FE518C /* Quartz.framework in Frameworks */,
 				971CC3A11585DBD7004D75BA /* SystemConfiguration.framework in Frameworks */,
-				FA6E801B1438E4B700D01FB5 /* Growl.framework in Frameworks */,
 				FA228ECB137045F40070141A /* Security.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */,
 				E1D68B0A1E295DB50074ED7F /* MediaPlayer.framework in Frameworks */,
+				A1B2C3D40000000000000002 /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,7 +289,6 @@
 				9728D8A5158C3E7C00C078A4 /* AudioToolbox.framework */,
 				9728D89C158C3E3C00C078A4 /* Carbon.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
-				FA6E801A1438E4B700D01FB5 /* Growl.framework */,
 				E195ABA817D4636B00FE518C /* Quartz.framework */,
 				FA228ECA137045F40070141A /* Security.framework */,
 				FAD42F8713678F7500E935CA /* Sparkle.framework */,
@@ -338,7 +333,6 @@
 			isa = PBXGroup;
 			children = (
 				FA24435E136B3D6C00E126D3 /* CHANGELOG.md */,
-				FAD42FA3136790DE00E935CA /* dsa_pub.pem */,
 				8D1107310486CEB800E47090 /* Hermes-Info.plist */,
 				FAEFFBFF132D620B007DC6FB /* Icons */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -356,6 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				E1D68B091E295DB50074ED7F /* MediaPlayer.framework */,
+				A1B2C3D40000000000000001 /* UserNotifications.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -636,7 +631,6 @@
 				FA7FD1E413325F6600DF66EB /* volume_up.png in Resources */,
 				FA85E6CE1333B257005C96B8 /* volume_down.icns in Resources */,
 				FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */,
-				FAD42FA4136790DE00E935CA /* dsa_pub.pem in Resources */,
 				FA229D6514429E48008AB9FE /* history.png in Resources */,
 				FA04AE9C14438F1000819310 /* thumbdown.png in Resources */,
 				FA04AE9D14438F1000819310 /* thumbup.png in Resources */,
@@ -769,7 +763,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = CYEL96ZVC2;
+				DEVELOPMENT_TEAM = RPZ6JR7U39;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -785,6 +779,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alexcrichton.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Hermes;
+				ENABLE_HARDENED_RUNTIME = YES;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WARNING_CFLAGS = (
@@ -792,6 +787,7 @@
 					"-Wextra",
 					"-Wno-unused-parameter",
 					"-Werror",
+					"-Wno-error=deprecated-declarations",
 				);
 			};
 			name = Debug;
@@ -803,7 +799,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = CYEL96ZVC2;
+				DEVELOPMENT_TEAM = RPZ6JR7U39;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -819,6 +815,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alexcrichton.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Hermes;
+				ENABLE_HARDENED_RUNTIME = YES;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WARNING_CFLAGS = (
@@ -826,6 +823,7 @@
 					"-Wextra",
 					"-Wno-unused-parameter",
 					"-Werror",
+					"-Wno-error=deprecated-declarations",
 				);
 			};
 			name = Release;
@@ -866,7 +864,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG";
 				SDKROOT = macosx;
@@ -911,8 +909,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				ONLY_ACTIVE_ARCH = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 				VERSIONING_SYSTEM = "apple-generic";

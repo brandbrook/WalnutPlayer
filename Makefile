@@ -16,10 +16,6 @@ all: hermes
 hermes:
 	$(XCB) $(COMMON_OPTS) -configuration $(CONFIGURATION) -scheme $(SCHEME) $(XCPIPE)
 
-travis: COMMON_OPTS += CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
-travis: XCPIPE = | xcpretty -f `xcpretty-travis-formatter`
-travis: hermes
-
 run: hermes
 	$(HERMES)
 
@@ -45,4 +41,4 @@ clean:
 	$(XCB) $(COMMON_OPTS) -scheme $(SCHEME) clean
 	rm -rf build
 
-.PHONY: all hermes travis run dbg archive clean install archive upload-release
+.PHONY: all hermes run dbg archive clean install archive upload-release
