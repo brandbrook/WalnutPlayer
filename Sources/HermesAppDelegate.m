@@ -242,6 +242,7 @@
 
   NSDictionary *app_defaults = @{
     PLEASE_SCROBBLE:            @"0",
+    STATUS_BAR_ICON_BW:         @"1",   // the template glyph is the default menu bar icon
     ONLY_SCROBBLE_LIKED:        @"0",
     PLEASE_GROWL:               @"1",
     PLEASE_GROWL_PLAY:          @"0",
@@ -591,19 +592,13 @@
   NSImage *icon;
   NSSize size = {.width = 18, .height = 18};
 
-  if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW)) {
-    
-    icon = [NSImage imageNamed:(playback.playing.isPlaying) ?
-            @"Pandora-Menu-Dark-Play" : @"Pandora-Menu-Dark-Pause"];
-    [icon setTemplate:YES];
-    
-  } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM)) {
-    
+  if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM)) {
     icon = [self buildPlayPauseAlbumArtImage:size];
-    
+  } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW)) {
+    // template glyph: macOS tints it for light, dark and coloured menu bars
+    icon = [MenuBarIcon glyphWithPlaying:playback.playing.isPlaying];
   } else {
-    // Use color application image
-    icon = [NSImage imageNamed:@"walnut"];
+    icon = [MenuBarIcon color];
   }
 
   // Set image size, then set status bar icon
@@ -647,12 +642,13 @@
   if (playing != nil) {
     nowPlaying.title = [@"Now Playing: " stringByAppendingString:s.name];
     currentSong.title = playing.title;
+    currentSong.hidden = NO;
     currentArtist.title = playing.artist;
     currentArtist.hidden = NO;
     statusItem.button.toolTip = [NSString stringWithFormat:@"Song: %@\nArtist: %@\nAlbum: %@\nStation: %@", playing.title, playing.artist, playing.album, s.name];
   } else {
-    nowPlaying.title = @"Now Playing";
-    currentSong.title = @"(none)";
+    nowPlaying.title = @"Not playing";
+    currentSong.hidden = YES;
     currentArtist.hidden = YES;
     statusItem.button.toolTip = nil;
   }

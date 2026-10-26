@@ -24,6 +24,19 @@ final class RadioMenus: NSObject {
       settings.action = #selector(SettingsWindowController.show)
     }
 
+    // The menu bar icon's menu: Settings opens the new window; the song rows wait for a song
+    if let statusMenu = (NSApp.delegate as? NSObject)?.value(forKey: "statusBarMenu") as? NSMenu {
+      for item in statusMenu.items {
+        if item.title.hasSuffix("Preferences…") || item.title.hasPrefix("Settings") {
+          item.title = "Settings…"
+          item.target = SettingsWindowController.shared
+          item.action = #selector(SettingsWindowController.show)
+        }
+        if item.title == "(song)" || item.title == "(artist)" { item.isHidden = true }
+        if item.title == "Now Playing" { item.title = "Not playing" }
+      }
+    }
+
     // View: the display's screens
     if let view = main.item(withTitle: "View")?.submenu {
       view.removeAllItems()

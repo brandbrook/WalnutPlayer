@@ -57,7 +57,7 @@ private var app: HermesAppDelegate { NSApp.delegate as! HermesAppDelegate }
 private struct GeneralSettings: View {
   @AppStorage("statusBarIcon") private var menuBar = false
   @AppStorage("statusBarShowSongTitle") private var songTitle = false
-  @AppStorage("statusBarIconBlackWhite") private var blackWhite = false
+  @AppStorage("statusBarIconBlackWhite") private var blackWhite = true
   @AppStorage("statusBarIconAlbumArt") private var albumArtIcon = false
   @AppStorage("dockIconAlbumArt") private var dockArt = false
   @AppStorage("albumArtPlayPause") private var playPauseOverArt = false
@@ -65,8 +65,8 @@ private struct GeneralSettings: View {
   @StateObject private var updates = UpdateSettings()
 
   private var iconStyle: Binding<Int> {
-    Binding(get: { albumArtIcon ? 2 : (blackWhite ? 1 : 0) },
-            set: { blackWhite = $0 == 1; albumArtIcon = $0 == 2; app.updateStatusItem(nil) })
+    Binding(get: { albumArtIcon ? 2 : (blackWhite ? 0 : 1) },
+            set: { blackWhite = $0 == 0; albumArtIcon = $0 == 2; app.updateStatusItem(nil) })
   }
 
   var body: some View {
@@ -75,8 +75,8 @@ private struct GeneralSettings: View {
         Toggle("Keep Walnut in the menu bar instead of the Dock", isOn: $menuBar)
           .onChange(of: menuBar) { _ in app.updateStatusItemVisibility(self) }
         Picker("Menu bar icon", selection: iconStyle) {
-          Text("Walnut icon").tag(0)
-          Text("Black and white, with play/pause").tag(1)
+          Text("Speaker (matches the menu bar)").tag(0)
+          Text("Colour radio").tag(1)
           Text("Album art").tag(2)
         }
         .disabled(!menuBar)
