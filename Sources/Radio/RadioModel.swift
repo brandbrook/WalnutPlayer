@@ -597,3 +597,8 @@ func artURL(_ url: String) -> String {
   guard let r = url.range(of: #"^https?://mediaserver[^/]*\.pandora\.com/images/"#, options: .regularExpression) else { return url }
   return "https://content-images.p-cdn.com/images/" + url[r.upperBound...]
 }
+
+/// artURL for the Objective-C engine (notifications and the menu bar use its copy of the cover).
+@objc(RadioArt) final class RadioArt: NSObject {
+  @objc static func url(_ url: String) -> String { artURL(url) }
+}
