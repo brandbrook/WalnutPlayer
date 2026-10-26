@@ -38,9 +38,18 @@ struct DisplayView: View {
       LinearGradient(colors: [.white.opacity(style.glare), .clear], startPoint: .topTrailing, endPoint: UnitPoint(x: 0.45, y: 0.55))
         .rotationEffect(.degrees(-10)).scaleEffect(1.4).allowsHitTesting(false)
     }
+    // set behind the brass: the frame's top lip throws a shadow down onto the glass, a little on the
+    // left too, and a fine dark line marks where the glass meets the brass
+    .overlay(alignment: .top) {
+      LinearGradient(colors: [Color.black.opacity(0.32), Color.black.opacity(0.1), .clear], startPoint: .top, endPoint: .bottom)
+        .frame(height: u(9)).allowsHitTesting(false)
+    }
+    .overlay(alignment: .leading) {
+      LinearGradient(colors: [Color.black.opacity(0.16), .clear], startPoint: .leading, endPoint: .trailing)
+        .frame(width: u(5)).allowsHitTesting(false)
+    }
     .clipShape(RoundedRectangle(cornerRadius: u(5)))
-    .overlay(RoundedRectangle(cornerRadius: u(5)).stroke(Color(hex: 0x46300A, opacity: 0.55), lineWidth: 1))
-    .overlay(RoundedRectangle(cornerRadius: u(5)).stroke(Color.black.opacity(0.35), lineWidth: 3).blur(radius: 2).clipShape(RoundedRectangle(cornerRadius: u(5))))
+    .overlay(RoundedRectangle(cornerRadius: u(5)).stroke(Color(hex: 0x2A1A04, opacity: 0.75), lineWidth: 1))
     .saturation(dim ? (style.glare > 0.3 ? 0.55 : 0.7) : 1)
     .brightness(dim ? (style.glare > 0.3 ? -0.07 : -0.25) : 0)
     .animation(.easeInOut(duration: 0.6), value: dim)
