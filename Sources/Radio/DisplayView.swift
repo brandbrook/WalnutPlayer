@@ -48,7 +48,8 @@ struct DisplayView: View {
     .overlay(RoundedRectangle(cornerRadius: u(5)).stroke(Color(hex: 0x2A1A04, opacity: 0.75), lineWidth: 1))
     .saturation(dim ? (style.glare > 0.3 ? 0.55 : 0.7) : 1)
     .brightness(dim ? (style.glare > 0.3 ? -0.07 : -0.25) : 0)
-    .animation(.easeInOut(duration: 0.6), value: dim)
+    // a short fade when playback pauses or resumes; switching screens is instant
+    .animation(model.mode == .nowPlaying ? .easeInOut(duration: 0.25) : nil, value: dim)
   }
 
   // MARK: Strips
