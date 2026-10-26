@@ -99,8 +99,14 @@ final class RadioWindowController: NSWindowController, NSWindowDelegate {
   @objc func startRadio() {
     RadioModel.shared.start()
     RadioMenus.shared.install()
+    applyAlwaysOnTop()
     showWindow(nil)
     window?.makeKeyAndOrderFront(nil)
+  }
+
+  /// "Keep the radio on top of other windows" in Settings.
+  func applyAlwaysOnTop() {
+    window?.level = UserDefaults.standard.bool(forKey: "alwaysOnTop") ? .floating : .normal
   }
 
   @objc func bringToFront() {

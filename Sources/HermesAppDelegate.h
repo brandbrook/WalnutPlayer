@@ -83,6 +83,7 @@
 - (IBAction) activate:(id)sender;
 - (IBAction) updateStatusItemVisibility:(id)sender;
 - (IBAction) updateStatusItem:(id)sender;
+- (IBAction) updateDockIcon:(id)sender;
 - (IBAction) updateAlwaysOnTop:(id)sender;
 
 /**

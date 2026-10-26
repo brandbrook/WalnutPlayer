@@ -18,6 +18,12 @@ final class RadioMenus: NSObject {
     UserDefaults.standard.set(false, forKey: "NSFullScreenMenuItemEverywhere")   // no Enter Full Screen
     guard let main = NSApp.mainMenu else { return }
 
+    // Settings…: the new Settings window
+    if let settings = main.items.first?.submenu?.items.first(where: { $0.title.hasPrefix("Settings") || $0.title.hasPrefix("Preferences") }) {
+      settings.target = SettingsWindowController.shared
+      settings.action = #selector(SettingsWindowController.show)
+    }
+
     // View: the display's screens
     if let view = main.item(withTitle: "View")?.submenu {
       view.removeAllItems()

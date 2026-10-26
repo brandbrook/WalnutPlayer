@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F64A1A780124A7739C057791 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A0297B86CD82A426556F1D /* SettingsWindow.swift */; };
 		338D67C73A4DD9EF386A2EF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9395C196A1F6BB297F28FACE /* Assets.xcassets */; };
 		9FE5B63253E1B584B1B64654 /* RadioMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8303B6AE4FBD5BB091A36E2 /* RadioMenus.swift */; };
 		7CFCC5B6BDAC879AA5356A98 /* RadioWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087C6E930F5E342D3A6AFE09 /* RadioWindow.swift */; };
@@ -129,6 +130,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		99A0297B86CD82A426556F1D /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsWindow.swift"; sourceTree = "<group>"; };
 		9395C196A1F6BB297F28FACE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets.xcassets"; sourceTree = "<group>"; };
 		D8303B6AE4FBD5BB091A36E2 /* RadioMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RadioMenus.swift"; sourceTree = "<group>"; };
 		087C6E930F5E342D3A6AFE09 /* RadioWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RadioWindow.swift"; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 		0031D23A786416B0B1F8AD68 /* Radio */ = {
 			isa = PBXGroup;
 			children = (
+				99A0297B86CD82A426556F1D /* SettingsWindow.swift */,
 				D8303B6AE4FBD5BB091A36E2 /* RadioMenus.swift */,
 				087C6E930F5E342D3A6AFE09 /* RadioWindow.swift */,
 				AE6EE38BE362496123258341 /* RadioView.swift */,
@@ -722,6 +725,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F64A1A780124A7739C057791 /* SettingsWindow.swift in Sources */,
 				9FE5B63253E1B584B1B64654 /* RadioMenus.swift in Sources */,
 				7CFCC5B6BDAC879AA5356A98 /* RadioWindow.swift in Sources */,
 				3BA2A4B26D168F2CD79F6047 /* RadioView.swift in Sources */,
@@ -954,7 +958,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG";
 				SDKROOT = macosx;
@@ -999,7 +1003,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
