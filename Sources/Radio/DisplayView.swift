@@ -172,7 +172,7 @@ private struct NowPlayingView: View {
   var body: some View {
     HStack(alignment: .top, spacing: u(20)) {
       // left: the art, with the time centred under it
-      VStack(spacing: u(11)) {
+      VStack(spacing: u(14)) {
         AlbumArt(image: model.art, style: style).frame(width: u(96), height: u(96))
         HStack(alignment: .bottom, spacing: u(4)) {
           SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
@@ -196,7 +196,7 @@ private struct NowPlayingView: View {
           }
         }
         Spacer(minLength: u(6))
-        VStack(alignment: .leading, spacing: u(7)) {
+        VStack(alignment: .leading, spacing: u(10)) {
           InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
             SpinningRecord(playing: model.isPlaying, style: style)
           }
@@ -215,7 +215,7 @@ private struct NowPlayingView: View {
         .padding(.leading, -u(5))                  // line the icons up with the rows above
       }
       .frame(maxWidth: .infinity, alignment: .topLeading)
-      .frame(height: u(96 + 11 + 25) + u(2))         // same height as the art and time, so the rows line up
+      .frame(height: u(96 + 14 + 25) + u(2))         // same height as the art and time, so the rows line up
     }
     .padding(.horizontal, u(4))
     .frame(maxHeight: .infinity)                   // centred in the display
@@ -233,11 +233,11 @@ private struct StationBadge: View {
   @ObservedObject var model: RadioModel
   let style: GlassStyle
   var body: some View {
-    HStack(spacing: u(6)) {
-      Image(systemName: "radio.fill").font(.system(size: u(11)))
-        .foregroundStyle(style.inkDim)
+    HStack(spacing: u(7)) {
+      Image(systemName: "radio.fill").font(.system(size: u(11.5)))
+        .foregroundStyle(style.inkDim).frame(width: u(15), height: u(15))
       Text(model.stationName.isEmpty ? "Walnut" : model.stationName)
-        .font(.system(size: u(12), weight: .semibold)).foregroundStyle(style.ink)
+        .font(.system(size: u(13.5))).foregroundStyle(style.inkDim)
         .lineLimit(1).truncationMode(.tail)
     }
     .contentShape(Rectangle())
@@ -260,8 +260,8 @@ private struct InfoLine<Icon: View>: View {
     HStack(spacing: u(7)) {
       icon().foregroundStyle(style.inkDim).frame(width: u(15), height: u(15))
       Text(text.isEmpty ? " " : text)
-        .font(.system(size: u(strong ? 15 : 13.5), weight: strong ? .semibold : .regular))
-        .foregroundStyle(strong ? style.songStrong : style.inkDim)
+        .font(.system(size: u(13.5), weight: strong ? .semibold : .regular))   // same size; only the song is bold
+        .foregroundStyle(style.inkDim)
         .underline(hover && link != nil, color: style.inkDim)
         .lineLimit(1).truncationMode(.tail)
     }
