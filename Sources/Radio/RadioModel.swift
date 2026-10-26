@@ -105,6 +105,7 @@ final class RadioModel: ObservableObject {
   private var observers: [NSObjectProtocol] = []
   private var progressTimer: Timer?
   private var searchFor: String?
+  private var lastSavedPlayState: Bool?
 
   private var app: HermesAppDelegate { NSApp.delegate as! HermesAppDelegate }
   private var pandora: Pandora { app.pandora }
@@ -228,6 +229,17 @@ final class RadioModel: ObservableObject {
     if let s = playback.playing, s.progress(&t) { elapsed = t } else if playback.playing == nil { elapsed = 0 }
     let playingNow = playback.playing?.isPlaying() ?? false
     if playingNow != isPlaying { isPlaying = playingNow }
+    rememberPlayState()
+  }
+
+  /// Saved as soon as it changes (not only on a normal quit), so Walnut reopens playing or paused
+  /// the way it was left even after a crash or a force quit. Buffering and errors don't count.
+  private func rememberPlayState() {
+    guard let s = playback.playing else { return }
+    let state: Bool? = s.isPlaying() ? true : (s.isPaused() ? false : nil)
+    guard let state, state != lastSavedPlayState else { return }
+    lastSavedPlayState = state
+    UserDefaults.standard.set(state, forKey: "walnut.playingAtQuit")
   }
 
   private func reloadHistory() {

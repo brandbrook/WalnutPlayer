@@ -276,8 +276,6 @@
 }
 
 - (void) applicationWillTerminate: (NSNotification *)aNotification {
-  // Walnut comes back the way it was left: playing if it was playing, paused if it was paused
-  [[NSUserDefaults standardUserDefaults] setBool:[[playback playing] isPlaying] forKey:@"walnut.playingAtQuit"];
   [playback saveState];
   [playback stop];
   [history saveSongs];
