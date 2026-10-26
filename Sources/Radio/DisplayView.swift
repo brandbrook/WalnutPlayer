@@ -58,10 +58,10 @@ struct DisplayView: View {
     Strip(style: style) {
       switch model.mode {
       case .nowPlaying, .loading, .login:
-        StripLabel("DISPLAY", style: style)
+        if model.mode == .nowPlaying { StationBadge(model: model, style: style) }
         Spacer()
         ForEach(DisplayTheme.allCases, id: \.self) { t in
-          StripButton(t.rawValue.uppercased(), lit: model.theme == t, style: style) { model.theme = t }
+          ThemeButton(theme: t, lit: model.theme == t, style: style) { model.theme = t }
         }
       case .stations, .history:
         StripButton("STATIONS", lit: model.mode == .stations, style: style) { model.showBrowser(.stations) }
@@ -191,10 +191,9 @@ private struct NowPlayingView: View {
       .frame(height: u(76))
       .frame(maxWidth: .infinity, alignment: .leading)
       .layoutPriority(1)                // the song gets the room; the station name truncates first
-      // station top right, time bottom right
+      // the time, bottom right
       VStack(alignment: .trailing, spacing: 0) {
-        StationBadge(model: model, style: style)
-        Spacer(minLength: u(6))
+        Spacer(minLength: 0)
         HStack(alignment: .bottom, spacing: u(5)) {
           SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
             .frame(height: u(32))
@@ -218,7 +217,7 @@ private struct NowPlayingView: View {
   }
 }
 
-/// Top right: a radio-station icon and the station's name; clicking it opens the station picker.
+/// In the top strip: a radio-station icon and the station's name; clicking it opens the station picker.
 private struct StationBadge: View {
   @ObservedObject var model: RadioModel
   let style: GlassStyle
@@ -227,10 +226,9 @@ private struct StationBadge: View {
       Image(systemName: "radio.fill").font(.system(size: u(11)))
         .foregroundStyle(style.inkDim)
       Text(model.stationName.isEmpty ? "Walnut" : model.stationName)
-        .font(.system(size: u(13), weight: .semibold)).foregroundStyle(style.ink)
+        .font(.system(size: u(12), weight: .semibold)).foregroundStyle(style.ink)
         .lineLimit(1).truncationMode(.tail)
     }
-    .frame(maxWidth: u(130), alignment: .trailing)
     .contentShape(Rectangle())
     .onHover { inside in inside ? NSCursor.pointingHand.push() : NSCursor.pop() }
     .onTapGesture { model.showBrowser(.stations) }          // opens the station picker
@@ -640,4 +638,27 @@ private struct GlassTextField: View {
 private struct StripSpreadKey: EnvironmentKey { static let defaultValue = false }
 private extension EnvironmentValues {
   var stripSpread: Bool { get { self[StripSpreadKey.self] } set { self[StripSpreadKey.self] = newValue } }
+}
+
+/// System / light / dark as icons in the top strip; the active one lit, like an LCD indicator.
+private struct ThemeButton: View {
+  let theme: DisplayTheme
+  let lit: Bool
+  let style: GlassStyle
+  let action: () -> Void
+  @State private var hover = false
+  private var symbol: String {
+    switch theme { case .system: return "circle.lefthalf.filled"; case .light: return "sun.max.fill"; case .dark: return "moon.fill" }
+  }
+  var body: some View {
+    Button(action: action) {
+      Image(systemName: symbol).font(.system(size: u(11.5)))
+        .frame(width: u(24), height: u(18)).contentShape(Rectangle())
+        .foregroundStyle(lit ? style.ink : style.inkDim)
+        .opacity(lit ? 1 : hover ? 0.85 : 0.42)
+    }
+    .buttonStyle(.plain).focusable(false)
+    .onHover { hover = $0 }
+    .help(theme == .system ? "Match the system appearance" : theme == .light ? "Light display" : "Dark display")
+  }
 }
