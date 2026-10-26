@@ -174,7 +174,8 @@ private struct NowPlayingView: View {
   var body: some View {
     HStack(alignment: .center, spacing: u(14)) {
       AlbumArt(image: model.art, style: style).frame(width: u(88), height: u(88))
-      // the song: track, album, artist, spaced out down the middle
+      // the song: track, album, artist, spread over the art's height. Track and album use the full
+      // width; only the artist row leaves room for the time beside it.
       VStack(alignment: .leading, spacing: 0) {
         InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
           SpinningRecord(playing: model.isPlaying, style: style)
@@ -187,16 +188,12 @@ private struct NowPlayingView: View {
         InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
           Image(systemName: "person.fill").font(.system(size: u(11.5)))
         }
+        .padding(.trailing, u(130))                // room for the time beside it
       }
-      .frame(height: u(76))
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .layoutPriority(1)                // the song gets the room; the station name truncates first
-      // the time, bottom right
-      VStack(alignment: .trailing, spacing: 0) {
-        Spacer(minLength: 0)
+      .overlay(alignment: .bottomTrailing) {
         HStack(alignment: .bottom, spacing: u(5)) {
           SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
-            .frame(height: u(32))
+            .frame(height: u(30))
             .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
           VStack(alignment: .leading, spacing: u(2)) {
             Text("MIN").kerning(u(0.6)); Text("SEC").kerning(u(0.6))
@@ -204,9 +201,12 @@ private struct NowPlayingView: View {
           .font(.system(size: u(8.5)))
           .foregroundStyle(model.isPlaying ? style.inkDim : style.inkOff)
         }
-        .fixedSize()                    // the timer never shrinks
+        .fixedSize()
+        .padding(.bottom, -u(4))
       }
-      .frame(minWidth: u(112), maxHeight: u(88), alignment: .trailing)
+      .padding(.vertical, u(8))
+      .frame(height: u(88))
+      .frame(maxWidth: .infinity, alignment: .leading)
     }
     .padding(.horizontal, u(3))
   }
