@@ -185,6 +185,7 @@ private struct NowPlayingView: View {
           .font(.system(size: u(8)))
           .foregroundStyle(model.isPlaying ? style.inkDim : style.inkOff)
         }
+        .offset(y: u(3.9))   // centred on the action bar beside it (bar 24 tall at the column's bottom)
       }
       // right: station and appearance on top, the song in the middle, ratings at the bottom
       VStack(alignment: .leading, spacing: 0) {
@@ -195,18 +196,18 @@ private struct NowPlayingView: View {
             ThemeButton(theme: t, lit: model.theme == t, style: style) { model.theme = t }
           }
         }
-        // every line the same distance apart, station to thumbs
+        // the song, artist and album as one group, centred between the station and the bar
         Spacer(minLength: u(4))
-        InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
-          SpinningRecord(playing: model.isPlaying, style: style)
-        }
-        Spacer(minLength: u(4))
-        InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
-          Image(systemName: "person.fill").font(.system(size: u(11.5)))
-        }
-        Spacer(minLength: u(4))
-        InfoLine(text: model.album, link: model.link(for: .album), style: style) {
-          Image(systemName: "rectangle.stack.fill").font(.system(size: u(11.5)))
+        VStack(alignment: .leading, spacing: u(6)) {
+          InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
+            SpinningRecord(playing: model.isPlaying, style: style)
+          }
+          InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
+            Image(systemName: "person.fill").font(.system(size: u(11.5)))
+          }
+          InfoLine(text: model.album, link: model.link(for: .album), style: style) {
+            Image(systemName: "rectangle.stack.fill").font(.system(size: u(11.5)))
+          }
         }
         Spacer(minLength: u(4))
         // the song's actions, under the info only, level with the time
