@@ -32,9 +32,10 @@ struct RadioView: View {
         }
       cornerGlints
       front.padding(u(Radio.cabinetPadding))
-      TrafficLights(visible: hovering).padding(.top, u(7)).padding(.leading, u(14)).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
     .frame(width: u(Radio.size.width), height: u(Radio.size.height))
+    // close and minimise: an overlay sized to the buttons only, so it doesn't swallow clicks on the wood
+    .overlay(alignment: .topLeading) { TrafficLights(visible: hovering).padding(.top, u(7)).padding(.leading, u(14)) }
     .clipShape(shape)
     .overlay(shape.stroke(Color(hex: 0x140A03, opacity: 0.85), lineWidth: 0.5))
     .overlay(alignment: .bottom) { shape.stroke(Color(hex: 0x140802, opacity: 0.75), lineWidth: 1).mask(Rectangle().frame(height: u(8))) }
@@ -175,14 +176,17 @@ private struct TrafficLights: View {
 
 /// Lets the user drag the window by the wood.
 struct WindowDragArea: NSViewRepresentable {
+  /// Moves the window by hand while the mouse is dragged; a plain click is left to AppKit, which
+  /// brings Walnut forward as usual.
   final class DragView: NSView {
-    override func mouseDown(with event: NSEvent) {
-      NSApp.activate(ignoringOtherApps: true)   // a click on the wood brings Walnut forward…
-      window?.makeKeyAndOrderFront(nil)
-      window?.performDrag(with: event)          // …and dragging moves it
+    private var grab: NSPoint?          // where in the window the mouse went down
+    override func mouseDown(with event: NSEvent) { grab = event.locationInWindow }
+    override func mouseDragged(with event: NSEvent) {
+      guard let grab, let window else { return }
+      let mouse = NSEvent.mouseLocation
+      window.setFrameOrigin(NSPoint(x: mouse.x - grab.x, y: mouse.y - grab.y))
     }
-    override var mouseDownCanMoveWindow: Bool { true }
-    override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }   // drag even when Walnut isn't frontmost
+    override func mouseUp(with event: NSEvent) { grab = nil; window?.saveFrame(usingName: "WalnutRadio") }
     override func hitTest(_ point: NSPoint) -> NSView? { frame.contains(point) ? self : nil }
   }
   func makeNSView(context: Context) -> NSView { DragView() }
