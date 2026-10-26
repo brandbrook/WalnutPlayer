@@ -40,9 +40,6 @@ struct RadioView: View {
     .overlay(alignment: .bottom) { shape.stroke(Color(hex: 0x140802, opacity: 0.75), lineWidth: 1).mask(Rectangle().frame(height: u(8))) }
     // the slab's front face below the edge, then the desk
     .background(shape.fill(Color(hex: 0x4A2613)).offset(y: u(6)).overlay(shape.stroke(Color(hex: 0x140A03, opacity: 0.85), lineWidth: 0.5).offset(y: u(6))))
-    .shadow(color: Color(hex: 0x0F0802, opacity: 0.55), radius: 1, y: u(7.5))
-    .shadow(color: Color(hex: 0x281608, opacity: 0.35), radius: 6, y: u(13))
-    .shadow(color: Color(hex: 0x321E0A, opacity: 0.4), radius: 22, y: u(28))
   }
 
   /// The cabinet frame only (not the panel), so dragging the wood moves the window.
@@ -80,8 +77,6 @@ struct RadioView: View {
     UnevenRoundedRectangleShape(bottomRadius: u(4))
       .fill(LinearGradient(colors: [Color(hex: 0x2A170B), Color(hex: 0x1B0E06)], startPoint: .top, endPoint: .bottom))
       .frame(width: u(64), height: u(7))
-      .shadow(color: Color(hex: 0x0A0500, opacity: 0.5), radius: 0.5, y: u(1.5))
-      .shadow(color: Color(hex: 0x281608, opacity: 0.3), radius: 2.5, y: u(4))
   }
 
   // MARK: Front panel

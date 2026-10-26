@@ -20,7 +20,7 @@ final class RadioWindowController: NSWindowController, NSWindowDelegate {
   @objc static let shared = RadioWindowController()
 
   /// Margins around the radio for its shadow and feet.
-  private static let margin = NSEdgeInsets(top: 12, left: 26, bottom: 56, right: 26)
+  private static let margin = NSEdgeInsets(top: 2, left: 2, bottom: u(5 + 7) + 2, right: 2)   // room for the feet only, no shadow
   private var keyMonitor: Any?
 
   private init() {
