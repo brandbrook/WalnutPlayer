@@ -522,7 +522,7 @@ private struct TunerScale: View {
     }
     .frame(height: u(13))
     .padding(.horizontal, u(10))
-    .padding(.bottom, u(4))   // the ticks start 4 below the top of this row, so match that gap below
+    .padding(.bottom, u(9))   // as much room below the scale as above it
   }
 }
 
