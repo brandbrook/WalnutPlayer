@@ -20,7 +20,7 @@ final class RadioWindow: NSWindow {
   /// Areas of the radio that handle their own clicks, in mockup units from the cabinet's top-left:
   /// the display and the controls row (the face), and close/minimise. Everything else is wood.
   private static let interactive = [
-    CGRect(x: 20 + 720 * 0.37 + 8, y: 20 + 18, width: 720 * 0.63 - 8 - 20, height: 310 - 18 - 16),
+    CGRect(x: 20 + Radio.speakerColumn + 8, y: 20 + 18, width: Radio.size.width - 40 - Radio.speakerColumn - 8 - 20, height: 310 - 18 - 16),
     CGRect(x: 8, y: 2, width: 60, height: 24),
   ]
 

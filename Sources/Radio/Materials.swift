@@ -10,9 +10,11 @@ import SwiftUI
 
 enum Radio {
   /// The radio is laid out in the mockup's units (760 wide) and drawn at this scale, 688 pt wide.
-  static let scale: CGFloat = 688 / 760   // 80% of the original 860 pt
+  static let scale: CGFloat = 688 / 760   // 80% of the original radio
   /// Fixed size of the radio itself, in mockup units (the window adds room for its shadow and feet).
-  static let size = CGSize(width: 760, height: 348)
+  static let size = CGSize(width: 734, height: 348)
+  /// Width of the speaker's side of the panel (the display side keeps its width).
+  static let speakerColumn: CGFloat = 240
   static let cabinetRadius: CGFloat = 34
   static let cabinetPadding: CGFloat = 20
   static let panelRadius: CGFloat = 16

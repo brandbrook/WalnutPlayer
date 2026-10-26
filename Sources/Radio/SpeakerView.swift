@@ -77,7 +77,7 @@ struct SpeakerView: View {
   private func draw(_ ctx: inout GraphicsContext, size: CGSize, t: Double) {
     let e = motion.cone, hi = motion.high
     let flutter = motion.mid * sin(t * 47) * 0.004
-    let c = CGPoint(x: size.width / 2, y: size.height / 2), R = min(size.width, size.height) * 0.36   // 80% of its area
+    let c = CGPoint(x: size.width / 2, y: size.height / 2), R = min(size.width / 2 - u(24), size.height * 0.31)   // same size as before, closer to the display
     let bO = R, bI = R * 0.88, so = R * 0.88, capR = R * 0.26
     let eoFill = FillStyle(eoFill: true)
 
