@@ -21,7 +21,7 @@ struct DisplayView: View {
     case .system: dark = systemScheme == .dark
     }
     if !dark { return model.isPlaying ? .lightPlaying : .light }
-    return model.isPlaying ? .darkPlaying : .dark   // navy glass while music plays, warm brown when not
+    return .darkPlaying   // navy glass whether playing or not; the button and timer show the state
   }
   private var dim: Bool { model.mode == .nowPlaying && !model.isPlaying }
 
@@ -40,7 +40,8 @@ struct DisplayView: View {
       }
       .padding(u(7))
       .foregroundStyle(style.ink)
-      .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
+      // a faint glow on the text; now playing glows its own text so the album art gets no halo
+      .shadow(color: model.mode == .nowPlaying ? .clear : style.glow.opacity(0.4), radius: 1.5)
       // glass glare
       LinearGradient(colors: [.white.opacity(style.glare), .clear], startPoint: .topTrailing, endPoint: UnitPoint(x: 0.45, y: 0.55))
         .rotationEffect(.degrees(-10)).scaleEffect(1.4).allowsHitTesting(false)
@@ -53,8 +54,8 @@ struct DisplayView: View {
     }
     .clipShape(RoundedRectangle(cornerRadius: u(5)))
     .overlay(RoundedRectangle(cornerRadius: u(5)).stroke(Color(hex: 0x2A1A04, opacity: 0.45), lineWidth: 1))
-    .saturation(dim ? (style.glare > 0.3 ? 0.8 : 0.7) : 1)
-    .brightness(dim ? (style.glare > 0.3 ? -0.03 : 0) : 0)   // dark mode: the brown glass already reads as off
+    .saturation(dim ? (style.isDark ? 0.9 : 0.8) : 1)
+    .brightness(dim ? (style.isDark ? 0 : -0.03) : 0)
     // a short fade when playback pauses or resumes; switching screens is instant
     .animation(.easeInOut(duration: 0.25), value: model.isPlaying)   // only play/pause fades
   }
@@ -181,7 +182,7 @@ private struct NowPlayingView: View {
       VStack(spacing: u(17)) {
         AlbumArt(image: model.art, style: style).frame(width: u(96), height: u(96))
         HStack(alignment: .bottom, spacing: u(4)) {
-          SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
+          SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.isDark ? style.inkOff.opacity(0.4) : style.inkOff)   // unlit segments barely there on the glowing glass
             .frame(height: u(25))
             .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
             .fixedSize()
@@ -225,6 +226,7 @@ private struct NowPlayingView: View {
       }
       .frame(maxWidth: .infinity, alignment: .topLeading)
       .frame(height: u(96 + 17 + 25) + u(2))         // same height as the art and time, so the rows line up
+      .shadow(color: style.glow.opacity(0.4), radius: 1.5)
     }
     .padding(.horizontal, u(4))
     .frame(maxHeight: .infinity)                   // centred in the display
@@ -675,7 +677,7 @@ private struct ThemeButton: View {
       Image(systemName: symbol).font(.system(size: u(11.5)))
         .frame(width: u(24), height: u(18)).contentShape(Rectangle())
         .foregroundStyle(lit ? style.ink : style.inkDim)
-        .opacity(lit ? 1 : hover ? 0.85 : 0.42)
+        .opacity(lit ? 1 : hover ? 0.85 : style.isDark ? 0.62 : 0.42)
     }
     .buttonStyle(.plain).focusable(false)
     .onHover { hover = $0 }

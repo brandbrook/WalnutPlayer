@@ -141,6 +141,7 @@ struct GlassStyle {
   let glow: Color             // text glow (clear in light mode)
   let glare: Double
   var vertical = false        // glass lit as a top-to-bottom gradient (while playing)
+  var isDark: Bool { glow != .clear }
 
   static let light = GlassStyle(
     glass: [Color(hex: 0xFFF8DD), Color(hex: 0xF9EBC2), Color(hex: 0xEDD59D)],   // brighter cream
@@ -164,13 +165,6 @@ struct GlassStyle {
     songStrong: Color(hex: 0xF2AD4F),
     stripBackground: Color(hex: 0xFFAA3C, opacity: 0.04), stripLine: Color(hex: 0xFFAA3C, opacity: 0.12),
     selectedText: Color(hex: 0x0C1424), glow: Color(hex: 0xFFA532, opacity: 0.45), glare: 0.14, vertical: true)
-
-  static let dark = GlassStyle(
-    glass: [Color(hex: 0x2A1A0B), Color(hex: 0x170E06), Color(hex: 0x0C0703)],
-    ink: Color(hex: 0xFFBE5C), inkDim: Color(hex: 0xC88D40), inkOff: Color(hex: 0xFFAA3C, opacity: 0.08),
-    songStrong: Color(hex: 0xF2AD4F),
-    stripBackground: Color(hex: 0xFFAA3C, opacity: 0.04), stripLine: Color(hex: 0xFFAA3C, opacity: 0.12),
-    selectedText: Color(hex: 0x140C05), glow: Color(hex: 0xFFA532, opacity: 0.45), glare: 0.14)
 }
 
 let accentRed = Color(hex: 0xD2462F)
