@@ -49,7 +49,7 @@ struct DisplayView: View {
     .saturation(dim ? (style.glare > 0.3 ? 0.55 : 0.7) : 1)
     .brightness(dim ? (style.glare > 0.3 ? -0.07 : -0.25) : 0)
     // a short fade when playback pauses or resumes; switching screens is instant
-    .animation(model.mode == .nowPlaying ? .easeInOut(duration: 0.25) : nil, value: dim)
+    .animation(.easeInOut(duration: 0.25), value: model.isPlaying)   // only play/pause fades
   }
 
   // MARK: Strips
