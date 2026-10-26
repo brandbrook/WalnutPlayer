@@ -28,7 +28,7 @@ struct RadioView: View {
       FrameWalnut().allowsHitTesting(false)
       cornerGlints
       front.padding(u(Radio.cabinetPadding))
-      CarvedName().frame(maxHeight: .infinity, alignment: .bottom).padding(.bottom, u(3.5))
+      WoodenName().frame(maxHeight: .infinity, alignment: .bottom).padding(.bottom, u(4.5))
     }
     .frame(width: u(Radio.size.width), height: u(Radio.size.height))
     // close and minimise: an overlay sized to the buttons only, so it doesn't swallow clicks on the wood
@@ -207,20 +207,21 @@ private struct MenuBars: View {
   }
 }
 
-/// The app's name carved into the bottom of the walnut frame: letters cut into the wood, shaded
-/// inside along their top edge and catching the light along their bottom edge, with worn gold paint.
-private struct CarvedName: View {
+/// The app's name as wooden letters glued onto the bottom of the frame: each letter is cut from
+/// walnut (its own grain), with a lit top edge, a darker side showing its thickness, and a small shadow
+/// on the frame below.
+private struct WoodenName: View {
   var body: some View {
-    let text = Text("WALNUT").font(.system(size: u(12.5), weight: .bold, design: .serif)).kerning(u(3.6))
+    let text = Text("WALNUT PLAYER").font(.system(size: u(12), weight: .bold, design: .serif)).kerning(u(3))
     ZStack {
-      text.foregroundStyle(Color(hex: 0xFFE6C8, opacity: 0.38)).offset(y: 1)    // lit lower lip of the cut
-      text.foregroundStyle(Color(hex: 0x140702, opacity: 0.88))                    // the cut itself
-      // a little worn gold paint left in the cut
-      text.foregroundStyle(Color(hex: 0xE0B060, opacity: 0.28))
-        .mask(Image(nsImage: Texture.wear).resizable())
-      text.foregroundStyle(Color(hex: 0x050201, opacity: 0.5)).offset(y: -0.75)    // shade under the top edge
-        .mask(text)
+      text.foregroundStyle(Color(hex: 0x2A1206)).offset(y: u(1.3))                 // the letters' thickness
+      text.foregroundStyle(Color(hex: 0xFFE8CC, opacity: 0.6)).offset(y: -u(0.5))  // lit top edges
+      text.foregroundStyle(Color(hex: 0xA8743F))                                     // letter faces: lighter walnut…
+        .overlay(Image(nsImage: Texture.panelWalnut).resizable().aspectRatio(contentMode: .fill)
+                   .opacity(0.55).blendMode(.multiply).mask(text))                   // …with their own grain
     }
+    .compositingGroup()
+    .shadow(color: Color(hex: 0x0A0402, opacity: 0.6), radius: 0.8, x: 0.3, y: u(1.6))
     .allowsHitTesting(false)
     .accessibilityHidden(true)
   }
