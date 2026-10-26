@@ -242,7 +242,6 @@
 
   NSDictionary *app_defaults = @{
     PLEASE_SCROBBLE:            @"0",
-    STATUS_BAR_ICON_BW:         @"1",   // the template glyph is the default menu bar icon
     ONLY_SCROBBLE_LIKED:        @"0",
     PLEASE_GROWL:               @"1",
     PLEASE_GROWL_PLAY:          @"0",

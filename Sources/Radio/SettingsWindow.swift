@@ -57,7 +57,7 @@ private var app: HermesAppDelegate { NSApp.delegate as! HermesAppDelegate }
 private struct GeneralSettings: View {
   @AppStorage("statusBarIcon") private var menuBar = false
   @AppStorage("statusBarShowSongTitle") private var songTitle = false
-  @AppStorage("statusBarIconBlackWhite") private var blackWhite = true
+  @AppStorage("statusBarIconBlackWhite") private var blackWhite = false
   @AppStorage("statusBarIconAlbumArt") private var albumArtIcon = false
   @AppStorage("dockIconAlbumArt") private var dockArt = false
   @AppStorage("albumArtPlayPause") private var playPauseOverArt = false
