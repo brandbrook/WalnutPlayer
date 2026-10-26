@@ -31,10 +31,15 @@ import AppKit
     return image
   }
 
-  /// The colour walnut radio, cropped tight so it fills the menu bar slot.
+  /// The colour walnut radio, cropped tight so it fills the menu bar slot. It's drawn when macOS
+  /// paints the menu bar, so it picks the darker walnut on a light bar and lighter walnut on a dark one.
   @objc static let color: NSImage = {
-    let image = Bundle.main.image(forResource: "walnut-menubar") ?? NSImage(named: "walnut") ?? NSImage()
-    image.size = NSSize(width: 18, height: 18)
-    return image
+    let standard = Bundle.main.image(forResource: "walnut-menubar") ?? NSImage()
+    let light = Bundle.main.image(forResource: "walnut-menubar-light") ?? standard
+    return NSImage(size: NSSize(width: 18, height: 18), flipped: false) { rect in
+      let dark = NSAppearance.currentDrawing().bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
+      (dark ? light : standard).draw(in: rect)
+      return true
+    }
   }()
 }
