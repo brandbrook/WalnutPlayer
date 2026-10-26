@@ -243,7 +243,7 @@ private struct StationBadge: View {
         .lineLimit(1).truncationMode(.tail)
     }
     .contentShape(Rectangle())
-    .onHover { inside in inside ? NSCursor.pointingHand.push() : NSCursor.pop() }
+    .pointingHand()
     .onTapGesture { model.showBrowser(.stations) }          // opens the station picker
     .help("Choose a station")
   }
@@ -264,14 +264,10 @@ private struct InfoLine<Icon: View>: View {
       Text(text.isEmpty ? " " : text)
         .font(.system(size: u(13.5), weight: strong ? .semibold : .regular))   // same size; only the song is bold
         .foregroundStyle(style.inkDim)
-        .underline(hover && link != nil, color: style.inkDim)
         .lineLimit(1).truncationMode(.tail)
     }
     .contentShape(Rectangle())
-    .onHover { inside in
-      hover = inside
-      if link != nil { inside ? NSCursor.pointingHand.push() : NSCursor.pop() }
-    }
+    .pointingHand(link != nil)
     .onTapGesture { if let link { NSWorkspace.shared.open(link) } }
     .help(link == nil ? "" : "Open “\(text)”")
   }
@@ -375,7 +371,7 @@ private struct EditStationView: View {
           ForEach(model.draftSeeds.prefix(3)) { seed in
             HStack(spacing: u(2)) {
               Text(seed.name).lineLimit(1)
-              Button { model.removeSeed(seed) } label: { Text("×") }.buttonStyle(.plain).foregroundStyle(style.inkDim)
+              Button { model.removeSeed(seed) } label: { Text("×") }.buttonStyle(.plain).foregroundStyle(style.inkDim).pointingHand()
                 .disabled(model.draftSeeds.count < 2)
             }
             .font(.system(size: u(11)))
@@ -395,7 +391,7 @@ private struct EditStationView: View {
                 Text("+ \(r.name)\(r.detail.map { " · \($0)" } ?? "")").font(.system(size: u(11))).lineLimit(1)
                   .padding(.horizontal, u(7)).padding(.vertical, u(2))
                   .background(Capsule().fill(style.stripBackground))
-              }.buttonStyle(.plain)
+              }.buttonStyle(.plain).pointingHand()
             }
           }
         }
@@ -422,6 +418,7 @@ private struct BrowserGrid: View {
                 .frame(width: (geo.size.width - u(16)) / 2)
                 .id(i)
                 .contentShape(Rectangle())
+                .pointingHand()
                 .onTapGesture {
                   // stations: a click only selects (TUNE IN plays it); new-station results: a second click creates
                   if model.selection == i && model.mode == .newStation { model.choose() } else { model.selection = i }
@@ -589,6 +586,7 @@ private struct StripButton: View {
     .buttonStyle(.plain)
     .focusable(false)
     .disabled(disabled)
+    .pointingHand(!disabled)
     .frame(maxWidth: spread ? .infinity : nil)   // bottom strip: actions spread evenly across
     .onHover { hover = $0 }
     .animation(.easeOut(duration: 0.15), value: lit)
@@ -673,7 +671,26 @@ private struct ThemeButton: View {
     }
     .buttonStyle(.plain).focusable(false)
     .onHover { hover = $0 }
+    .pointingHand()
     .help(theme == .system ? "Match the system appearance" : theme == .light ? "Light display" : "Dark display")
   }
 }
 
+
+/// A pointing-hand cursor over something clickable on the display (instead of underlines).
+private struct PointingHand: ViewModifier {
+  let enabled: Bool
+  @State private var pushed = false
+  func body(content: Content) -> some View {
+    content
+      .onHover { inside in
+        if inside && enabled && !pushed { NSCursor.pointingHand.push(); pushed = true }
+        else if !inside && pushed { NSCursor.pop(); pushed = false }
+      }
+      .onDisappear { if pushed { NSCursor.pop(); pushed = false } }   // e.g. the screen changed under the cursor
+      .onChange(of: enabled) { on in if !on && pushed { NSCursor.pop(); pushed = false } }
+  }
+}
+extension View {
+  func pointingHand(_ enabled: Bool = true) -> some View { modifier(PointingHand(enabled: enabled)) }
+}
