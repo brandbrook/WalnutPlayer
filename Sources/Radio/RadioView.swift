@@ -176,7 +176,11 @@ private struct TrafficLights: View {
 /// Lets the user drag the window by the wood.
 struct WindowDragArea: NSViewRepresentable {
   final class DragView: NSView {
-    override func mouseDown(with event: NSEvent) { window?.performDrag(with: event) }
+    override func mouseDown(with event: NSEvent) {
+      NSApp.activate(ignoringOtherApps: true)   // a click on the wood brings Walnut forward…
+      window?.makeKeyAndOrderFront(nil)
+      window?.performDrag(with: event)          // …and dragging moves it
+    }
     override var mouseDownCanMoveWindow: Bool { true }
     override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }   // drag even when Walnut isn't frontmost
     override func hitTest(_ point: NSPoint) -> NSView? { frame.contains(point) ? self : nil }
