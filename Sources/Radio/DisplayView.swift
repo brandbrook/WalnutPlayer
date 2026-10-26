@@ -170,19 +170,19 @@ private struct NowPlayingView: View {
   let style: GlassStyle
 
   var body: some View {
-    HStack(alignment: .top, spacing: u(16)) {
+    HStack(alignment: .top, spacing: u(20)) {
       // left: the art, with the time centred under it
-      VStack(spacing: u(8)) {
+      VStack(spacing: u(11)) {
         AlbumArt(image: model.art, style: style).frame(width: u(96), height: u(96))
         HStack(alignment: .bottom, spacing: u(4)) {
           SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
-            .frame(height: u(20))
+            .frame(height: u(25))
             .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
             .fixedSize()
-          VStack(alignment: .leading, spacing: u(1)) {
+          VStack(alignment: .leading, spacing: u(2)) {
             Text("MIN").kerning(u(0.5)); Text("SEC").kerning(u(0.5))
           }
-          .font(.system(size: u(7)))
+          .font(.system(size: u(8)))
           .foregroundStyle(model.isPlaying ? style.inkDim : style.inkOff)
         }
       }
@@ -196,7 +196,7 @@ private struct NowPlayingView: View {
           }
         }
         Spacer(minLength: u(6))
-        VStack(alignment: .leading, spacing: u(4)) {
+        VStack(alignment: .leading, spacing: u(7)) {
           InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
             SpinningRecord(playing: model.isPlaying, style: style)
           }
@@ -215,7 +215,7 @@ private struct NowPlayingView: View {
         .padding(.leading, -u(5))                  // line the icons up with the rows above
       }
       .frame(maxWidth: .infinity, alignment: .topLeading)
-      .frame(height: u(96 + 8 + 20) + u(2))         // same height as the art and time, so the rows line up
+      .frame(height: u(96 + 11 + 25) + u(2))         // same height as the art and time, so the rows line up
     }
     .padding(.horizontal, u(4))
     .frame(maxHeight: .infinity)                   // centred in the display
