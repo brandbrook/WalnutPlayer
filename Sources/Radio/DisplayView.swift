@@ -218,9 +218,9 @@ private struct NowPlayingView: View {
         Spacer(minLength: u(4))
         // the song's actions, under the info only, level with the time
         Strip(style: style, spread: true) {
-          StripButton("DISLIKE", icon: "hand.thumbsdown.fill", lit: model.flash == "dislike", style: style) { model.dislike() }
-          StripButton("TIRED", icon: "moon.fill", lit: model.flash == "tired", style: style) { model.tired() }
-          StripButton("LIKE", icon: "hand.thumbsup.fill", lit: model.rating == 1, litColor: accentRed, style: style) { model.like() }
+          StripButton("DISLIKE", icon: "hand.thumbsdown.fill", lit: model.flash == "dislike", style: style, ready: true) { model.dislike() }
+          StripButton("TIRED", icon: "moon.fill", lit: model.flash == "tired", style: style, ready: true) { model.tired() }
+          StripButton("LIKE", icon: "hand.thumbsup.fill", lit: model.rating == 1, litColor: accentRed, style: style, ready: true) { model.like() }
         }
       }
       .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -569,14 +569,16 @@ private struct StripButton: View {
   let style: GlassStyle
   var bright = false
   var disabled = false
+  /// An action that's always there to press (the song's feedback): readable dark ink, not a faded option.
+  var ready = false
   let action: () -> Void
   @State private var hover = false
   @Environment(\.stripSpread) private var spread
 
   init(_ title: String, icon: String? = nil, lit: Bool = false, litColor: Color? = nil, style: GlassStyle,
-       bright: Bool = false, disabled: Bool = false, action: @escaping () -> Void) {
+       bright: Bool = false, disabled: Bool = false, ready: Bool = false, action: @escaping () -> Void) {
     self.title = title; self.icon = icon; self.lit = lit; self.litColor = litColor; self.style = style
-    self.bright = bright; self.disabled = disabled; self.action = action
+    self.bright = bright; self.disabled = disabled; self.ready = ready; self.action = action
   }
 
   var body: some View {
@@ -587,8 +589,8 @@ private struct StripButton: View {
       }
       .padding(.horizontal, u(6)).padding(.vertical, u(4))
       .contentShape(Rectangle())
-      .foregroundStyle(lit ? (litColor ?? style.ink) : style.inkDim)
-      .opacity(disabled ? 0.42 : lit ? 1 : hover ? 0.85 : (bright ? 0.78 : 0.42))   // unavailable: faded like an unlit option
+      .foregroundStyle(lit ? (litColor ?? style.ink) : (ready && !disabled) ? style.ink : style.inkDim)
+      .opacity(disabled ? 0.42 : lit ? 1 : ready ? (hover ? 0.95 : 0.72) : hover ? 0.85 : (bright ? 0.78 : 0.42))   // unavailable: faded like an unlit option
     }
     .buttonStyle(.plain)
     .focusable(false)

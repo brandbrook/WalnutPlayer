@@ -112,7 +112,7 @@ struct RadioView: View {
           MenuBars()
         }
         .help("Stations")
-        RecessedBrassButton(size: u(64), latched: model.isPlaying, action: playButton) {
+        RecessedBrassButton(size: u(64), action: playButton) {   // the icon tells play from pause; it only goes in while pressed
           Image(systemName: model.isPlaying && model.mode == .nowPlaying ? "pause.fill" : "play.fill").resizable().aspectRatio(contentMode: .fit)
         }
         .help("Play / Pause")
