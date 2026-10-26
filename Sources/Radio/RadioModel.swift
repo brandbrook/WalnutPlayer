@@ -187,7 +187,7 @@ final class RadioModel: ObservableObject {
 
   private func reloadStations() {
     let all = (pandora.stations as? [Station]) ?? []
-    stations = all.map { StationItem(id: $0.token, name: $0.name ?? "", created: $0.created, isShuffle: $0.isQuickMix,
+    stations = all.map { StationItem(id: $0.token, name: plain($0.name ?? ""), created: $0.created, isShuffle: $0.isQuickMix,
                                      canEdit: !$0.isQuickMix && !$0.shared) }
     refreshSong()
   }
@@ -216,7 +216,7 @@ final class RadioModel: ObservableObject {
     let station = playback.playing
     let song = station?.playingSong
     currentToken = station?.token
-    stationName = station.map { $0.isQuickMix ? "Shuffle" : ($0.name ?? "") } ?? ""
+    stationName = station.map { $0.isQuickMix ? "Shuffle" : plain($0.name ?? "") } ?? ""
     title = song?.title ?? ""
     artist = song?.artist ?? ""
     album = song?.album ?? ""
@@ -246,6 +246,26 @@ final class RadioModel: ObservableObject {
   private func reloadHistory() {
     let songs = (app.history.songs as? [Song]) ?? []
     history = songs.map { HistoryItem(id: ObjectIdentifier($0), song: $0) }
+  }
+
+  // MARK: - Song links
+
+  enum SongPart { case track, album, artist }
+
+  /// Pandora's own page for the track, album or artist when it has one, otherwise a web search.
+  func link(for part: SongPart) -> URL? {
+    let song = playback.playing?.playingSong
+    let pandora: String?, query: String
+    switch part {
+    case .track:  pandora = song?.titleUrl;  query = [title, artist].filter { !$0.isEmpty }.joined(separator: " ")
+    case .album:  pandora = song?.albumUrl;  query = [album, artist].filter { !$0.isEmpty }.joined(separator: " ")
+    case .artist: pandora = song?.artistUrl; query = artist
+    }
+    guard !query.isEmpty else { return nil }
+    if let p = pandora, !p.isEmpty, let url = URL(string: p) { return url }
+    var search = URLComponents(string: "https://www.google.com/search")!
+    search.queryItems = [URLQueryItem(name: "q", value: query)]
+    return search.url
   }
 
   // MARK: - Login
@@ -512,4 +532,10 @@ func trimFlatBorder(_ image: NSImage) -> NSImage {
                     width: CGFloat(w - 2 * inset) * sx, height: CGFloat(h - 2 * inset) * sy)
   guard let cut = cg.cropping(to: crop) else { return image }
   return NSImage(cgImage: cut, size: NSSize(width: cut.width, height: cut.height))
+}
+
+/// Station names without emoji (Pandora adds some, like the shuffle arrows), to match the display's icons.
+func plain(_ name: String) -> String {
+  String(name.unicodeScalars.filter { !($0.properties.isEmojiPresentation || ($0.properties.isEmoji && $0.value > 0x238C)) })
+    .trimmingCharacters(in: .whitespaces)
 }

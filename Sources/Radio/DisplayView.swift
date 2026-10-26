@@ -172,28 +172,34 @@ private struct NowPlayingView: View {
   let style: GlassStyle
 
   var body: some View {
-    HStack(spacing: u(14)) {
+    HStack(alignment: .top, spacing: u(14)) {
       AlbumArt(image: model.art, style: style).frame(width: u(88), height: u(88))
-      VStack(alignment: .leading, spacing: u(2)) {
+      VStack(alignment: .leading, spacing: u(5)) {
         HStack(alignment: .top) {
-          HStack(alignment: .bottom, spacing: u(6)) {
+          HStack(alignment: .bottom, spacing: u(5)) {
             SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
-              .frame(height: u(42))
+              .frame(height: u(32))
               .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
-            VStack(alignment: .leading, spacing: u(4)) {
+            VStack(alignment: .leading, spacing: u(2)) {
               Text("MIN").kerning(u(0.6)); Text("SEC").kerning(u(0.6))
             }
-            .font(.system(size: u(10)))
+            .font(.system(size: u(8.5)))
             .foregroundStyle(model.isPlaying ? style.inkDim : style.inkOff)
-            .padding(.bottom, u(1))
           }
           Spacer(minLength: u(8))
-          LevelMeter(label: model.album, style: style, playing: model.isPlaying)
+          StationBadge(model: model, style: style)
         }
-        Text(model.stationName.isEmpty ? "Walnut" : model.stationName)
-          .font(.system(size: u(21))).lineLimit(1).truncationMode(.tail).padding(.top, u(6))
-        (Text(model.title).fontWeight(.semibold).foregroundColor(style.songStrong) + Text(model.artist.isEmpty ? "" : " — \(model.artist)"))
-          .font(.system(size: u(13))).foregroundStyle(style.inkDim).lineLimit(1).truncationMode(.tail)
+        VStack(alignment: .leading, spacing: u(3)) {
+          InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
+            SpinningRecord(playing: model.isPlaying, style: style)
+          }
+          InfoLine(text: model.album, link: model.link(for: .album), style: style) {
+            Image(systemName: "rectangle.stack.fill").font(.system(size: u(10)))
+          }
+          InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
+            Image(systemName: "person.fill").font(.system(size: u(10)))
+          }
+        }
       }
       .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -203,6 +209,91 @@ private struct NowPlayingView: View {
   private var timeDigits: String {
     let s = Int(model.elapsed), m = (s / 60) % 100
     return (m < 10 ? " \(m)" : "\(m)") + String(format: "%02d", s % 60)
+  }
+}
+
+/// Top right: the level meter, a radio-station icon and the station's name.
+private struct StationBadge: View {
+  @ObservedObject var model: RadioModel
+  let style: GlassStyle
+  var body: some View {
+    HStack(spacing: u(6)) {
+      LevelMeter(style: style, playing: model.isPlaying)
+      Image(systemName: "radio.fill").font(.system(size: u(11)))
+        .foregroundStyle(style.inkDim)
+      Text(model.stationName.isEmpty ? "Walnut" : model.stationName)
+        .font(.system(size: u(13), weight: .semibold)).foregroundStyle(style.ink)
+        .lineLimit(1).truncationMode(.tail)
+    }
+    .frame(maxWidth: u(190), alignment: .trailing)
+  }
+}
+
+/// One line of song info with its icon. Clicking it opens the link (Pandora's page, or a web search).
+private struct InfoLine<Icon: View>: View {
+  let text: String
+  let link: URL?
+  var strong = false
+  let style: GlassStyle
+  @ViewBuilder var icon: () -> Icon
+  @State private var hover = false
+
+  var body: some View {
+    HStack(spacing: u(7)) {
+      icon().foregroundStyle(style.inkDim).frame(width: u(13), height: u(13))
+      Text(text.isEmpty ? " " : text)
+        .font(.system(size: u(strong ? 13 : 12), weight: strong ? .semibold : .regular))
+        .foregroundStyle(strong ? style.songStrong : style.inkDim)
+        .underline(hover && link != nil, color: style.inkDim)
+        .lineLimit(1).truncationMode(.tail)
+    }
+    .contentShape(Rectangle())
+    .onHover { inside in
+      hover = inside
+      if link != nil { inside ? NSCursor.pointingHand.push() : NSCursor.pop() }
+    }
+    .onTapGesture { if let link { NSWorkspace.shared.open(link) } }
+    .help(link == nil ? "" : "Open “\(text)”")
+  }
+}
+
+/// A small record that turns slowly while music plays.
+private struct SpinningRecord: View {
+  let playing: Bool
+  let style: GlassStyle
+  @State private var angle = 0.0
+  @State private var last = Date()
+
+  var body: some View {
+    TimelineView(.animation(paused: !playing)) { t in
+      Canvas { ctx, size in
+        let r = min(size.width, size.height) / 2, c = CGPoint(x: size.width / 2, y: size.height / 2)
+        func circle(_ rr: CGFloat) -> Path { Path(ellipseIn: CGRect(x: c.x - rr, y: c.y - rr, width: rr * 2, height: rr * 2)) }
+        // one colour, like the other icons: a solid disc with the label and grooves cut out of it
+        ctx.fill(circle(r), with: .color(style.inkDim))
+        do {
+          var l = ctx                                                              // cut into the disc itself
+          l.blendMode = .destinationOut
+          for g in stride(from: r * 0.55, to: r * 0.95, by: r * 0.17) { l.stroke(circle(g), with: .color(.black.opacity(0.5)), lineWidth: 0.5) }
+          l.stroke(circle(r * 0.34), with: .color(.black), lineWidth: 0.9)
+          l.fill(circle(r * 0.09), with: .color(.black))                            // spindle hole
+        }
+        // a sheen across the grooves, so the turning is visible
+        let a = angle(at: t.date)
+        var sheen = Path()
+        sheen.move(to: c)
+        sheen.addArc(center: c, radius: r * 0.95, startAngle: .radians(a), endAngle: .radians(a + 0.6), clockwise: false)
+        sheen.closeSubpath()
+        var cut = ctx; cut.blendMode = .destinationOut; cut.fill(sheen, with: .color(.black.opacity(0.4)))
+      }
+    }
+  }
+
+  /// About one turn every 4 seconds while playing; holds still when paused.
+  private func angle(at date: Date) -> Double {
+    let dt = date.timeIntervalSince(last)
+    DispatchQueue.main.async { last = date; if playing { angle += dt * .pi / 2 } }
+    return angle + (playing ? dt * .pi / 2 : 0)
   }
 }
 
@@ -220,15 +311,14 @@ private struct AlbumArt: View {
       }
       LinearGradient(colors: [Color(hex: 0xFFE6AA, opacity: 0.18), Color(hex: 0x78460A, opacity: 0.12)], startPoint: .top, endPoint: .bottom)
     }
-    .clipShape(RoundedRectangle(cornerRadius: u(4)))
-    .overlay(RoundedRectangle(cornerRadius: u(4)).stroke(Color(hex: 0x3C2305, opacity: 0.35), lineWidth: 0.5))
+    .clipShape(RoundedRectangle(cornerRadius: u(10), style: .continuous))
+    .overlay(RoundedRectangle(cornerRadius: u(10), style: .continuous).stroke(Color(hex: 0x3C2305, opacity: 0.35), lineWidth: 0.5))
     .shadow(color: Color(hex: 0x3C2305, opacity: 0.3), radius: 2.5, y: 2)
   }
 }
 
-/// Three red bars that follow the speaker's low, mid and high levels, next to the album name.
+/// Three red bars that follow the speaker's low, mid and high levels.
 private struct LevelMeter: View {
-  let label: String
   let style: GlassStyle
   let playing: Bool
   @State private var motion = SpeakerMotion()
@@ -248,7 +338,6 @@ private struct LevelMeter: View {
         }
         .frame(width: u(13), height: u(12))
       }
-      Text(label).font(.system(size: u(13))).foregroundStyle(style.inkDim).lineLimit(1).frame(maxWidth: u(120), alignment: .leading)
     }
   }
 }
