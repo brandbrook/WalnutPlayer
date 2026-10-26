@@ -135,7 +135,12 @@ struct DisplayView: View {
     case .loading(let text):
       Text(text == RadioModel.noSignal ? text : text + "…").font(.system(size: u(13), weight: .bold)).kerning(u(2)).foregroundStyle(style.inkDim)
     case .login: LoginView(model: model, style: style)
-    case .stations, .history: BrowserGrid(model: model, style: style, rows: 4)
+    case .stations, .history:
+      if model.browserItems == 0 {
+        Hint(model.mode == .history ? "Songs you play show up here." : "No stations yet. Press + NEW to make one.", style: style)
+      } else {
+        BrowserGrid(model: model, style: style, rows: 4)
+      }
     case .newStation:
       VStack(spacing: u(6)) {
         Field(label: "SEARCH", style: style) {

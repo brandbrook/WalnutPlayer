@@ -143,6 +143,7 @@ final class RadioModel: ObservableObject {
       MainActor.assumeIsolated { self?.tick() }
     }
     applyEQ()
+    app.history.loadSavedSongs()   // so History shows past songs right away, not only after the next song
 
     let user = app.getSavedUsername() ?? "", pass = app.getSavedPassword() ?? ""
     username = user
@@ -301,6 +302,7 @@ final class RadioModel: ObservableObject {
   }
 
   func showBrowser(_ m: DisplayMode) {
+    if m == .history { reloadHistory() }
     mode = m
     if m == .stations { selection = sortedStations.firstIndex { $0.id == currentToken } ?? 0 } else { selection = 0 }
     if m == .history { reloadHistory() }

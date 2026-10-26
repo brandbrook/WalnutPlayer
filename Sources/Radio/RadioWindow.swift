@@ -98,6 +98,7 @@ final class RadioWindowController: NSWindowController, NSWindowDelegate {
 
   @objc func startRadio() {
     RadioModel.shared.start()
+    RadioMenus.shared.install()
     showWindow(nil)
     window?.makeKeyAndOrderFront(nil)
   }

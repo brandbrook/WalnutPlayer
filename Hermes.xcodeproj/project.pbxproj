@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9FE5B63253E1B584B1B64654 /* RadioMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8303B6AE4FBD5BB091A36E2 /* RadioMenus.swift */; };
 		7CFCC5B6BDAC879AA5356A98 /* RadioWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087C6E930F5E342D3A6AFE09 /* RadioWindow.swift */; };
 		3BA2A4B26D168F2CD79F6047 /* RadioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6EE38BE362496123258341 /* RadioView.swift */; };
 		36AF7AF7DBDD465797493750 /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2846B1D5DDE69CEB48D2D2F5 /* DisplayView.swift */; };
@@ -127,6 +128,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D8303B6AE4FBD5BB091A36E2 /* RadioMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RadioMenus.swift"; sourceTree = "<group>"; };
 		087C6E930F5E342D3A6AFE09 /* RadioWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RadioWindow.swift"; sourceTree = "<group>"; };
 		AE6EE38BE362496123258341 /* RadioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RadioView.swift"; sourceTree = "<group>"; };
 		2846B1D5DDE69CEB48D2D2F5 /* DisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DisplayView.swift"; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 		0031D23A786416B0B1F8AD68 /* Radio */ = {
 			isa = PBXGroup;
 			children = (
+				D8303B6AE4FBD5BB091A36E2 /* RadioMenus.swift */,
 				087C6E930F5E342D3A6AFE09 /* RadioWindow.swift */,
 				AE6EE38BE362496123258341 /* RadioView.swift */,
 				2846B1D5DDE69CEB48D2D2F5 /* DisplayView.swift */,
@@ -715,6 +718,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FE5B63253E1B584B1B64654 /* RadioMenus.swift in Sources */,
 				7CFCC5B6BDAC879AA5356A98 /* RadioWindow.swift in Sources */,
 				3BA2A4B26D168F2CD79F6047 /* RadioView.swift in Sources */,
 				36AF7AF7DBDD465797493750 /* DisplayView.swift in Sources */,
