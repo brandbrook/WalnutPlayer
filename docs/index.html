@@ -106,7 +106,12 @@
   code { font: 14px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; }
 
   footer { border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 14px; color: var(--ink-soft); }
-  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: baseline; gap: 8px 24px; flex-wrap: wrap; }
+  footer p { margin: 0; }
+  footer a { color: var(--ink); text-underline-offset: 2px; }
+  .foot-links { display: flex; gap: 18px; flex-wrap: wrap; }
+  .foot-fine { flex-basis: 100%; font-size: 12px; margin-top: 10px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
   @media (max-width: 760px) {
     .split { grid-template-columns: 1fr; }
@@ -179,8 +184,9 @@
 
 <footer>
   <div class="wrap">
-    <span>Walnut is not affiliated with or endorsed by Pandora Media.</span>
-    <span><a href="https://github.com/brandbrook/WalnutPlayer/blob/master/CHANGELOG.md">Changelog</a> · <a href="https://github.com/brandbrook/WalnutPlayer/issues">Report an issue</a> · <a href="https://github.com/brandbrook/WalnutPlayer/blob/master/LICENSE">MIT License</a></span>
+    <p>Walnut is free and open source, based on <a href="https://github.com/HermesApp/Hermes">Hermes</a>. Built by <a href="https://iamradu.com/" rel="me noopener" target="_blank">Radu<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+    <p class="foot-links"><a href="https://github.com/brandbrook/WalnutPlayer/blob/master/CHANGELOG.md">Changelog</a><a href="https://github.com/brandbrook/WalnutPlayer/issues">Report an issue</a><a href="https://github.com/brandbrook/WalnutPlayer/blob/master/LICENSE">MIT License</a></p>
+    <p class="foot-fine">Walnut is not affiliated with or endorsed by Pandora Media. Pandora is a trademark of its owner.</p>
   </div>
 </footer>
 
