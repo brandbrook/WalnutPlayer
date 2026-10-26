@@ -411,7 +411,7 @@ final class RadioModel: ObservableObject {
     let list = sortedStations
     guard list.indices.contains(index), let station = Station(forToken: list[index].id) else { return }
     PlaybackController.setPlayOnStart(true)
-    if currentToken != station.token { playback.play(station) } else if !isPlaying { playback.play() }
+    if currentToken != station.token { playback.play(station) } else if !isPlaying { playPause() }   // same station: resume
     mode = .nowPlaying
   }
 

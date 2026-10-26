@@ -103,9 +103,8 @@ struct DisplayView: View {
         StripButton("+ NEW", style: style, bright: true) { model.beginNewStation() }
         StripButton("EDIT", style: style, bright: true, disabled: !(item?.canEdit ?? false)) { model.beginEdit(model.selection) }
         StripButton("DELETE", style: style, bright: true, disabled: !(item?.canEdit ?? false)) { model.beginDelete(model.selection) }
-        // lit when the selection isn't the station already playing
-        StripButton("▶ TUNE IN", lit: item != nil && item?.id != model.currentToken, style: style, bright: true,
-                    disabled: item == nil || item?.id == model.currentToken) { model.tune(model.selection) }
+        // always active: on another station it tunes in, on the current one it resumes playback
+        StripButton("▶ TUNE IN", lit: item != nil, style: style, bright: true, disabled: item == nil) { model.tune(model.selection) }
       case .history:
         let item = model.history.indices.contains(model.selection) ? model.history[model.selection] : nil
         StripButton("DISLIKE", icon: "hand.thumbsdown.fill", lit: item?.rating == -1, style: style, bright: true, disabled: item == nil) {
@@ -574,7 +573,7 @@ private struct StripButton: View {
   }
 
   var body: some View {
-    Button(action: action) {
+    Button(action: { if !disabled { action() } }) {
       HStack(spacing: u(5)) {
         if let icon { Image(systemName: icon).font(.system(size: u(10.5))) }
         Text(title).font(.system(size: u(10.5), weight: .bold)).kerning(u(1.2)).lineLimit(1)
@@ -582,11 +581,10 @@ private struct StripButton: View {
       .padding(.horizontal, u(6)).padding(.vertical, u(4))
       .contentShape(Rectangle())
       .foregroundStyle(lit ? (litColor ?? style.ink) : style.inkDim)
-      .opacity(disabled ? 0.15 : lit ? 1 : hover ? 0.85 : (bright ? 0.78 : 0.42))
+      .opacity(disabled ? 0.42 : lit ? 1 : hover ? 0.85 : (bright ? 0.78 : 0.42))   // unavailable: faded like an unlit option
     }
     .buttonStyle(.plain)
     .focusable(false)
-    .disabled(disabled)
     .pointingHand(!disabled)
     .frame(maxWidth: spread ? .infinity : nil)   // bottom strip: actions spread evenly across
     .onHover { hover = $0 }
