@@ -72,6 +72,9 @@ final class RadioWindowController: NSWindowController, NSWindowDelegate {
     window.isOpaque = false
     window.backgroundColor = .clear
     window.hasShadow = false            // the radio draws its own shadow on the desk
+    // A transparent window is click-through wherever macOS thinks it's see-through; the radio fills
+    // almost all of it, so take every click (the drag code above decides what each one does).
+    window.ignoresMouseEvents = false
     window.isMovableByWindowBackground = false
     window.title = "Walnut"
     window.isReleasedWhenClosed = false
