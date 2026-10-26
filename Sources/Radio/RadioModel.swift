@@ -138,6 +138,12 @@ final class RadioModel: ObservableObject {
     on(.StationDidPlaySong) { [weak self] _ in self?.songPlayed() }
     on(.ASStatusChanged) { [weak self] _ in self?.stateChanged() }
     on(NSNotification.Name(ASStreamError)) { [weak self] _ in self?.mode = .loading(Self.noSignal) }
+    // Pandora couldn't be reached (network, server): say so instead of tuning in forever. The engine
+    // retries by itself after 20 s; play retries straight away.
+    on(NSNotification.Name("WalnutConnectionProblem")) { [weak self] _ in
+      guard let self else { return }
+      switch self.mode { case .login: return; default: self.mode = .loading(Self.noSignal) }
+    }
 
     progressTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
       MainActor.assumeIsolated { self?.tick() }
@@ -168,7 +174,7 @@ final class RadioModel: ObservableObject {
     let code = (n.userInfo?["code"] as? NSNumber)?.intValue ?? 0
     switch code {
     case 1002, 1011, 1012: showLogin(error: "WRONG EMAIL OR PASSWORD")
-    default: break   // the engine retries and reports other errors itself
+    default: break   // other errors arrive as WalnutConnectionProblem, after the engine has handled them
     }
   }
 
@@ -203,7 +209,7 @@ final class RadioModel: ObservableObject {
     art = nil
     if let url = playback.playing?.playingSong?.art, !url.isEmpty {
       let expected = url
-      ImageLoader().loadImageURL(url) { [weak self] data in
+      ImageLoader().loadImageURL(artURL(url)) { [weak self] data in
         MainActor.assumeIsolated {
           guard let self, self.playback.playing?.playingSong?.art == expected, let data else { return }
           self.art = NSImage(data: data).map(trimFlatBorder)
@@ -284,10 +290,14 @@ final class RadioModel: ObservableObject {
   static let noSignal = "NO SIGNAL · PRESS PLAY"
 
   func playPause() {
-    if mode == .loading(Self.noSignal) {          // stream dropped: fetch a fresh playlist and go on
+    if mode == .loading(Self.noSignal) {          // try again
       mode = .loading("TUNING IN")
-      playback.playing?.clearSongList()
-      playback.playing?.next()
+      if let station = playback.playing, pandora.isAuthenticated() {
+        station.clearSongList()                   // stream dropped: fetch a fresh playlist and go on
+        station.next()
+      } else {
+        app.retry(nil)                            // couldn't reach Pandora: log in / repeat the request
+      }
       return
     }
     // a station restored paused at launch hasn't started streaming yet; play starts it
@@ -538,4 +548,11 @@ func trimFlatBorder(_ image: NSImage) -> NSImage {
 func plain(_ name: String) -> String {
   String(name.unicodeScalars.filter { !($0.properties.isEmojiPresentation || ($0.properties.isEmoji && $0.value > 0x238C)) })
     .trimmingCharacters(in: .whitespaces)
+}
+
+/// Pandora sometimes hands out art on mediaserver-… hosts that don't answer; the same image is on
+/// its content CDN, so load it from there over https.
+func artURL(_ url: String) -> String {
+  guard let r = url.range(of: #"^https?://mediaserver[^/]*\.pandora\.com/images/"#, options: .regularExpression) else { return url }
+  return "https://content-images.p-cdn.com/images/" + url[r.upperBound...]
 }

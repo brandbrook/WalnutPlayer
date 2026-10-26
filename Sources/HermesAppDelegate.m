@@ -760,6 +760,9 @@
   lastRequest = [notification userInfo][@"request"];
   [self setCurrentView:errorView];
   [errorLabel setStringValue:err];
+  // the radio shows this on its display (RadioModel); the old error view stays hidden
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"WalnutConnectionProblem" object:self
+                                                    userInfo:@{@"message": err ?: @"", @"autoRetry": @(code != 0 && code != 1039)}];
   [window orderFront:nil];
   [autoRetry invalidate];
 

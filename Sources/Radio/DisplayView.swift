@@ -172,36 +172,42 @@ private struct NowPlayingView: View {
   let style: GlassStyle
 
   var body: some View {
-    HStack(alignment: .top, spacing: u(14)) {
+    HStack(alignment: .center, spacing: u(14)) {
       AlbumArt(image: model.art, style: style).frame(width: u(88), height: u(88))
-      VStack(alignment: .leading, spacing: u(5)) {
-        HStack(alignment: .top) {
-          HStack(alignment: .bottom, spacing: u(5)) {
-            SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
-              .frame(height: u(32))
-              .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
-            VStack(alignment: .leading, spacing: u(2)) {
-              Text("MIN").kerning(u(0.6)); Text("SEC").kerning(u(0.6))
-            }
-            .font(.system(size: u(8.5)))
-            .foregroundStyle(model.isPlaying ? style.inkDim : style.inkOff)
-          }
-          Spacer(minLength: u(8))
-          StationBadge(model: model, style: style)
+      // the song: track, album, artist, spaced out down the middle
+      VStack(alignment: .leading, spacing: 0) {
+        InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
+          SpinningRecord(playing: model.isPlaying, style: style)
         }
-        VStack(alignment: .leading, spacing: u(3)) {
-          InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
-            SpinningRecord(playing: model.isPlaying, style: style)
-          }
-          InfoLine(text: model.album, link: model.link(for: .album), style: style) {
-            Image(systemName: "rectangle.stack.fill").font(.system(size: u(10)))
-          }
-          InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
-            Image(systemName: "person.fill").font(.system(size: u(10)))
-          }
+        Spacer(minLength: u(4))
+        InfoLine(text: model.album, link: model.link(for: .album), style: style) {
+          Image(systemName: "rectangle.stack.fill").font(.system(size: u(11.5)))
+        }
+        Spacer(minLength: u(4))
+        InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
+          Image(systemName: "person.fill").font(.system(size: u(11.5)))
         }
       }
+      .frame(height: u(76))
       .frame(maxWidth: .infinity, alignment: .leading)
+      .layoutPriority(1)                // the song gets the room; the station name truncates first
+      // station top right, time bottom right
+      VStack(alignment: .trailing, spacing: 0) {
+        StationBadge(model: model, style: style)
+        Spacer(minLength: u(6))
+        HStack(alignment: .bottom, spacing: u(5)) {
+          SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
+            .frame(height: u(32))
+            .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
+          VStack(alignment: .leading, spacing: u(2)) {
+            Text("MIN").kerning(u(0.6)); Text("SEC").kerning(u(0.6))
+          }
+          .font(.system(size: u(8.5)))
+          .foregroundStyle(model.isPlaying ? style.inkDim : style.inkOff)
+        }
+        .fixedSize()                    // the timer never shrinks
+      }
+      .frame(minWidth: u(112), maxHeight: u(88), alignment: .trailing)
     }
     .padding(.horizontal, u(3))
   }
@@ -212,7 +218,7 @@ private struct NowPlayingView: View {
   }
 }
 
-/// Top right: a radio-station icon and the station's name.
+/// Top right: a radio-station icon and the station's name; clicking it opens the station picker.
 private struct StationBadge: View {
   @ObservedObject var model: RadioModel
   let style: GlassStyle
@@ -224,7 +230,11 @@ private struct StationBadge: View {
         .font(.system(size: u(13), weight: .semibold)).foregroundStyle(style.ink)
         .lineLimit(1).truncationMode(.tail)
     }
-    .frame(maxWidth: u(190), alignment: .trailing)
+    .frame(maxWidth: u(130), alignment: .trailing)
+    .contentShape(Rectangle())
+    .onHover { inside in inside ? NSCursor.pointingHand.push() : NSCursor.pop() }
+    .onTapGesture { model.showBrowser(.stations) }          // opens the station picker
+    .help("Choose a station")
   }
 }
 
@@ -239,9 +249,9 @@ private struct InfoLine<Icon: View>: View {
 
   var body: some View {
     HStack(spacing: u(7)) {
-      icon().foregroundStyle(style.inkDim).frame(width: u(13), height: u(13))
+      icon().foregroundStyle(style.inkDim).frame(width: u(15), height: u(15))
       Text(text.isEmpty ? " " : text)
-        .font(.system(size: u(strong ? 13 : 12), weight: strong ? .semibold : .regular))
+        .font(.system(size: u(strong ? 15 : 13.5), weight: strong ? .semibold : .regular))
         .foregroundStyle(strong ? style.songStrong : style.inkDim)
         .underline(hover && link != nil, color: style.inkDim)
         .lineLimit(1).truncationMode(.tail)
