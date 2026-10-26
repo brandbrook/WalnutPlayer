@@ -44,10 +44,6 @@ struct DisplayView: View {
       LinearGradient(colors: [Color.black.opacity(0.32), Color.black.opacity(0.1), .clear], startPoint: .top, endPoint: .bottom)
         .frame(height: u(9)).allowsHitTesting(false)
     }
-    .overlay(alignment: .leading) {
-      LinearGradient(colors: [Color.black.opacity(0.16), .clear], startPoint: .leading, endPoint: .trailing)
-        .frame(width: u(5)).allowsHitTesting(false)
-    }
     .clipShape(RoundedRectangle(cornerRadius: u(5)))
     .overlay(RoundedRectangle(cornerRadius: u(5)).stroke(Color(hex: 0x2A1A04, opacity: 0.75), lineWidth: 1))
     .saturation(dim ? (style.glare > 0.3 ? 0.55 : 0.7) : 1)

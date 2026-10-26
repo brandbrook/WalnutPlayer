@@ -85,12 +85,13 @@ struct RadioView: View {
   private var face: some View {
     VStack(spacing: u(16)) {
       DisplayView(model: model)
-        // the brass's inner edge bevels down toward the glass: in shade along the top and left,
-        // catching the light along the bottom and right
+        // the brass's inner edge bevels down toward the glass: lit along the left, right and bottom,
+        // in shade only along the top, under the frame's lip
         .padding(u(2.5))
-        .background(RoundedRectangle(cornerRadius: u(7)).fill(
-          LinearGradient(colors: [Color(hex: 0x4E3612), Color(hex: 0x8A6A30), Color(hex: 0xE6CB8A)],
-                         startPoint: UnitPoint(x: 0.35, y: 0), endPoint: UnitPoint(x: 0.65, y: 1))))
+        .background(RoundedRectangle(cornerRadius: u(7)).fill(Color(hex: 0xE2C684))
+          .overlay(LinearGradient(stops: [.init(color: Color(hex: 0x4E3612), location: 0), .init(color: Color(hex: 0x8A6A30, opacity: 0.6), location: 0.04),
+                                          .init(color: .clear, location: 0.1)], startPoint: .top, endPoint: .bottom)
+                     .clipShape(RoundedRectangle(cornerRadius: u(7)))))
         .padding(u(4.5))
         .background(BrushedBrass().clipShape(RoundedRectangle(cornerRadius: u(10))))
         .overlay(RoundedRectangle(cornerRadius: u(10)).stroke(Color(hex: 0x32200A, opacity: 0.6), lineWidth: 0.5))
