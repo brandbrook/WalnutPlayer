@@ -313,6 +313,8 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   }
   if (audioQueue) {
     AudioQueueStop(audioQueue, true);
+    WalnutTapRemove(walnutTap);
+    walnutTap = NULL;
     err = AudioQueueDispose(audioQueue, true);
     assert(!err);
     audioQueue = nil;
@@ -904,6 +906,7 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
                             (__bridge void*) self, CFRunLoopGetCurrent(), NULL,
                             0, &audioQueue);
   CHECK_ERR(err, AS_AUDIO_QUEUE_CREATION_FAILED);
+  walnutTap = WalnutTapInstall(audioQueue);
 
   // start the queue if it has not been started already
   // listen to the "isRunning" property

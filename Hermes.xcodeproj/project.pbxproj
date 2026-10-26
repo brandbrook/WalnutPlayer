@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7CFCC5B6BDAC879AA5356A98 /* RadioWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087C6E930F5E342D3A6AFE09 /* RadioWindow.swift */; };
+		3BA2A4B26D168F2CD79F6047 /* RadioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6EE38BE362496123258341 /* RadioView.swift */; };
+		36AF7AF7DBDD465797493750 /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2846B1D5DDE69CEB48D2D2F5 /* DisplayView.swift */; };
+		087A920E7CF29CE4230BA69B /* SpeakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAB3CCEF3B88F989C7A05B /* SpeakerView.swift */; };
+		DBD59D897E9C61CF06C330A7 /* RadioModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F330CBC6A11D57213E617DBC /* RadioModel.swift */; };
+		4CB30FE95DE404D9A4083DBC /* SevenSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1956EB2802472AA6F2D88C4A /* SevenSegment.swift */; };
+		DADB099377B31EC683F0B0CF /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE32F06BC163B35AB747FB30 /* Controls.swift */; };
+		E3DDFB0F23BF7812444F1D4D /* Materials.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51B6E786E918C29257EC332 /* Materials.swift */; };
+		755A114A28881099A42337FA /* WalnutAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A6ED92CDEB5EF58E4F3040 /* WalnutAudio.m */; };
+		088E71B3AB1BEE04BF034EB7 /* paper006.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 70B2A09AC673F0046DFD2DB1 /* paper006.jpg */; };
+		C5E38B5F98429390E7EF4DF0 /* metal009.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B32C3C3CA31E5532BA98B75E /* metal009.jpg */; };
+		77FE266FBA5606437215FF60 /* wood026.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2C356760E7A4AC0F03B73F52 /* wood026.jpg */; };
+		CE71D2409961555E2E52160B /* wood027.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 05F10F1D241AAAB323A1E348 /* wood027.jpg */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		441C9F0D1CC80635000A0302 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D8A5158C3E7C00C078A4 /* AudioToolbox.framework */; };
 		441C9F0E1CC80AA0000A0302 /* ASPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = FA99E25A15E4B7EA005AB6E6 /* ASPlaylist.m */; };
@@ -114,6 +127,21 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		087C6E930F5E342D3A6AFE09 /* RadioWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RadioWindow.swift"; sourceTree = "<group>"; };
+		AE6EE38BE362496123258341 /* RadioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RadioView.swift"; sourceTree = "<group>"; };
+		2846B1D5DDE69CEB48D2D2F5 /* DisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DisplayView.swift"; sourceTree = "<group>"; };
+		5BEAB3CCEF3B88F989C7A05B /* SpeakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpeakerView.swift"; sourceTree = "<group>"; };
+		F330CBC6A11D57213E617DBC /* RadioModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RadioModel.swift"; sourceTree = "<group>"; };
+		1956EB2802472AA6F2D88C4A /* SevenSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SevenSegment.swift"; sourceTree = "<group>"; };
+		EE32F06BC163B35AB747FB30 /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Controls.swift"; sourceTree = "<group>"; };
+		F51B6E786E918C29257EC332 /* Materials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Materials.swift"; sourceTree = "<group>"; };
+		00A6ED92CDEB5EF58E4F3040 /* WalnutAudio.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WalnutAudio.m"; sourceTree = "<group>"; };
+		C1395025FC6B0004D8A40A99 /* WalnutAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WalnutAudio.h"; sourceTree = "<group>"; };
+		0191DA723070DF614019CD0B /* Walnut-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Walnut-Bridging-Header.h"; sourceTree = "<group>"; };
+		70B2A09AC673F0046DFD2DB1 /* paper006.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "paper006.jpg"; sourceTree = "<group>"; };
+		B32C3C3CA31E5532BA98B75E /* metal009.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "metal009.jpg"; sourceTree = "<group>"; };
+		2C356760E7A4AC0F03B73F52 /* wood026.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wood026.jpg"; sourceTree = "<group>"; };
+		05F10F1D241AAAB323A1E348 /* wood027.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wood027.jpg"; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -256,9 +284,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8FDB7A7A11D3CF12C061C22F /* RadioTextures */ = {
+			isa = PBXGroup;
+			children = (
+				70B2A09AC673F0046DFD2DB1 /* paper006.jpg */,
+				B32C3C3CA31E5532BA98B75E /* metal009.jpg */,
+				2C356760E7A4AC0F03B73F52 /* wood026.jpg */,
+				05F10F1D241AAAB323A1E348 /* wood027.jpg */,
+			);
+			name = RadioTextures;
+			path = Radio;
+			sourceTree = "<group>";
+		};
+		0031D23A786416B0B1F8AD68 /* Radio */ = {
+			isa = PBXGroup;
+			children = (
+				087C6E930F5E342D3A6AFE09 /* RadioWindow.swift */,
+				AE6EE38BE362496123258341 /* RadioView.swift */,
+				2846B1D5DDE69CEB48D2D2F5 /* DisplayView.swift */,
+				5BEAB3CCEF3B88F989C7A05B /* SpeakerView.swift */,
+				F330CBC6A11D57213E617DBC /* RadioModel.swift */,
+				1956EB2802472AA6F2D88C4A /* SevenSegment.swift */,
+				EE32F06BC163B35AB747FB30 /* Controls.swift */,
+				F51B6E786E918C29257EC332 /* Materials.swift */,
+				0191DA723070DF614019CD0B /* Walnut-Bridging-Header.h */,
+			);
+			name = Radio;
+			path = Radio;
+			sourceTree = "<group>";
+		};
 		080E96DDFE201D6D7F000001 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0031D23A786416B0B1F8AD68 /* Radio */,
 				256AC3F00F4B6AF500CF3369 /* Hermes_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				FACF0180149A713700D1FB73 /* AudioStreamer */,
@@ -332,6 +390,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8FDB7A7A11D3CF12C061C22F /* RadioTextures */,
 				FA24435E136B3D6C00E126D3 /* CHANGELOG.md */,
 				8D1107310486CEB800E47090 /* Hermes-Info.plist */,
 				FAEFFBFF132D620B007DC6FB /* Icons */,
@@ -489,6 +548,8 @@
 		FACF0180149A713700D1FB73 /* AudioStreamer */ = {
 			isa = PBXGroup;
 			children = (
+				00A6ED92CDEB5EF58E4F3040 /* WalnutAudio.m */,
+				C1395025FC6B0004D8A40A99 /* WalnutAudio.h */,
 				FACF0183149A713700D1FB73 /* AudioStreamer.h */,
 				FACF0184149A713700D1FB73 /* AudioStreamer.m */,
 				FA99E25915E4B7EA005AB6E6 /* ASPlaylist.h */,
@@ -618,6 +679,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				088E71B3AB1BEE04BF034EB7 /* paper006.jpg in Resources */,
+				C5E38B5F98429390E7EF4DF0 /* metal009.jpg in Resources */,
+				77FE266FBA5606437215FF60 /* wood026.jpg in Resources */,
+				CE71D2409961555E2E52160B /* wood027.jpg in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				FAEFFBD5132CC0E2007DC6FB /* error_icon.png in Resources */,
@@ -650,6 +715,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CFCC5B6BDAC879AA5356A98 /* RadioWindow.swift in Sources */,
+				3BA2A4B26D168F2CD79F6047 /* RadioView.swift in Sources */,
+				36AF7AF7DBDD465797493750 /* DisplayView.swift in Sources */,
+				087A920E7CF29CE4230BA69B /* SpeakerView.swift in Sources */,
+				DBD59D897E9C61CF06C330A7 /* RadioModel.swift in Sources */,
+				4CB30FE95DE404D9A4083DBC /* SevenSegment.swift in Sources */,
+				DADB099377B31EC683F0B0CF /* Controls.swift in Sources */,
+				E3DDFB0F23BF7812444F1D4D /* Materials.swift in Sources */,
+				755A114A28881099A42337FA /* WalnutAudio.m in Sources */,
 				441C9F101CC815A1000A0302 /* NSObject+SPInvocationGrabbing.m in Sources */,
 				441C9F121CC815A1000A0302 /* SPMediaKeyTap.m in Sources */,
 				441C9F0E1CC80AA0000A0302 /* ASPlaylist.m in Sources */,
@@ -770,6 +844,9 @@
 					"\"$(SRCROOT)/Frameworks\"",
 				);
 				GCC_PREFIX_HEADER = Sources/Hermes_Prefix.pch;
+				CLANG_ENABLE_MODULES = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Sources/Radio/Walnut-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/Sources\"/**",
@@ -806,6 +883,9 @@
 					"\"$(SRCROOT)/Frameworks\"",
 				);
 				GCC_PREFIX_HEADER = Sources/Hermes_Prefix.pch;
+				CLANG_ENABLE_MODULES = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Sources/Radio/Walnut-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/Sources\"/**",

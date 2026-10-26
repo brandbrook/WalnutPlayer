@@ -7,8 +7,15 @@
 //
 
 #import "HermesMainWindow.h"
+#import "Walnut-Swift.h"
 
 @implementation HermesMainWindow
+
+// Walnut shows the radio window instead; the old main window stays hidden but keeps its
+// controllers' views alive. Anything asking it to come forward brings the radio forward.
+- (void)makeKeyAndOrderFront:(id)sender { [[RadioWindowController shared] bringToFront]; }
+- (void)orderFront:(id)sender { [[RadioWindowController shared] bringToFront]; }
+- (void)orderFrontRegardless { [[RadioWindowController shared] bringToFront]; }
 
 - (void)sendEvent:(NSEvent *)theEvent {
   if ([theEvent type] == NSKeyDown) {

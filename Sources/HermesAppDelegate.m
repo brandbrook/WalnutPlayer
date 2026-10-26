@@ -5,6 +5,7 @@
  * Contains startup routines, and other interfaces with the OS
  */
 
+#import "Walnut-Swift.h"
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 #import <MediaPlayer/MediaPlayer.h>
 
@@ -200,6 +201,9 @@
   window.restorationClass = [self class];
 
   [NSApp activateIgnoringOtherApps:YES];
+
+  // The radio interface listens to the engine from here on, before login starts below.
+  [[RadioWindowController shared] startRadio];
 
   NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 
