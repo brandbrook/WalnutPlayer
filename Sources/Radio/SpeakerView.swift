@@ -152,9 +152,7 @@ struct SpeakerView: View {
       l.fill(circle(.zero, dr * 0.42), with: .radialGradient(Gradient(colors: [.white.opacity(0.34 + hi * 0.18 + e * 0.08), .clear]),
                                                              center: .zero, startRadius: 0, endRadius: dr * 0.42))
     }
-    ctx.stroke(arc(c, dr - 1, 0.25, 0.75), with: .color(.white.opacity(0.08)), lineWidth: 1.5)
     ctx.stroke(circle(c, dr), with: .color(.black.opacity(0.9)), lineWidth: 0.75)
-    ctx.stroke(arc(c, dr - 0.75, 1.1, 1.55), with: .color(.white.opacity(0.2)), lineWidth: 0.5)
   }
 }
 
