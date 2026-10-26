@@ -81,6 +81,7 @@ struct BrassKnob: View {
   @Binding var value: Double          // dB
   var size: CGFloat = 44
   @State private var dragStart: Double?
+  @State private var lastTap = Date.distantPast
 
   var body: some View {
     VStack(spacing: 5) {
@@ -106,8 +107,16 @@ struct BrassKnob: View {
           if dragStart == nil { dragStart = value }
           value = ((dragStart! - g.translation.height / 140 * 24).clamped(to: -12...12) * 2).rounded() / 2
         }
-        .onEnded { _ in dragStart = nil })
-      .onTapGesture(count: 2) { value = 0 }
+        .onEnded { g in
+          dragStart = nil
+          // a click without movement: two within a moment reset the knob to flat
+          guard abs(g.translation.height) < 2, abs(g.translation.width) < 2 else { return }
+          if Date().timeIntervalSince(lastTap) < NSEvent.doubleClickInterval {
+            value = 0; lastTap = .distantPast
+          } else {
+            lastTap = Date()
+          }
+        })
       .help("\(label) \(value > 0 ? "+" : "")\(value.formatted()) dB")
       .accessibilityElement()
       .accessibilityLabel(label)
