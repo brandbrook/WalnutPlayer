@@ -85,13 +85,15 @@ struct RadioView: View {
   private var face: some View {
     VStack(spacing: u(16)) {
       DisplayView(model: model)
-        // the brass's inner edge bevels down toward the glass: lit along the left, right and bottom,
-        // in shade only along the top, under the frame's lip
+        // the brass's inner edge bevels down toward the glass: the light on it is full along the bottom
+        // and fades out up the sides (gone about two thirds of the way up); shaded under the top lip
         .padding(u(2.5))
-        .background(RoundedRectangle(cornerRadius: u(7)).fill(Color(hex: 0xE2C684))
-          .overlay(LinearGradient(stops: [.init(color: Color(hex: 0x4E3612), location: 0), .init(color: Color(hex: 0x8A6A30, opacity: 0.6), location: 0.04),
-                                          .init(color: .clear, location: 0.1)], startPoint: .top, endPoint: .bottom)
-                     .clipShape(RoundedRectangle(cornerRadius: u(7)))))
+        .background(RoundedRectangle(cornerRadius: u(7)).fill(Color(hex: 0x7C5C26))
+          .overlay(LinearGradient(stops: [.init(color: .clear, location: 0.62), .init(color: Color(hex: 0xE2C684), location: 1)],
+                                  startPoint: .top, endPoint: .bottom))
+          .overlay(LinearGradient(stops: [.init(color: Color(hex: 0x4E3612), location: 0), .init(color: Color(hex: 0x4E3612, opacity: 0), location: 0.1)],
+                                  startPoint: .top, endPoint: .bottom))
+          .clipShape(RoundedRectangle(cornerRadius: u(7))))
         .padding(u(4.5))
         .background(BrushedBrass().clipShape(RoundedRectangle(cornerRadius: u(10))))
         .overlay(RoundedRectangle(cornerRadius: u(10)).stroke(Color(hex: 0x32200A, opacity: 0.6), lineWidth: 0.5))
