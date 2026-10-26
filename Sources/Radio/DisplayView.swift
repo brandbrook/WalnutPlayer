@@ -267,7 +267,7 @@ private struct LoginView: View {
         GlassTextField(placeholder: "Password", text: $model.password, style: style, secure: true, focus: !model.username.isEmpty) { model.logIn() }
       }
       if let error = model.loginError {          // only shown when something went wrong, under the fields
-        Text(error).font(.system(size: u(9), weight: .bold)).kerning(u(1.3)).foregroundStyle(accentRed)
+        Text(error).font(.system(size: u(10.5), weight: .bold)).kerning(u(1.2)).foregroundStyle(accentRed)
           .frame(maxWidth: .infinity, alignment: .leading).padding(.leading, u(90))
       }
     }
@@ -452,7 +452,7 @@ private struct Strip<Content: View>: View {
   var body: some View {
     HStack(spacing: u(2)) { content() }
     .environment(\.stripSpread, spread)
-    .frame(height: u(22))
+    .frame(height: u(24))
     .padding(.leading, u(9)).padding(.trailing, u(6))
     .frame(maxWidth: .infinity)
     .background(RoundedRectangle(cornerRadius: u(3)).fill(style.stripBackground))
@@ -466,7 +466,7 @@ private struct StripLabel: View {
   var lit = false
   init(_ text: String, style: GlassStyle, lit: Bool = false) { self.text = text; self.style = style; self.lit = lit }
   var body: some View {
-    Text(text).font(.system(size: u(9), weight: .bold)).kerning(u(1.3)).lineLimit(1)
+    Text(text).font(.system(size: u(10.5), weight: .bold)).kerning(u(1.2)).lineLimit(1)
       .foregroundStyle(lit ? style.ink : style.inkDim.opacity(0.55))
   }
 }
@@ -492,8 +492,8 @@ private struct StripButton: View {
   var body: some View {
     Button(action: action) {
       HStack(spacing: u(5)) {
-        if let icon { Image(systemName: icon).font(.system(size: u(9))) }
-        Text(title).font(.system(size: u(9), weight: .bold)).kerning(u(1.3)).lineLimit(1)
+        if let icon { Image(systemName: icon).font(.system(size: u(10.5))) }
+        Text(title).font(.system(size: u(10.5), weight: .bold)).kerning(u(1.2)).lineLimit(1)
       }
       .padding(.horizontal, u(6)).padding(.vertical, u(4))
       .contentShape(Rectangle())
@@ -515,7 +515,7 @@ private struct Field<Content: View>: View {
   @ViewBuilder var content: () -> Content
   var body: some View {
     HStack(spacing: u(10)) {
-      Text(label).font(.system(size: u(9), weight: .bold)).kerning(u(1.3)).foregroundStyle(style.inkDim).lineLimit(1).fixedSize().frame(width: u(80), alignment: .leading)
+      Text(label).font(.system(size: u(10.5), weight: .bold)).kerning(u(1.2)).foregroundStyle(style.inkDim).lineLimit(1).fixedSize().frame(width: u(80), alignment: .leading)
       content()
     }
     .frame(minHeight: u(26))
