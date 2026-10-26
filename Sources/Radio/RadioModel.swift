@@ -206,7 +206,7 @@ final class RadioModel: ObservableObject {
       ImageLoader().loadImageURL(url) { [weak self] data in
         MainActor.assumeIsolated {
           guard let self, self.playback.playing?.playingSong?.art == expected, let data else { return }
-          self.art = NSImage(data: data)
+          self.art = NSImage(data: data).map(trimFlatBorder)
         }
       }
     }
@@ -481,4 +481,35 @@ final class RadioModel: ObservableObject {
   // MARK: - EQ
 
   private func applyEQ() { WalnutAudioSetEQ(Float(eqLow), Float(eqMid), Float(eqHigh)) }
+}
+
+/// Some Pandora covers come with a flat white (or near-white) frame around the artwork; it looks
+/// odd on the glass, so trim any such border (up to 12% per side) off the cover.
+func trimFlatBorder(_ image: NSImage) -> NSImage {
+  guard let cg = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return image }
+  let w = 128, h = 128
+  guard let ctx = CGContext(data: nil, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w * 4,
+                            space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue),
+        let px = ctx.data?.assumingMemoryBound(to: UInt8.self) else { return image }
+  ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+  func light(_ x: Int, _ y: Int) -> Bool {
+    let i = (y * w + x) * 4
+    return px[i] > 232 && px[i + 1] > 232 && px[i + 2] > 228
+  }
+  func rowLight(_ y: Int) -> Bool { (0..<w).filter { light($0, y) }.count > w * 9 / 10 }
+  func colLight(_ x: Int) -> Bool { (0..<h).filter { light(x, $0) }.count > h * 9 / 10 }
+  let limit = w * 12 / 100
+  var top = 0, bottom = 0, left = 0, right = 0
+  while top < limit && rowLight(h - 1 - top) { top += 1 }        // bitmap rows run bottom-up
+  while bottom < limit && rowLight(bottom) { bottom += 1 }
+  while left < limit && colLight(left) { left += 1 }
+  while right < limit && colLight(w - 1 - right) { right += 1 }
+  // only trim a real frame (all four sides), never artwork that's simply light at one edge
+  guard min(top, bottom, left, right) >= 1 else { return image }
+  let inset = max(top, bottom, left, right) + 1                  // keep it square
+  let sx = CGFloat(cg.width) / CGFloat(w), sy = CGFloat(cg.height) / CGFloat(h)
+  let crop = CGRect(x: CGFloat(inset) * sx, y: CGFloat(inset) * sy,
+                    width: CGFloat(w - 2 * inset) * sx, height: CGFloat(h - 2 * inset) * sy)
+  guard let cut = cg.cropping(to: crop) else { return image }
+  return NSImage(cgImage: cut, size: NSSize(width: cut.width, height: cut.height))
 }
