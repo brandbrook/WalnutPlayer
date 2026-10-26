@@ -513,10 +513,12 @@
 
     /* Causes underlying window to activate briefly, but no other solution I could find */
     [NSApp hide:nil];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-      TransformProcessType(&psn, kProcessTransformToUIElementApplication);
+    // window work has to happen on the main thread (macOS crashes the app otherwise)
+    dispatch_async(dispatch_get_main_queue(), ^{
+      ProcessSerialNumber current = { 0, kCurrentProcess };
+      TransformProcessType(&current, kProcessTransformToUIElementApplication);
       [NSApp activateIgnoringOtherApps:YES];
-      [[NSApp mainWindow] makeKeyAndOrderFront:nil]; // restores mouse cursor
+      [[RadioWindowController shared] bringToFront]; // restores mouse cursor
     });
   }
 
