@@ -70,7 +70,7 @@
 		FA94E6ED1368E5830063860C /* FMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6E71368E5830063860C /* FMEngine.m */; };
 		FA94E6EF1368E5830063860C /* NSString+FMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6EB1368E5830063860C /* NSString+FMEngine.m */; };
 		FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6F71368E62C0063860C /* Scrobbler.m */; };
-		FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */ = {isa = PBXBuildFile; fileRef = FAAB28CE1336FB0300FC04C4 /* pandora.icns */; };
+		FAAB28CF1336FB0300FC04C4 /* walnut.icns in Resources */ = {isa = PBXBuildFile; fileRef = FAAB28CE1336FB0300FC04C4 /* walnut.icns */; };
 		FACFACD615673690008A2140 /* StationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FACFACD515673690008A2140 /* StationController.m */; };
 		FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
 		FAD42FA013678FB000E935CA /* Sparkle.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -221,7 +221,7 @@
 		FA94E6F71368E62C0063860C /* Scrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Scrobbler.m; path = Integration/Scrobbler.m; sourceTree = "<group>"; };
 		FA99E25915E4B7EA005AB6E6 /* ASPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPlaylist.h; sourceTree = "<group>"; };
 		FA99E25A15E4B7EA005AB6E6 /* ASPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPlaylist.m; sourceTree = "<group>"; };
-		FAAB28CE1336FB0300FC04C4 /* pandora.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = pandora.icns; sourceTree = "<group>"; };
+		FAAB28CE1336FB0300FC04C4 /* walnut.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = walnut.icns; sourceTree = "<group>"; };
 		FACF0183149A713700D1FB73 /* AudioStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		FACF0184149A713700D1FB73 /* AudioStreamer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
 		FACFACD415673690008A2140 /* StationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StationController.h; path = Controllers/StationController.h; sourceTree = "<group>"; };
@@ -337,7 +337,7 @@
 				FAEFFBFF132D620B007DC6FB /* Icons */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
-				FAAB28CE1336FB0300FC04C4 /* pandora.icns */,
+				FAAB28CE1336FB0300FC04C4 /* walnut.icns */,
 				FA24435F136B3D6C00E126D3 /* README.md */,
 				E137BA0A2132E698002E513C /* RELEASING.md */,
 				FA0E555914784A3000C36794 /* Hermes.sdef */,
@@ -630,7 +630,7 @@
 				FA7BF0321331832E00E26ADA /* zzs.png in Resources */,
 				FA7FD1E413325F6600DF66EB /* volume_up.png in Resources */,
 				FA85E6CE1333B257005C96B8 /* volume_down.icns in Resources */,
-				FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */,
+				FAAB28CF1336FB0300FC04C4 /* walnut.icns in Resources */,
 				FA229D6514429E48008AB9FE /* history.png in Resources */,
 				FA04AE9C14438F1000819310 /* thumbdown.png in Resources */,
 				FA04AE9D14438F1000819310 /* thumbup.png in Resources */,
@@ -777,8 +777,8 @@
 				);
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.alexcrichton.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = Hermes;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brandbrook.Walnut;
+				PRODUCT_NAME = Walnut;
 				ENABLE_HARDENED_RUNTIME = YES;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -813,8 +813,8 @@
 				);
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.alexcrichton.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = Hermes;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brandbrook.Walnut;
+				PRODUCT_NAME = Walnut;
 				ENABLE_HARDENED_RUNTIME = YES;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;

@@ -81,7 +81,7 @@
     } else {
 #endif
 #if DEBUG
-      mediaKeysLabel.stringValue = @"Media keys are not available because this version of Hermes is compiled in debug mode.";
+      mediaKeysLabel.stringValue = @"Media keys are not available because this version of Walnut is compiled in debug mode.";
 #else
       mediaKeysLabel.stringValue = @"Media keys are unavailable for an unknown reason.";
 #endif

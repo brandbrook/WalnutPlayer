@@ -13,7 +13,7 @@
 #import "Pandora/Station.h"
 #import "Notifications.h"
 
-#define LASTFM_KEYCHAIN_ITEM @"hermes-lastfm-sk"
+#define LASTFM_KEYCHAIN_ITEM @"walnut-lastfm-sk"
 
 @implementation Scrobbler
 
@@ -218,8 +218,8 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  */
 - (void) requestAuthorization {
   NSAlert *alert = [NSAlert new];
-  alert.messageText = @"Allow Hermes to scrobble on Last.fm";
-  alert.informativeText = @"Click “Authorize” to give Hermes permission to access your Last.fm account.\n\nHermes will not try to use Last.fm for at least 30 seconds to give you time to grant permission.\n\nClick “Don’t Scrobbleʺ to stop Hermes from trying to use Last.fm.";
+  alert.messageText = @"Allow Walnut to scrobble on Last.fm";
+  alert.informativeText = @"Click “Authorize” to give Walnut permission to access your Last.fm account.\n\nWalnut will not try to use Last.fm for at least 30 seconds to give you time to grant permission.\n\nClick “Don’t Scrobbleʺ to stop Walnut from trying to use Last.fm.";
   [alert addButtonWithTitle:@"Authorize"];
   [alert addButtonWithTitle:@"Don’t Scrobble"];
   [alert beginSheetModalForWindow:[HMSAppDelegate window] completionHandler:^(NSModalResponse returnCode) {

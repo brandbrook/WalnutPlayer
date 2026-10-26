@@ -4,7 +4,7 @@ XCB           = xcodebuild
 XCPIPE        =
 CONFIGURATION = Debug
 SCHEME        = Hermes
-HERMES        = ./build/$(CONFIGURATION)/Hermes.app/Contents/MacOS/Hermes
+HERMES        = ./build/$(CONFIGURATION)/Walnut.app/Contents/MacOS/Walnut
 DEBUGGER      = lldb
 
 # For some reason the project's SYMROOT setting is ignored when we specify an
@@ -24,8 +24,8 @@ dbg: hermes
 
 install:
 	$(XCB) $(COMMON_OPTS) -configuration Release -scheme Hermes
-	rm -rf /Applications/Hermes.app
-	cp -a ./build/Release/Hermes.app /Applications/
+	rm -rf /Applications/Walnut.app
+	cp -a ./build/Release/Walnut.app /Applications/
 
 # Create an archive to share (for beta testing purposes).
 archive: CONFIGURATION = Release

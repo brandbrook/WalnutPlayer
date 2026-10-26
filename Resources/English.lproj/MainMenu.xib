@@ -15,10 +15,10 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="AMainMenu" systemMenu="main" id="29">
             <items>
-                <menuItem title="Hermes" id="56">
-                    <menu key="submenu" title="Hermes" systemMenu="apple" id="57">
+                <menuItem title="Walnut" id="56">
+                    <menu key="submenu" title="Walnut" systemMenu="apple" id="57">
                         <items>
-                            <menuItem title="About Hermes" id="58">
+                            <menuItem title="About Walnut" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="orderFrontStandardAboutPanel:" target="-2" id="142"/>
@@ -47,7 +47,7 @@
                             <menuItem isSeparatorItem="YES" id="144">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Hide Hermes" keyEquivalent="h" id="134">
+                            <menuItem title="Hide Walnut" keyEquivalent="h" id="134">
                                 <connections>
                                     <action selector="hide:" target="-1" id="367"/>
                                 </connections>
@@ -66,7 +66,7 @@
                             <menuItem isSeparatorItem="YES" id="149">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Quit Hermes" keyEquivalent="q" id="136">
+                            <menuItem title="Quit Walnut" keyEquivalent="q" id="136">
                                 <connections>
                                     <action selector="terminate:" target="-3" id="449"/>
                                 </connections>
@@ -269,7 +269,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="491">
                         <items>
-                            <menuItem title="Hermes Web Site" id="492">
+                            <menuItem title="Walnut Web Site" id="492">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="hermesHomepage:" target="494" id="EdS-Zz-Tbe"/>
@@ -288,7 +288,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="aMG-UP-yRH"/>
-                            <menuItem title="Hermes on GitHub" id="zJ5-sc-NCR">
+                            <menuItem title="Walnut on GitHub" id="zJ5-sc-NCR">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="hermesOnGitHub:" target="494" id="xwk-J2-CdM"/>
@@ -299,7 +299,7 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="Hermes" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" appearanceType="aqua" frameAutosaveName="Preferences" animationBehavior="default" titlebarAppearsTransparent="YES" id="371" userLabel="Main Window" customClass="HermesMainWindow">
+        <window title="Walnut" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" appearanceType="aqua" frameAutosaveName="Preferences" animationBehavior="default" titlebarAppearsTransparent="YES" id="371" userLabel="Main Window" customClass="HermesMainWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <rect key="contentRect" x="300" y="434" width="240" height="294"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
@@ -1363,7 +1363,7 @@ DQ
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="YES" id="1550">
                     <rect key="frame" x="36" y="314" width="308" height="28"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use play/pause and next track keys to control Hermes from any application." id="1551">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use play/pause and next track keys to control Walnut from any application." id="1551">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1384,7 +1384,7 @@ DQ
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="YES" id="2354">
                     <rect key="frame" x="36" y="251" width="308" height="28"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="When checked, control Hermes with the keyboard or its menu on the right side of the menu bar." id="2355">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="When checked, control Walnut with the keyboard or its menu on the right side of the menu bar." id="2355">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1426,7 +1426,7 @@ DQ
                 <button id="sIX-RA-vSL">
                     <rect key="frame" x="156" y="203" width="188" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="radio" title="Color Hermes icon only" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="i1p-bV-vfc">
+                    <buttonCell key="cell" type="radio" title="Color Walnut icon only" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="i1p-bV-vfc">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -1463,7 +1463,7 @@ DQ
                 <button id="2369">
                     <rect key="frame" x="18" y="78" width="326" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Keep Hermes on top of all other windows" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2370">
+                    <buttonCell key="cell" type="check" title="Keep Walnut on top of all other windows" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2370">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -2258,7 +2258,7 @@ DQ
         </window>
         <menu title="Title" id="2308" userLabel="Status bar menu">
             <items>
-                <menuItem title="Show Hermes" id="2313">
+                <menuItem title="Show Walnut" id="2313">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="activate:" target="494" id="2330"/>
@@ -2306,7 +2306,7 @@ DQ
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="2322"/>
-                <menuItem title="About Hermes" id="Qwq-0z-jUK">
+                <menuItem title="About Walnut" id="Qwq-0z-jUK">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="orderFrontStandardAboutPanel:" target="-2" id="twq-VT-q9u"/>
@@ -2319,13 +2319,13 @@ DQ
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="fLS-rf-56B"/>
-                <menuItem title="Hermes Preferences…" id="2325">
+                <menuItem title="Walnut Preferences…" id="2325">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="show:" target="1114" id="2336"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Quit Hermes" id="2323">
+                <menuItem title="Quit Walnut" id="2323">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="terminate:" target="-3" id="2324"/>

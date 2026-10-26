@@ -61,7 +61,7 @@
 
   [[NSDistributedNotificationCenter defaultCenter]
     postNotificationName:HistoryControllerDidPlaySongDistributedNotification
-                  object:@"hermes"
+                  object:@"walnut"
                 userInfo:[song toDictionary]
                 deliverImmediately: YES];
 

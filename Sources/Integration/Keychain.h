@@ -7,7 +7,7 @@
 
 #pragma once
 
-#define KEYCHAIN_SERVICE_NAME "Hermes"
+#define KEYCHAIN_SERVICE_NAME "Walnut"
 
 /**
  * Set a password in the Login Keychain
