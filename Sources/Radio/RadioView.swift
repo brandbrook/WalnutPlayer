@@ -25,7 +25,6 @@ struct RadioView: View {
   private var cabinet: some View {
     let shape = RoundedRectangle(cornerRadius: u(Radio.cabinetRadius), style: .continuous)
     return ZStack {
-      WindowDragArea()                  // dragging the outer frame moves the window
       FrameWalnut().allowsHitTesting(false)
         .overlay(alignment: .bottom) {   // the edge rolling under: a narrow band of shade, thin dark line
           LinearGradient(colors: [.clear, Color(hex: 0x1E0C04, opacity: 0.45)], startPoint: .top, endPoint: .bottom).frame(height: u(5))
@@ -80,7 +79,7 @@ struct RadioView: View {
         .frame(width: u(720) * 0.37)
       face
     }
-    .background(ZStack { WindowDragArea(); PanelWalnut().allowsHitTesting(false) })   // and so does the wood panel
+    .background(PanelWalnut().allowsHitTesting(false))
     .clipShape(shape)
     // the cabinet's top lip shades the panel; its bottom edge catches the light
     .overlay(shape.stroke(Color(hex: 0x0A0500, opacity: 0.55), lineWidth: 3).blur(radius: 1.5).offset(y: 1.5).clipShape(shape))
@@ -172,25 +171,6 @@ private struct TrafficLights: View {
     }
     .buttonStyle(.plain)
   }
-}
-
-/// Lets the user drag the window by the wood.
-struct WindowDragArea: NSViewRepresentable {
-  /// Moves the window by hand while the mouse is dragged; a plain click is left to AppKit, which
-  /// brings Walnut forward as usual.
-  final class DragView: NSView {
-    private var grab: NSPoint?          // where in the window the mouse went down
-    override func mouseDown(with event: NSEvent) { grab = event.locationInWindow }
-    override func mouseDragged(with event: NSEvent) {
-      guard let grab, let window else { return }
-      let mouse = NSEvent.mouseLocation
-      window.setFrameOrigin(NSPoint(x: mouse.x - grab.x, y: mouse.y - grab.y))
-    }
-    override func mouseUp(with event: NSEvent) { grab = nil; window?.saveFrame(usingName: "WalnutRadio") }
-    override func hitTest(_ point: NSPoint) -> NSView? { frame.contains(point) ? self : nil }
-  }
-  func makeNSView(context: Context) -> NSView { DragView() }
-  func updateNSView(_ nsView: NSView, context: Context) {}
 }
 
 /// Rectangle with only its bottom corners rounded (UnevenRoundedRectangle needs macOS 13).

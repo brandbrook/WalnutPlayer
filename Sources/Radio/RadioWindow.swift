@@ -12,6 +12,47 @@ import SwiftUI
 final class RadioWindow: NSWindow {
   override var canBecomeKey: Bool { true }
   override var canBecomeMain: Bool { true }
+
+  /// Where the radio sits in the window (top-left of the cabinet), set by the controller.
+  var radioOrigin = NSPoint.zero
+  private var grab: NSPoint?
+
+  /// Areas of the radio that handle their own clicks, in mockup units from the cabinet's top-left:
+  /// the display and the controls row (the face), and close/minimise. Everything else is wood.
+  private static let interactive = [
+    CGRect(x: 20 + 720 * 0.37 + 8, y: 20 + 18, width: 720 * 0.63 - 8 - 20, height: 310 - 18 - 16),
+    CGRect(x: 8, y: 2, width: 60, height: 24),
+  ]
+
+  private func isWood(_ p: NSPoint) -> Bool {
+    // window coordinates (bottom-left origin) to mockup units from the cabinet's top-left
+    let x = (p.x - radioOrigin.x) / Radio.scale
+    let y = (frame.height - p.y - radioOrigin.y) / Radio.scale
+    let cabinet = CGRect(x: 0, y: 0, width: Radio.size.width, height: Radio.size.height + 6 + 5 + 7)   // plus slab edge and feet
+    guard cabinet.contains(CGPoint(x: x, y: y)) else { return false }
+    return !Self.interactive.contains { $0.contains(CGPoint(x: x, y: y)) }
+  }
+
+  /// Drag the window by the wood: frame, panel and speaker. Clicks elsewhere go to SwiftUI as usual.
+  override func sendEvent(_ event: NSEvent) {
+    switch event.type {
+    case .leftMouseDown where isWood(event.locationInWindow):
+      grab = event.locationInWindow
+      NSApp.activate(ignoringOtherApps: true)
+      makeKeyAndOrderFront(nil)
+      return
+    case .leftMouseDragged where grab != nil:
+      let mouse = NSEvent.mouseLocation
+      setFrameOrigin(NSPoint(x: mouse.x - grab!.x, y: mouse.y - grab!.y))
+      return
+    case .leftMouseUp where grab != nil:
+      grab = nil
+      saveFrame(usingName: "WalnutRadio")
+      return
+    default:
+      super.sendEvent(event)
+    }
+  }
 }
 
 @objc(RadioWindowController)
@@ -45,6 +86,7 @@ final class RadioWindowController: NSWindowController, NSWindowDelegate {
     let host = NSHostingView(rootView: root)
     host.frame = frame
     window.contentView = host
+    window.radioOrigin = NSPoint(x: m.left, y: m.top)
     if !window.setFrameUsingName("WalnutRadio") { window.center() }
     installKeys()
   }
