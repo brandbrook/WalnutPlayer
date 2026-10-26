@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SevenSegmentDisplay: View {
-  /// Four characters, digits or spaces, e.g. " 1:03" as " 103".
+  /// Three or four characters: "103" shows 1:03, "1205" shows 12:05.
   let digits: String
   let ink: Color
   let off: Color
@@ -25,12 +25,16 @@ struct SevenSegmentDisplay: View {
   private static let lit: [Character: String] = ["0": "abcdef", "1": "bc", "2": "abged", "3": "abgcd", "4": "fgbc",
                                                  "5": "afgcd", "6": "afgedc", "7": "abc", "8": "abcdefg", "9": "abcdfg", " ": ""]
 
+  /// Three digits start at the second slot; the box begins there.
+  private var firstX: CGFloat { digits.count >= 4 ? 0 : 34 }
+
   var body: some View {
     Canvas { ctx, size in
-      let scale = size.height / 70
+      let scale = size.height / 64
       ctx.scaleBy(x: scale, y: scale)
-      let chars = Array(digits.padding(toLength: 4, withPad: " ", startingAt: 0))
-      for (i, x) in [0.0, 34, 78, 112].enumerated() {
+      ctx.translateBy(x: -firstX + 3, y: -6)        // the digits' own box, no empty margins
+      let chars = Array(digits)
+      for (i, x) in Array([0.0, 34, 78, 112].suffix(chars.count)).enumerated() {
         let on = Self.lit[chars[i]] ?? ""
         for (name, pts) in Self.segments {
           var p = Path()
@@ -43,6 +47,6 @@ struct SevenSegmentDisplay: View {
         ctx.fill(Path(roundedRect: CGRect(x: 66, y: y, width: 5, height: 5), cornerRadius: 1), with: .color(ink))
       }
     }
-    .aspectRatio(150 / 70, contentMode: .fit)
+    .aspectRatio((142 - firstX) / 64, contentMode: .fit)
   }
 }

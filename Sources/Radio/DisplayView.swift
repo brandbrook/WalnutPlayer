@@ -87,7 +87,7 @@ struct DisplayView: View {
   }
 
   private var bottomStrip: some View {
-    Strip(style: style, spread: true) {
+    Strip(style: style, plain: true, spread: true) {
       switch model.mode {
       case .nowPlaying:
         StripButton("DISLIKE", icon: "hand.thumbsdown.fill", lit: model.flash == "dislike", style: style) { model.dislike() }
@@ -174,23 +174,21 @@ private struct NowPlayingView: View {
   var body: some View {
     HStack(alignment: .center, spacing: u(14)) {
       AlbumArt(image: model.art, style: style).frame(width: u(88), height: u(88))
-      // the time top left with the artist top right; the song and album below
+      // the time on the art's top edge; song, artist and album below it, the last on the art's bottom edge
       VStack(alignment: .leading, spacing: 0) {
-        HStack(alignment: .center, spacing: u(10)) {
-          SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
-            .frame(height: u(34))
-            .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
-            .fixedSize()
-          Spacer(minLength: u(6))
-          InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
-            Image(systemName: "person.fill").font(.system(size: u(11.5)))
-          }
-        }
-        Spacer(minLength: u(4))
+        SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
+          .frame(height: u(30))
+          .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
+          .fixedSize()
+        Spacer(minLength: u(6))
         InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
           SpinningRecord(playing: model.isPlaying, style: style)
         }
-        Spacer(minLength: u(4))
+        Spacer(minLength: u(3))
+        InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
+          Image(systemName: "person.fill").font(.system(size: u(11.5)))
+        }
+        Spacer(minLength: u(3))
         InfoLine(text: model.album, link: model.link(for: .album), style: style) {
           Image(systemName: "rectangle.stack.fill").font(.system(size: u(11.5)))
         }
@@ -201,9 +199,10 @@ private struct NowPlayingView: View {
     .padding(.horizontal, u(3))
   }
 
+  /// Three digits (9:59), four only once a song passes ten minutes.
   private var timeDigits: String {
     let s = Int(model.elapsed), m = (s / 60) % 100
-    return (m < 10 ? " \(m)" : "\(m)") + String(format: "%02d", s % 60)
+    return "\(m)" + String(format: "%02d", s % 60)
   }
 }
 
