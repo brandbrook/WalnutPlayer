@@ -55,7 +55,7 @@ struct DisplayView: View {
   // MARK: Strips
 
   private var topStrip: some View {
-    Strip(style: style) {
+    Strip(style: style, plain: true) {
       switch model.mode {
       case .nowPlaying, .loading, .login:
         if model.mode == .nowPlaying { StationBadge(model: model, style: style) }
@@ -174,28 +174,25 @@ private struct NowPlayingView: View {
   var body: some View {
     HStack(alignment: .center, spacing: u(14)) {
       AlbumArt(image: model.art, style: style).frame(width: u(88), height: u(88))
-      // the song: track, album, artist, spread over the art's height. Track and album use the full
-      // width; only the artist row leaves room for the time beside it.
+      // the time top left with the artist top right; the song and album below
       VStack(alignment: .leading, spacing: 0) {
+        HStack(alignment: .center, spacing: u(10)) {
+          SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
+            .frame(height: u(34))
+            .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
+            .fixedSize()
+          Spacer(minLength: u(6))
+          InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
+            Image(systemName: "person.fill").font(.system(size: u(11.5)))
+          }
+        }
+        Spacer(minLength: u(4))
         InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
           SpinningRecord(playing: model.isPlaying, style: style)
         }
         Spacer(minLength: u(4))
         InfoLine(text: model.album, link: model.link(for: .album), style: style) {
           Image(systemName: "rectangle.stack.fill").font(.system(size: u(11.5)))
-        }
-        Spacer(minLength: u(4))
-        // the artist, with the time beside it; the time's bottom lines up with the art's
-        HStack(alignment: .center, spacing: u(10)) {
-          InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
-            Image(systemName: "person.fill").font(.system(size: u(11.5)))
-          }
-          .frame(maxWidth: .infinity, alignment: .leading)
-          SevenSegmentDisplay(digits: timeDigits, ink: style.ink, off: style.inkOff)
-            .frame(height: u(28))
-            .shadow(color: style.glow, radius: style.glow == .clear ? 0 : 3)
-            .fixedSize()
-            .offset(y: u(3.5))   // the digits sit a little above the bottom of their box
         }
       }
       .frame(height: u(88))
@@ -512,6 +509,7 @@ private struct TunerScale: View {
 
 private struct Strip<Content: View>: View {
   let style: GlassStyle
+  var plain = false               // no band behind it (the top strip)
   var spread = false
   @ViewBuilder var content: () -> Content
   var body: some View {
@@ -520,8 +518,8 @@ private struct Strip<Content: View>: View {
     .frame(height: u(24))
     .padding(.leading, u(9)).padding(.trailing, u(6))
     .frame(maxWidth: .infinity)
-    .background(RoundedRectangle(cornerRadius: u(3)).fill(style.stripBackground))
-    .overlay(RoundedRectangle(cornerRadius: u(3)).stroke(style.stripLine, lineWidth: 0.5))
+    .background(RoundedRectangle(cornerRadius: u(3)).fill(plain ? .clear : style.stripBackground))
+    .overlay(RoundedRectangle(cornerRadius: u(3)).stroke(plain ? .clear : style.stripLine, lineWidth: 0.5))
   }
 }
 
