@@ -146,6 +146,11 @@
         url = [NSURL URLWithString:[s medUrl]];
         break;
     }
+    if (url == nil) {
+      NSLog(@"No stream for %@ at the chosen quality, skipping it", [s title]);
+      [qualities removeLastObject];
+      continue;
+    }
     [urls addObject:url];
     [songs addObject:s];
   }

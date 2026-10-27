@@ -517,6 +517,9 @@ static NSString *hierrs[] = {
 
       if (!song.medUrl) song.medUrl = song.lowUrl;
       if (!song.highUrl) song.highUrl = song.medUrl;
+      // Pandora sends no low stream to subscribers, so fall back the other way too
+      if (!song.medUrl) song.medUrl = song.highUrl;
+      if (!song.lowUrl) song.lowUrl = song.medUrl;
 
       [songs addObject: song];
     };

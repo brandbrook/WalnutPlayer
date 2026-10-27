@@ -12,6 +12,7 @@
 		BF7CEAA6F785117ECDFDA7EA /* walnut-menubar.png in Resources */ = {isa = PBXBuildFile; fileRef = C54B5DF989044D7E2E280F3D /* walnut-menubar.png */; };
 		F64A1A780124A7739C057791 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A0297B86CD82A426556F1D /* SettingsWindow.swift */; };
 		338D67C73A4DD9EF386A2EF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9395C196A1F6BB297F28FACE /* Assets.xcassets */; };
+		A1C0FFEE00000000000000B1 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A1C0FFEE00000000000000F1 /* AppIcon.icon */; };
 		9FE5B63253E1B584B1B64654 /* RadioMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8303B6AE4FBD5BB091A36E2 /* RadioMenus.swift */; };
 		7CFCC5B6BDAC879AA5356A98 /* RadioWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087C6E930F5E342D3A6AFE09 /* RadioWindow.swift */; };
 		3BA2A4B26D168F2CD79F6047 /* RadioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6EE38BE362496123258341 /* RadioView.swift */; };
@@ -138,6 +139,7 @@
 		C54B5DF989044D7E2E280F3D /* walnut-menubar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walnut-menubar.png"; sourceTree = "<group>"; };
 		99A0297B86CD82A426556F1D /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsWindow.swift"; sourceTree = "<group>"; };
 		9395C196A1F6BB297F28FACE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets.xcassets"; sourceTree = "<group>"; };
+		A1C0FFEE00000000000000F1 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		D8303B6AE4FBD5BB091A36E2 /* RadioMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RadioMenus.swift"; sourceTree = "<group>"; };
 		087C6E930F5E342D3A6AFE09 /* RadioWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RadioWindow.swift"; sourceTree = "<group>"; };
 		AE6EE38BE362496123258341 /* RadioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RadioView.swift"; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A1C0FFEE00000000000000F1 /* AppIcon.icon */,
 				9395C196A1F6BB297F28FACE /* Assets.xcassets */,
 				8FDB7A7A11D3CF12C061C22F /* RadioTextures */,
 				FA24435E136B3D6C00E126D3 /* CHANGELOG.md */,
@@ -699,6 +702,7 @@
 			files = (
 				26BAF8C485DEEE866D29D0F7 /* walnut-menubar-light.png in Resources */,
 				BF7CEAA6F785117ECDFDA7EA /* walnut-menubar.png in Resources */,
+				A1C0FFEE00000000000000B1 /* AppIcon.icon in Resources */,
 				338D67C73A4DD9EF386A2EF6 /* Assets.xcassets in Resources */,
 				088E71B3AB1BEE04BF034EB7 /* paper006.jpg in Resources */,
 				C5E38B5F98429390E7EF4DF0 /* metal009.jpg in Resources */,
