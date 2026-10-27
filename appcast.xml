@@ -5,6 +5,15 @@
     <link>https://github.com/brandbrook/WalnutPlayer</link>
     <language>en</language>
     <item>
+      <title>Walnut 1.0.2</title>
+      <pubDate>Tue, 27 Oct 2026 01:44:06 +0000</pubDate>
+      <sparkle:version>102</sparkle:version>
+      <sparkle:shortVersionString>1.0.2</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+      <sparkle:releaseNotesLink>https://github.com/brandbrook/WalnutPlayer/releases/tag/1.0.2</sparkle:releaseNotesLink>
+      <enclosure url="https://github.com/brandbrook/WalnutPlayer/releases/download/1.0.2/Walnut-1.0.2.zip" type="application/octet-stream" sparkle:edSignature="smyYEoif+aBTgWukzYvY3Q0SNBLJQ8ZCu6UxbO6k/++ss3fCerYLHlDwp+YJ0FZydRX+4nAg7mB0r13oZEruCg==" length="14276410"/>
+    </item>
+    <item>
       <title>Walnut 1.0.1</title>
       <pubDate>Tue, 27 Oct 2026 00:48:17 +0000</pubDate>
       <sparkle:version>101</sparkle:version>
