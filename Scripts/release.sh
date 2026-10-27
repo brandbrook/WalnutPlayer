@@ -35,13 +35,16 @@ info "Exporting with Developer ID"
 xcodebuild -exportArchive -archivePath build/Walnut.xcarchive -exportPath build/export \
   -exportOptionsPlist Scripts/ExportOptions.plist -quiet
 
+# Leave extended attributes out of the zip: macOS 26 tags every file, ditto stores the tags as
+# "._" files, and older macOS unpacks those next to the framework symlinks, breaking the seal.
+zipapp() { rm -f "$ZIP"; ditto -c -k --norsrc --noextattr --noacl --keepParent "$APP" "$ZIP"; }
+
 info "Notarizing (this takes a few minutes)"
-rm -f "$ZIP"
-ditto -c -k --keepParent "$APP" "$ZIP"
+zipapp
 xcrun notarytool submit "$ZIP" --keychain-profile "$NOTARY_PROFILE" --wait
 xcrun stapler staple "$APP"
-rm -f "$ZIP"
-ditto -c -k --keepParent "$APP" "$ZIP"
+zipapp
+if zipinfo -1 "$ZIP" | grep -q '/\._'; then echo "$ZIP has ._ files." >&2; exit 1; fi
 spctl -a -vv "$APP"
 MIN_OS=$(/usr/libexec/PlistBuddy -c "Print LSMinimumSystemVersion" "$APP/Contents/Info.plist")
 

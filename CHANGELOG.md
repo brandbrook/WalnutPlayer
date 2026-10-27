@@ -1,3 +1,9 @@
+# Walnut 1.0.2 (10/26/26)
+
+* Opens on macOS 15 and earlier without the "Apple could not verify" warning
+* A proper rounded icon on macOS 15 and earlier
+* No crash when a song has no stream at the chosen audio quality
+
 # Walnut 1.0.1 (10/26/26)
 
 * Clicking a song notification brings back the radio that is playing, instead of opening a second copy of Walnut at the station list
