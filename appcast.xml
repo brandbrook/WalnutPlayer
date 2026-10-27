@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Walnut</title>
+    <link>https://github.com/brandbrook/WalnutPlayer</link>
+    <language>en</language>
+    <item>
+      <title>Walnut 1.0</title>
+      <pubDate>Mon, 26 Oct 2026 21:49:57 +0000</pubDate>
+      <sparkle:version>100</sparkle:version>
+      <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+      <sparkle:releaseNotesLink>https://github.com/brandbrook/WalnutPlayer/releases/tag/v1.0</sparkle:releaseNotesLink>
+      <enclosure url="https://github.com/brandbrook/WalnutPlayer/releases/download/v1.0/Walnut-1.0.zip" type="application/octet-stream" sparkle:edSignature="vlSTWUZCt4EQtSwQNsQVZqHlxONQJD6ZZzG3ILRCIUJkEJjiiNm2TlUQdEOxkZnZRDatmOKi5SuDzlxTVB8vBg==" length="12908274"/>
+    </item>
+  </channel>
+</rss>
