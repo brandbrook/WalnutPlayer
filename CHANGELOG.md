@@ -1,3 +1,7 @@
+# Walnut 1.0.1 (10/26/26)
+
+* Clicking a song notification brings back the radio that is playing, instead of opening a second copy of Walnut at the station list
+
 # Walnut 1.0 (10/26/26)
 
 Walnut is Hermes rebuilt for today's Macs and redesigned as a walnut table radio.

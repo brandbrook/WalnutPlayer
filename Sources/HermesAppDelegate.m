@@ -182,6 +182,17 @@
 #pragma mark - NSApplication notifications
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
+  // Clicking a notification launches the app by bundle ID, which can start a second copy
+  // (another Walnut.app elsewhere on disk). Hand over to the one already playing and quit,
+  // before this copy touches any saved state.
+  NSRunningApplication *me = [NSRunningApplication currentApplication];
+  for (NSRunningApplication *other in [NSRunningApplication runningApplicationsWithBundleIdentifier:[me bundleIdentifier]]) {
+    if ([other processIdentifier] != [me processIdentifier]) {
+      [other activateWithOptions:NSApplicationActivateAllWindows];
+      exit(0);
+    }
+  }
+
   // Must do this before the app is activated, or the menu bar doesn't draw.
   // <http://stackoverflow.com/questions/7596643/>
   [self updateStatusItemVisibility:nil];
