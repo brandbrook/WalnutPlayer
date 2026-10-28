@@ -32,21 +32,23 @@ On the Mac that makes releases:
    - `CFBundleVersion` — a whole number that must go up with every release (Sparkle compares
      it). Walnut 1.0 is `100`; use `110` for 1.1, `111` for 1.1.1, and so on. Keep
      `CURRENT_PROJECT_VERSION` in the Xcode project the same.
-2. **Update [`CHANGELOG.md`](CHANGELOG.md)** with a section for the new version.
+2. **Update [`CHANGELOG.md`](CHANGELOG.md)** with a section for the new version, headed
+   `# Walnut x.y (MM/DD/YY)` like the others. The website's changelog page is built from it.
 3. **Build:**
 
        make release
 
    This archives the app, exports it with Developer ID, sends it to Apple for notarization
    and waits, staples the approval, zips it as `build/Walnut-x.y.zip`, signs the zip for
-   Sparkle, and adds the new version to the top of `appcast.xml`. Nothing is uploaded.
+   Sparkle, adds the new version to the top of `appcast.xml`, and rebuilds the website's
+   changelog page (`docs/changelog.html`). Nothing is uploaded.
 4. **Try the build:** `build/export/Walnut.app` is the exact app in the zip.
 5. **Publish on GitHub** (github.com/brandbrook/WalnutPlayer → Releases → *Draft a new release*):
    - Tag: `vx.y` (e.g. `v1.1`), target `master`, created on publish.
    - Title: `Walnut x.y`; notes: the changelog section.
    - Attach `build/Walnut-x.y.zip`, with exactly that file name; the appcast points at it.
    - Publish.
-6. **Commit and push the appcast** (with the version and changelog changes):
+6. **Commit and push the appcast** (with the version, changelog and changelog page):
 
        git commit -am "Walnut x.y"
        git push
@@ -57,8 +59,9 @@ On the Mac that makes releases:
 ## Website
 
 The site is in [`docs/`](docs/) and served by GitHub Pages at
-https://brandbrook.github.io/WalnutPlayer/. Its download button opens the latest release,
-so it needs no change per release.
+https://brandbrook.github.io/WalnutPlayer/. Its download button opens the latest release.
+`changelog.html` is generated from `CHANGELOG.md` by `Scripts/changelog-page.py` (run by
+`make release`, or by hand after editing the changelog); don't edit it directly.
 
 ### Re-recording the website video
 

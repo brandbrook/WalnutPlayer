@@ -82,5 +82,8 @@ fi
 # newest first, right after <language>
 ITEM="$ITEM" perl -0pi -e 's#(<language>en</language>\n)#$1$ENV{ITEM}\n#' appcast.xml
 
+info "Updating the website's changelog page"
+python3 Scripts/changelog-page.py
+
 info "Done: $ZIP"
-info "Next: commit appcast.xml, push, then publish release v$VERSION with $ZIP attached (see RELEASING.md)."
+info "Next: commit appcast.xml and docs/changelog.html, push, then publish release v$VERSION with $ZIP attached (see RELEASING.md)."
