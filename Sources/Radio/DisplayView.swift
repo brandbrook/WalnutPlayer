@@ -207,7 +207,7 @@ private struct NowPlayingView: View {
         Spacer(minLength: u(4))
         VStack(alignment: .leading, spacing: u(6)) {
           InfoLine(text: model.title, link: model.link(for: .track), strong: true, style: style) {
-            SpinningRecord(playing: model.isPlaying, style: style)
+            SpinningRecord(playing: model.isPlaying, onScreen: model.onScreen, style: style)
           }
           InfoLine(text: model.artist, link: model.link(for: .artist), style: style) {
             Image(systemName: "person.fill").font(.system(size: u(11.5)))
@@ -285,12 +285,14 @@ private struct InfoLine<Icon: View>: View {
 /// A small record that turns slowly while music plays.
 private struct SpinningRecord: View {
   let playing: Bool
+  let onScreen: Bool
   let style: GlassStyle
-  @State private var angle = 0.0
-  @State private var last = Date()
+  @State private var heldAngle = 0.0     // where it stopped last
+  @State private var since: Date?        // when it started turning, while it plays
 
   var body: some View {
-    TimelineView(.animation(paused: !playing)) { t in
+    // a slow turn, so 30 frames a second is plenty
+    TimelineView(.animation(minimumInterval: 1 / 30, paused: !playing || !onScreen)) { t in
       Canvas { ctx, size in
         let r = min(size.width, size.height) / 2, c = CGPoint(x: size.width / 2, y: size.height / 2)
         func circle(_ rr: CGFloat) -> Path { Path(ellipseIn: CGRect(x: c.x - rr, y: c.y - rr, width: rr * 2, height: rr * 2)) }
@@ -312,13 +314,15 @@ private struct SpinningRecord: View {
         var cut = ctx; cut.blendMode = .destinationOut; cut.fill(sheen, with: .color(.black.opacity(0.4)))
       }
     }
+    .onAppear { if playing { since = Date() } }
+    .onChange(of: playing) { now in
+      if now { since = Date() } else { heldAngle = angle(at: Date()); since = nil }
+    }
   }
 
   /// About one turn every 4 seconds while playing; holds still when paused.
   private func angle(at date: Date) -> Double {
-    let dt = date.timeIntervalSince(last)
-    DispatchQueue.main.async { last = date; if playing { angle += dt * .pi / 2 } }
-    return angle + (playing ? dt * .pi / 2 : 0)
+    heldAngle + (since.map { date.timeIntervalSince($0) } ?? 0) * .pi / 2
   }
 }
 

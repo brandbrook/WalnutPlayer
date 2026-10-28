@@ -66,7 +66,7 @@ struct RadioView: View {
   private var front: some View {
     let shape = RoundedRectangle(cornerRadius: u(Radio.panelRadius))
     return HStack(spacing: 0) {
-      SpeakerView(playing: model.isPlaying)
+      SpeakerView(playing: model.isPlaying, onScreen: model.onScreen)
         .frame(width: u(Radio.speakerColumn))
       face
     }

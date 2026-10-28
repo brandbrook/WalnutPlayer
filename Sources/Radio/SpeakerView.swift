@@ -44,16 +44,42 @@ final class SpeakerMotion {
 
 struct SpeakerView: View {
   var playing: Bool
+  var onScreen: Bool
   @State private var motion = SpeakerMotion()
+  @State private var cones = ConeCache()
+  /// After a pause the cone still springs back to rest, so keep animating for a moment.
+  @State private var settling = false
 
   var body: some View {
-    TimelineView(.animation(paused: false)) { timeline in
-      Canvas { ctx, size in
-        motion.step(playing: playing)
-        draw(&ctx, size: size, t: timeline.date.timeIntervalSinceReferenceDate)
+    // Only the cone and dust cap move. The band, screws and rubber roll are drawn once, under
+    // the moving parts, and the animation stops when the music does or the radio can't be seen.
+    ZStack {
+      Canvas { ctx, size in drawStill(&ctx, size: size) }
+      TimelineView(.animation(minimumInterval: 1 / 30, paused: !onScreen || !(playing || settling))) { timeline in
+        Canvas { ctx, size in
+          motion.step(playing: playing)
+          drawMoving(&ctx, size: size, t: timeline.date.timeIntervalSinceReferenceDate)
+        }
       }
     }
     .allowsHitTesting(false)
+    .onChange(of: playing) { now in
+      settling = !now
+      if !now { DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { settling = false } }
+    }
+  }
+
+  private struct Geometry {
+    let c: CGPoint, R: CGFloat
+    var bO: CGFloat { R }
+    var bI: CGFloat { R * 0.88 }
+    var so: CGFloat { R * 0.88 }
+    var si: CGFloat { R * 0.71 }      // the cone's edge at rest
+    var capR: CGFloat { R * 0.26 }
+    init(_ size: CGSize) {
+      c = CGPoint(x: size.width / 2, y: size.height / 2)
+      R = min(size.width / 2 - u(24), size.height * 0.31)   // same size as before, closer to the display
+    }
   }
 
   private func ring(_ c: CGPoint, _ ro: CGFloat, _ ri: CGFloat) -> Path {
@@ -74,11 +100,10 @@ struct SpeakerView: View {
     g.fill(clip.boundingRect.insetBy(dx: -2, dy: -2).path, with: .tiledImage(Image(nsImage: Texture.grain), scale: 1))
   }
 
-  private func draw(_ ctx: inout GraphicsContext, size: CGSize, t: Double) {
-    let e = motion.cone, hi = motion.high
-    let flutter = motion.mid * sin(t * 47) * 0.004
-    let c = CGPoint(x: size.width / 2, y: size.height / 2), R = min(size.width / 2 - u(24), size.height * 0.31)   // same size as before, closer to the display
-    let bO = R, bI = R * 0.88, so = R * 0.88, capR = R * 0.26
+  /// Everything that doesn't move: contact shadows, the brass band and its screws, the rubber roll.
+  private func drawStill(_ ctx: inout GraphicsContext, size: CGSize) {
+    let g = Geometry(size), c = g.c, bO = g.bO, bI = g.bI, so = g.so
+    let si = g.si * 0.97              // the roll runs under the cone, which never shrinks this far
     let eoFill = FillStyle(eoFill: true)
 
     // contact with the panel: a soft short shadow and a tight dark one
@@ -105,9 +130,6 @@ struct SpeakerView: View {
                                                     center: CGPoint(x: s.x - sr * 0.35, y: s.y - sr * 0.4), startRadius: 0, endRadius: sr))
     }
 
-    // everything inside the ring moves toward the listener with the cone
-    let k = 1 + e * 0.04 + flutter
-    let si = R * 0.71 * k
     // rubber roll
     ctx.fill(ring(c, so, si), with: .radialGradient(Gradient(stops: [.init(color: Color(hex: 0x090909), location: 0), .init(color: Color(hex: 0x2C2C2C), location: 0.42),
                                                                    .init(color: Color(hex: 0x303030), location: 0.58), .init(color: Color(hex: 0x080808), location: 1)]),
@@ -120,8 +142,44 @@ struct SpeakerView: View {
                                    startPoint: CGPoint(x: c.x - so, y: c.y - so), endPoint: CGPoint(x: c.x + so, y: c.y + so)))
     }
     ctx.stroke(circle(c, so), with: .color(.black.opacity(0.95)), lineWidth: 1)
+  }
 
-    // cone: matte black, lower slope a touch lighter, paper fibre and fine pebbled grain
+  /// The cone and dust cap; everything inside the roll moves toward the listener with the cone.
+  private func drawMoving(_ ctx: inout GraphicsContext, size: CGSize, t: Double) {
+    let g = Geometry(size), c = g.c
+    let e = motion.cone, hi = motion.high
+    let flutter = motion.mid * sin(t * 47) * 0.004
+    let k = 1 + e * 0.04 + flutter
+    let si = g.si * k
+
+    // the cone's paper and grain are drawn once, at rest and fully pushed; each frame blends the two
+    let rest = CGRect(x: c.x - si, y: c.y - si, width: si * 2, height: si * 2)
+    let images = cones.images(radius: g.si, capR: g.capR, draw: drawCone)
+    ctx.draw(images.rest, in: rest)
+    let push = min(max(e, 0), 1)
+    if push > 0.01 { var l = ctx; l.opacity = push; l.draw(images.pushed, in: rest) }
+    ctx.stroke(circle(c, si), with: .color(.black.opacity(0.95)), lineWidth: 1)
+    ctx.stroke(arc(c, si - 1, 0.15, 0.85), with: .color(.white.opacity(0.1)), lineWidth: 0.5)
+
+    // dust cap: glossy black dome, its highlight shimmers with the highs
+    let dr = g.capR * (1 + e * 0.07 + flutter * 2)
+    ctx.drawLayer { l in l.addFilter(.shadow(color: .black.opacity(0.8), radius: 3, y: 2)); l.fill(circle(c, dr), with: .color(Color(hex: 0x0C0C0C))) }
+    ctx.fill(circle(c, dr), with: .radialGradient(Gradient(stops: [.init(color: Color(hex: 0x353535), location: 0), .init(color: Color(hex: 0x161616), location: 0.6),
+                                                                  .init(color: Color(hex: 0x070707), location: 1)]),
+                                                  center: CGPoint(x: c.x - dr * 0.3, y: c.y - dr * 0.35), startRadius: dr * 0.1, endRadius: dr * 1.1))
+    let h = CGPoint(x: c.x - dr * 0.32 + hi * sin(t * 61) * 0.5, y: c.y - dr * 0.42 + hi * cos(t * 53) * 0.4)   // upper left
+    ctx.drawLayer { l in
+      l.translateBy(x: h.x, y: h.y); l.scaleBy(x: 1.5, y: 0.8)
+      l.fill(circle(.zero, dr * 0.42), with: .radialGradient(Gradient(colors: [.white.opacity(0.22 + hi * 0.15 + e * 0.06), .clear]),
+                                                             center: .zero, startRadius: 0, endRadius: dr * 0.42))
+    }
+    ctx.stroke(circle(c, dr), with: .color(.black.opacity(0.9)), lineWidth: 0.75)
+  }
+
+  /// The cone at rest size, centred in a square of its diameter: matte black, lower slope a touch
+  /// lighter (more so when pushed), paper fibre and fine pebbled grain.
+  private func drawCone(_ ctx: inout GraphicsContext, si: CGFloat, capR: CGFloat, e: Double) {
+    let c = CGPoint(x: si, y: si)
     let lo = (24 + e * 6) / 255, up = (54 + e * 14) / 255
     ctx.fill(circle(c, si), with: .linearGradient(Gradient(colors: [Color(white: lo), Color(white: up)]),
                                                   startPoint: CGPoint(x: c.x, y: c.y - si), endPoint: CGPoint(x: c.x, y: c.y + si)))
@@ -138,24 +196,29 @@ struct SpeakerView: View {
       l.fill(CGRect(x: c.x - si, y: c.y - si, width: si * 2, height: si * 2).path,
              with: .radialGradient(Gradient(stops: [.init(color: .black.opacity(0.55), location: 0), .init(color: .black.opacity(0.15), location: 0.35),
                                                     .init(color: .clear, location: 0.9), .init(color: .black.opacity(0.5), location: 1)]),
-                                   center: c, startRadius: capR * k, endRadius: si))
+                                   center: c, startRadius: capR, endRadius: si))
     }
-    ctx.stroke(circle(c, si), with: .color(.black.opacity(0.95)), lineWidth: 1)
-    ctx.stroke(arc(c, si - 1, 0.15, 0.85), with: .color(.white.opacity(0.1)), lineWidth: 0.5)
+  }
+}
 
-    // dust cap: glossy black dome, its highlight shimmers with the highs
-    let dr = capR * (1 + e * 0.07 + flutter * 2)
-    ctx.drawLayer { l in l.addFilter(.shadow(color: .black.opacity(0.8), radius: 3, y: 2)); l.fill(circle(c, dr), with: .color(Color(hex: 0x0C0C0C))) }
-    ctx.fill(circle(c, dr), with: .radialGradient(Gradient(stops: [.init(color: Color(hex: 0x353535), location: 0), .init(color: Color(hex: 0x161616), location: 0.6),
-                                                                  .init(color: Color(hex: 0x070707), location: 1)]),
-                                                  center: CGPoint(x: c.x - dr * 0.3, y: c.y - dr * 0.35), startRadius: dr * 0.1, endRadius: dr * 1.1))
-    let h = CGPoint(x: c.x - dr * 0.32 + hi * sin(t * 61) * 0.5, y: c.y - dr * 0.42 + hi * cos(t * 53) * 0.4)   // upper left
-    ctx.drawLayer { l in
-      l.translateBy(x: h.x, y: h.y); l.scaleBy(x: 1.5, y: 0.8)
-      l.fill(circle(.zero, dr * 0.42), with: .radialGradient(Gradient(colors: [.white.opacity(0.22 + hi * 0.15 + e * 0.06), .clear]),
-                                                             center: .zero, startRadius: 0, endRadius: dr * 0.42))
+/// The cone's two looks (at rest, fully pushed) rendered once per size, a little larger than
+/// shown so they stay sharp when the cone moves out.
+private final class ConeCache {
+  typealias Draw = (inout GraphicsContext, CGFloat, CGFloat, Double) -> Void
+  private var key: CGFloat = 0
+  private var cached: (rest: Image, pushed: Image)?
+
+  @MainActor func images(radius si: CGFloat, capR: CGFloat, draw: @escaping Draw) -> (rest: Image, pushed: Image) {
+    if let cached, key == si { return cached }
+    func render(_ e: Double) -> Image {
+      let view = Canvas { ctx, _ in draw(&ctx, si, capR, e) }.frame(width: si * 2, height: si * 2)
+      let renderer = ImageRenderer(content: view)
+      renderer.scale = (NSScreen.main?.backingScaleFactor ?? 2) * 1.1
+      return renderer.nsImage.map { Image(nsImage: $0) } ?? Image(nsImage: NSImage())
     }
-    ctx.stroke(circle(c, dr), with: .color(.black.opacity(0.9)), lineWidth: 0.75)
+    let made = (rest: render(0), pushed: render(1))
+    key = si; cached = made
+    return made
   }
 }
 

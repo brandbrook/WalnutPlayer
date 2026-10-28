@@ -75,7 +75,9 @@ final class RadioModel: ObservableObject {
   @Published private(set) var art: NSImage?
   @Published private(set) var rating = 0
   @Published private(set) var isPlaying = false
-  @Published private(set) var elapsed: TimeInterval = 0
+  @Published private(set) var elapsed: TimeInterval = 0   // whole seconds; the display shows no finer
+  /// The radio window is at least partly visible; the speaker and record animate only then.
+  @Published var onScreen = true
   @Published private(set) var currentToken: String?
   @Published var flash: String?          // briefly lit action ("dislike", "tired")
 
@@ -274,12 +276,19 @@ final class RadioModel: ObservableObject {
     rating = song?.nrating?.intValue ?? 0
   }
 
+  private var demoElapsed = 0.0
+  /// Every published change redraws the whole radio, so only publish when the shown second changes.
+  private func setElapsed(_ t: TimeInterval) {
+    let s = t.rounded(.down)
+    if s != elapsed { elapsed = s }
+  }
+
   private func stateChanged() { isPlaying = playback.playing?.isPlaying() ?? false }
 
   private func tick() {
-    if demo { if isPlaying { elapsed += 0.25 }; return }
+    if demo { if isPlaying { demoElapsed += 0.25; setElapsed(demoElapsed) }; return }
     var t = 0.0
-    if let s = playback.playing, s.progress(&t) { elapsed = t } else if playback.playing == nil { elapsed = 0 }
+    if let s = playback.playing, s.progress(&t) { setElapsed(t) } else if playback.playing == nil { setElapsed(0) }
     let playingNow = playback.playing?.isPlaying() ?? false
     if playingNow != isPlaying { isPlaying = playingNow }
     rememberPlayState()

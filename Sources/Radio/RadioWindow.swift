@@ -92,6 +92,7 @@ final class RadioWindowController: NSWindowController, NSWindowDelegate {
     window.radioOrigin = NSPoint(x: m.left, y: m.top)
     if !window.setFrameUsingName("WalnutRadio") { window.center() }
     installKeys()
+    watchVisibility()
   }
 
   required init?(coder: NSCoder) { fatalError() }
@@ -102,6 +103,24 @@ final class RadioWindowController: NSWindowController, NSWindowDelegate {
     applyAlwaysOnTop()
     showWindow(nil)
     window?.makeKeyAndOrderFront(nil)
+  }
+
+  /// Hidden, minimized or fully covered: stop the animations, nobody can see them.
+  private func watchVisibility() {
+    let names: [Notification.Name] = [NSWindow.didChangeOcclusionStateNotification, NSWindow.didMiniaturizeNotification,
+                                      NSWindow.didDeminiaturizeNotification, NSApplication.didHideNotification,
+                                      NSApplication.didUnhideNotification]
+    for name in names {
+      NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in
+        MainActor.assumeIsolated { self?.updateVisibility() }
+      }
+    }
+  }
+
+  private func updateVisibility() {
+    guard let window else { return }
+    let visible = window.occlusionState.contains(.visible) && !window.isMiniaturized && !NSApp.isHidden
+    if RadioModel.shared.onScreen != visible { RadioModel.shared.onScreen = visible }
   }
 
   /// "Keep the radio on top of other windows" in Settings.

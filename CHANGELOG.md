@@ -1,3 +1,7 @@
+# Walnut 1.0.3 (10/28/26)
+
+* Uses far less CPU: about a third as much while playing, and almost none when paused, hidden or covered by other windows
+
 # Walnut 1.0.2 (10/26/26)
 
 * Opens on macOS 15 and earlier without the "Apple could not verify" warning
