@@ -1,3 +1,7 @@
+# Walnut 1.0.4 (11/04/26)
+
+* No more stuttering while the Mac is busy, for example during a big build with the iOS Simulator open
+
 # Walnut 1.0.3 (10/28/26)
 
 * Uses far less CPU: about a third as much while playing, and almost none when paused, hidden or covered by other windows
