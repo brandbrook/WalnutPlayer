@@ -110,6 +110,26 @@ static void MyPacketsProc(void *inClientData, UInt32 inNumberBytes, UInt32
             packetDescriptions:inPacketDescriptions];
 }
 
+/* Sets this process's I/O buffer size on the default output device to about 85 ms
+   (4096 frames at 48 kHz), within what the device allows */
+static void UseLargeOutputBuffers(void) {
+  AudioObjectPropertyAddress addr = { kAudioHardwarePropertyDefaultOutputDevice,
+    kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMain };
+  AudioDeviceID device = kAudioObjectUnknown;
+  UInt32 size = sizeof(device);
+  if (AudioObjectGetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, &size, &device) ||
+      device == kAudioObjectUnknown) return;
+
+  AudioValueRange range;
+  size = sizeof(range);
+  addr.mSelector = kAudioDevicePropertyBufferFrameSizeRange;
+  if (AudioObjectGetPropertyData(device, &addr, 0, NULL, &size, &range)) return;
+
+  UInt32 frames = (UInt32) MIN(MAX(4096, range.mMinimum), range.mMaximum);
+  addr.mSelector = kAudioDevicePropertyBufferFrameSize;
+  AudioObjectSetPropertyData(device, &addr, 0, NULL, sizeof(frames), &frames);
+}
+
 /* AudioQueue callback notifying that a buffer is done, invoked on AudioQueue's
  * own personal threads, not the main thread */
 static void MyAudioQueueOutputCallback(void *inClientData, AudioQueueRef inAQ,
@@ -900,6 +920,12 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
 //
 - (void)createQueue {
   assert(audioQueue == NULL);
+
+  // By default the output device hands this process 512 frames (~10 ms) at a time, and
+  // when another program on the same device falls behind (an iOS Simulator during a
+  // build, say) that leaves no slack: the music stutters while other players don't.
+  // Ask for large I/O buffers, as music players do; the setting is ours alone.
+  UseLargeOutputBuffers();
 
   // create the audio queue
   err = AudioQueueNewOutput(&asbd, MyAudioQueueOutputCallback,
