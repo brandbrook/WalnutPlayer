@@ -64,7 +64,6 @@ ITEM="    <item>
       <sparkle:version>$BUILD</sparkle:version>
       <sparkle:shortVersionString>$VERSION</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>$MIN_OS</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/$REPO/releases/tag/v$VERSION</sparkle:releaseNotesLink>
       <enclosure url=\"https://github.com/$REPO/releases/download/v$VERSION/Walnut-$VERSION.zip\" type=\"application/octet-stream\" $SIGNATURE/>
     </item>"
 if [ ! -f appcast.xml ]; then
@@ -81,6 +80,7 @@ EOF
 fi
 # newest first, right after <language>
 ITEM="$ITEM" perl -0pi -e 's#(<language>en</language>\n)#$1$ENV{ITEM}\n#' appcast.xml
+python3 Scripts/release-notes.py   # the update window shows this version's CHANGELOG.md section
 
 info "Updating the website's changelog page"
 python3 Scripts/changelog-page.py

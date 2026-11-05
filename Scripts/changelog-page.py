@@ -173,5 +173,6 @@ def page(entries):
 """
 
 
-PAGE.write_text(page([entry(*r) for r in releases()]))
-print(f"Wrote {PAGE.relative_to(ROOT)}")
+if __name__ == "__main__":
+    PAGE.write_text(page([entry(*r) for r in releases()]))
+    print(f"Wrote {PAGE.relative_to(ROOT)}")

@@ -6,47 +6,47 @@
     <language>en</language>
     <item>
       <title>Walnut 1.0.4</title>
+      <description><![CDATA[<ul><li>No more stuttering while the Mac is busy, for example during a big build with the iOS Simulator open</li></ul>]]></description>
       <pubDate>Wed, 04 Nov 2026 19:18:46 +0000</pubDate>
       <sparkle:version>104</sparkle:version>
       <sparkle:shortVersionString>1.0.4</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/brandbrook/WalnutPlayer/releases/tag/v1.0.4</sparkle:releaseNotesLink>
       <enclosure url="https://github.com/brandbrook/WalnutPlayer/releases/download/v1.0.4/Walnut-1.0.4.zip" type="application/octet-stream" sparkle:edSignature="o8MvLTG1XR2hjO+P4P4nxTlGu0wqtNM85aNwwN9zmZFPpX4bAyrwpurO7Yyjs6gro/hT2niju/i62ZMkyal3Bg==" length="14293974"/>
     </item>
     <item>
       <title>Walnut 1.0.3</title>
+      <description><![CDATA[<ul><li>Uses far less CPU: about a third as much while playing, and almost none when paused, hidden or covered by other windows</li></ul>]]></description>
       <pubDate>Wed, 28 Oct 2026 20:18:07 +0000</pubDate>
       <sparkle:version>103</sparkle:version>
       <sparkle:shortVersionString>1.0.3</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/brandbrook/WalnutPlayer/releases/tag/v1.0.3</sparkle:releaseNotesLink>
       <enclosure url="https://github.com/brandbrook/WalnutPlayer/releases/download/v1.0.3/Walnut-1.0.3.zip" type="application/octet-stream" sparkle:edSignature="K0AaROz/+KN4ID71K7zIApGmFuGkgCtGLPhTNtDMrakIYEXeXFb2M0ECpAiaxQBPZHUQ/qcSWSH8fncP74vxBw==" length="14293497"/>
     </item>
     <item>
       <title>Walnut 1.0.2</title>
+      <description><![CDATA[<ul><li>Opens on macOS 15 and earlier without the &quot;Apple could not verify&quot; warning</li><li>A proper rounded icon on macOS 15 and earlier</li><li>No crash when a song has no stream at the chosen audio quality</li></ul>]]></description>
       <pubDate>Tue, 27 Oct 2026 01:44:06 +0000</pubDate>
       <sparkle:version>102</sparkle:version>
       <sparkle:shortVersionString>1.0.2</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/brandbrook/WalnutPlayer/releases/tag/1.0.2</sparkle:releaseNotesLink>
       <enclosure url="https://github.com/brandbrook/WalnutPlayer/releases/download/1.0.2/Walnut-1.0.2.zip" type="application/octet-stream" sparkle:edSignature="smyYEoif+aBTgWukzYvY3Q0SNBLJQ8ZCu6UxbO6k/++ss3fCerYLHlDwp+YJ0FZydRX+4nAg7mB0r13oZEruCg==" length="14276410"/>
     </item>
     <item>
       <title>Walnut 1.0.1</title>
+      <description><![CDATA[<ul><li>Clicking a song notification brings back the radio that is playing, instead of opening a second copy of Walnut at the station list</li></ul>]]></description>
       <pubDate>Tue, 27 Oct 2026 00:48:17 +0000</pubDate>
       <sparkle:version>101</sparkle:version>
       <sparkle:shortVersionString>1.0.1</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/brandbrook/WalnutPlayer/releases/tag/v1.0.1</sparkle:releaseNotesLink>
       <enclosure url="https://github.com/brandbrook/WalnutPlayer/releases/download/v1.0.1/Walnut-1.0.1.zip" type="application/octet-stream" sparkle:edSignature="R2FbOflzj1T0ZhOWWK7gkXOVhRC3EiVoqXGoKUmMAxNxx7blh/tyzz8+kN131VBaEwZ9a1ebRQFXS/pxh1uiAA==" length="12908835"/>
     </item>
     <item>
       <title>Walnut 1.0</title>
+      <description><![CDATA[<p>Walnut is Hermes rebuilt for today&#x27;s Macs and redesigned as a walnut table radio.</p><ul><li>Runs natively on Apple Silicon and Intel Macs, on macOS 13 Ventura and later</li><li>A new player: a walnut cabinet with a brass speaker that moves with the music, a backlit display, latching brass buttons and a tuning scale for your stations</li><li>Light and dark displays (cream backlight or amber on navy), or follow the system</li><li>Three-band EQ on the LOW, MID and HIGH knobs; double-click a knob to reset it</li><li>Like, dislike and &quot;tired of this song&quot; from the display; links to the song, artist and album</li><li>Create, rename and delete stations, and browse your history, from the display</li><li>New Settings window, new app and menu bar icons</li><li>Updates through Sparkle 2, signed and notarized for Gatekeeper</li><li>Always opens paused; remembers whether you were playing</li><li>Longer network timeouts for slow connections</li></ul>]]></description>
       <pubDate>Mon, 26 Oct 2026 21:49:57 +0000</pubDate>
       <sparkle:version>100</sparkle:version>
       <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/brandbrook/WalnutPlayer/releases/tag/v1.0</sparkle:releaseNotesLink>
       <enclosure url="https://github.com/brandbrook/WalnutPlayer/releases/download/v1.0/Walnut-1.0.zip" type="application/octet-stream" sparkle:edSignature="vlSTWUZCt4EQtSwQNsQVZqHlxONQJD6ZZzG3ILRCIUJkEJjiiNm2TlUQdEOxkZnZRDatmOKi5SuDzlxTVB8vBg==" length="12908274"/>
     </item>
   </channel>

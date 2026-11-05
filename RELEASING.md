@@ -33,14 +33,16 @@ On the Mac that makes releases:
      it). Walnut 1.0 is `100`; use `110` for 1.1, `111` for 1.1.1, and so on. Keep
      `CURRENT_PROJECT_VERSION` in the Xcode project the same.
 2. **Update [`CHANGELOG.md`](CHANGELOG.md)** with a section for the new version, headed
-   `# Walnut x.y (MM/DD/YY)` like the others. The website's changelog page is built from it.
+   `# Walnut x.y (MM/DD/YY)` like the others. The website's changelog page and the notes in
+   the update window are built from it.
 3. **Build:**
 
        make release
 
    This archives the app, exports it with Developer ID, sends it to Apple for notarization
    and waits, staples the approval, zips it as `build/Walnut-x.y.zip`, signs the zip for
-   Sparkle, adds the new version to the top of `appcast.xml`, and rebuilds the website's
+   Sparkle, adds the new version to the top of `appcast.xml` with its changelog section as
+   the update window's notes (`Scripts/release-notes.py`), and rebuilds the website's
    changelog page (`docs/changelog.html`). Nothing is uploaded.
 4. **Try the build:** `build/export/Walnut.app` is the exact app in the zip.
 5. **Publish on GitHub** (github.com/brandbrook/WalnutPlayer → Releases → *Draft a new release*):
